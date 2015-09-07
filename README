@@ -10,7 +10,7 @@ Things, which are different from original MarioAI v0.2.0 project:
 
 1) only JAVA agents can be used now
 
-2) GameViewer + ToolsConfigurator is not working (not refactored/broken)
+2) GameViewer + ToolsConfigurator are not working (not refactored/broken)
 
 3) New agent base types: especially interesting is MarioHijackAIBase, which is an agent you can interrupt anytime during its run, hijacking its controls and manually control Mario from keyboard (press 'H'ijack to start controlling agent manually) - this is great for debugging as you can let your AI to run "dry" and watch logs / debug draws as you position MARIO into a concrete situation
 
