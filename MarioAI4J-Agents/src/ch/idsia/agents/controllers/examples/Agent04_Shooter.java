@@ -72,14 +72,17 @@ public class Agent04_Shooter extends MarioHijackAIBase implements IAgent {
 	}
 	
 	public static void main(String[] args) {
-		String options = FastOpts.FAST_VISx2_02_JUMPING + FastOpts.L_ENEMY(Enemy.GOOMBA);
+		// IMPLEMENTS END-LESS RUNS
+		while (true) {
+			String options = FastOpts.FAST_VISx2_02_JUMPING + FastOpts.L_ENEMY(Enemy.GOOMBA, Enemy.RED_KOOPA) + FastOpts.L_RANDOMIZE;
+			
+			MarioSimulator simulator = new MarioSimulator(options);
+			
+			IAgent agent = new Agent04_Shooter();
+			
+			simulator.run(agent);
+		}
 		
-		MarioSimulator simulator = new MarioSimulator(options);
-		
-		IAgent agent = new Agent04_Shooter();
-		
-		simulator.run(agent);
-		
-		System.exit(0);
+		//System.exit(0);
 	}
 }

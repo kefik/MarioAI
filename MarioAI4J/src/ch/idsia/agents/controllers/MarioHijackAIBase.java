@@ -113,6 +113,7 @@ public class MarioHijackAIBase extends MarioAIBase implements KeyListener, IMari
 				SimulatorOptions.receptiveFieldMode = ReceptiveFieldMode.getForCode(SimulatorOptions.receptiveFieldMode.getCode()+1);
 			}
 			return;
+		case KeyEvent.VK_P:
 		case KeyEvent.VK_SPACE:
 			if (isPressed) {
 				SimulatorOptions.isGameplayStopped = !SimulatorOptions.isGameplayStopped;

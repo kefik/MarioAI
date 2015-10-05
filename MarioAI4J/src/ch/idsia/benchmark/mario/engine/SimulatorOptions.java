@@ -164,4 +164,9 @@ public abstract class SimulatorOptions {
 		marioVisualComponent.height *= isScale2x ? 2 : 0.5;
 		marioVisualComponent.changeScale2x();
 	}
+
+	public static void setScale2x(boolean scale2x) {
+		if (scale2x == isScale2x) return;
+		changeScale2x();
+	}
 }
