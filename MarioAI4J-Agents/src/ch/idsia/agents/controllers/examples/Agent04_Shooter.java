@@ -5,9 +5,12 @@ import ch.idsia.agents.IAgent;
 import ch.idsia.agents.controllers.MarioHijackAIBase;
 import ch.idsia.benchmark.mario.MarioSimulator;
 import ch.idsia.benchmark.mario.engine.generalization.Enemy;
+import ch.idsia.benchmark.mario.engine.generalization.Entity;
 import ch.idsia.benchmark.mario.engine.input.MarioInput;
 import ch.idsia.benchmark.mario.engine.input.MarioKey;
+import ch.idsia.benchmark.mario.engine.sprites.Mario;
 import ch.idsia.benchmark.mario.options.FastOpts;
+import ch.idsia.tools.EvaluationInfo;
 
 /**
  * Agent that sprints forward, jumps and shoots.
@@ -45,6 +48,8 @@ public class Agent04_Shooter extends MarioHijackAIBase implements IAgent {
 		// WARNING: do not press JUMP if UNABLE TO JUMP!
 		action.set(MarioKey.JUMP, (enemyAhead() || brickAhead()) && mario.mayJump);
 		
+		
+		
 		// If in the air => keep JUMPing
 		if (!mario.onGround) {
 			action.press(MarioKey.JUMP);
@@ -74,13 +79,29 @@ public class Agent04_Shooter extends MarioHijackAIBase implements IAgent {
 	public static void main(String[] args) {
 		// IMPLEMENTS END-LESS RUNS
 		while (true) {
-			String options = FastOpts.FAST_VISx2_02_JUMPING + FastOpts.L_ENEMY(Enemy.GOOMBA, Enemy.RED_KOOPA) + FastOpts.L_RANDOMIZE;
+			String options = FastOpts.FAST_VISx2_02_JUMPING + FastOpts.L_ENEMY(Enemy.GOOMBA, Enemy.SPIKY) + FastOpts.L_TUBES_ON + FastOpts.L_RANDOMIZE;
 			
 			MarioSimulator simulator = new MarioSimulator(options);
 			
 			IAgent agent = new Agent04_Shooter();
 			
-			simulator.run(agent);
+			EvaluationInfo info = simulator.run(agent);
+			
+			switch (info.marioStatus) {
+			case Mario.STATUS_RUNNING:
+				if (info.timeLeft <= 0) {
+					System.out.println("LEVEL TIMED OUT!");
+				} else {
+					throw new RuntimeException("Invalid state...");
+				}
+				break;
+			case Mario.STATUS_WIN:
+				System.out.println("VICTORY");
+				break;
+			case Mario.STATUS_DEAD:
+				System.out.println("MARIO KILLED");
+				break;
+			}
 		}
 		
 		//System.exit(0);
