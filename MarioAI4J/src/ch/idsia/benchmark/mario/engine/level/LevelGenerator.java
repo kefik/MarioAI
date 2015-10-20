@@ -132,7 +132,7 @@ public class LevelGenerator {
 			return level;
 		} else {
 			if (LevelOptions.getRandomSeed() < 0) {
-				levelSeed = (int)System.currentTimeMillis();
+				levelSeed = Math.abs(new Random().nextInt());
 			} else {
 				levelSeed = LevelOptions.getRandomSeed();
 			}
