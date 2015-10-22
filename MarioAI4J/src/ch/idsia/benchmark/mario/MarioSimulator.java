@@ -121,7 +121,7 @@ public class MarioSimulator {
 	}
 	
 	public static void main(String[] args) {
-		String options = FastOpts.VIS_ON + FastOpts.VIS_SCALE_2X + FastOpts.L_ENEMY(Enemy.GOOMBA, Enemy.SPIKY, Enemy.GREEN_KOOPA) + FastOpts.L_RANDOMIZE + FastOpts.AI_ZL_0_0;
+		String options = FastOpts.VIS_ON_2X + FastOpts.L_ENEMY(Enemy.GOOMBA, Enemy.SPIKY, Enemy.GREEN_KOOPA) + FastOpts.L_RANDOMIZE + FastOpts.AI_ZL_0_0;
 		
 		MarioSimulator simulator = new MarioSimulator(options);
 		

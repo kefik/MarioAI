@@ -75,7 +75,7 @@ public class Agent00_Random extends MarioHijackAIBase implements IAgent {
 	
 	public static void main(String[] args) {
 		// USE WORLD WITH NON-FLAT GROUND WITHOUT ENEMIES
-		String options = FastOpts.FAST_VISx2_02_JUMPING;
+		String options = FastOpts.VIS_ON_2X + FastOpts.LEVEL_02_JUMPING;
 		
 		// CREATE SIMULATOR
 		MarioSimulator simulator = new MarioSimulator(options);

@@ -61,7 +61,7 @@ public class Agent01_SprintForward extends MarioHijackAIBase {
 	
 	public static void main(String[] args) {
 		// USE FLAT LEVEL WITHOUT ENEMIES
-		String options = FastOpts.FAST_VISx2_01_FLAT;
+		String options = FastOpts.VIS_ON_2X + FastOpts.LEVEL_01_FLAT;
 		
 		// CREATE SIMULATOR
 		MarioSimulator simulator = new MarioSimulator(options);

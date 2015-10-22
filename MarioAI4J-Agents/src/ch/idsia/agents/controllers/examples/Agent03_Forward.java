@@ -57,7 +57,7 @@ public class Agent03_Forward extends MarioHijackAIBase implements IAgent {
 	}
 	
 	public static void main(String[] args) {
-		String options = FastOpts.FAST_VISx2_02_JUMPING /* + FastOpts.L_ENEMY(Enemy.GOOMBA) */;
+		String options = FastOpts.VIS_ON_2X + FastOpts.LEVEL_02_JUMPING /* + FastOpts.L_ENEMY(Enemy.GOOMBA) */;
 		
 		MarioSimulator simulator = new MarioSimulator(options);
 		

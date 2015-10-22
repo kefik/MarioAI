@@ -79,7 +79,7 @@ public class Agent04_Shooter extends MarioHijackAIBase implements IAgent {
 	public static void main(String[] args) {
 		// IMPLEMENTS END-LESS RUNS
 		while (true) {
-			String options = FastOpts.FAST_VISx2_02_JUMPING + FastOpts.L_ENEMY(Enemy.GOOMBA, Enemy.SPIKY) + FastOpts.L_TUBES_ON + FastOpts.L_RANDOMIZE;
+			String options = FastOpts.VIS_ON_2X + FastOpts.LEVEL_02_JUMPING + FastOpts.L_ENEMY(Enemy.GOOMBA, Enemy.SPIKY) + FastOpts.L_TUBES_ON + FastOpts.L_RANDOMIZE;
 			
 			MarioSimulator simulator = new MarioSimulator(options);
 			

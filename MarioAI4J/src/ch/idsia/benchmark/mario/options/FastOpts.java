@@ -341,6 +341,11 @@ public class FastOpts {
 					+ " " + BoolOption.VISUALIZATION_2X_SCALE.getParam() + " on";
 	
 	/**
+	 * Enable visualization + Auto-scale the visualization by 2x. (I.e. the window will be 2x larger in both dimensions.)
+	 */
+	public static final String VIS_ON_2X = VIS_ON + VIS_SCALE_2X;
+	
+	/**
 	 * Whether to visualize receptive field around Mario.
 	 * @param mode
 	 * @return
@@ -355,44 +360,44 @@ public class FastOpts {
 	// ==============
 	
 	/**
-	 * Flat level + Visualization(x2)
+	 * Flat level.
 	 */
-	public static final String FAST_VISx2_01_FLAT = VIS_ON + VIS_SCALE_2X + L_FLAT;
+	public static final String LEVEL_01_FLAT = L_FLAT;
 	
 	/**
-	 * Level with hills + Visualization(x2)
+	 * Level with hills.
 	 */
-	public static final String FAST_VISx2_02_JUMPING = VIS_ON + VIS_SCALE_2X + L_BLOCKS_OFF + L_CANNONS_OFF + L_COINS_OFF + L_DEAD_ENDS_OFF + L_GAPS_OFF + L_HIDDEN_BLOCKS_OFF
+	public static final String LEVEL_02_JUMPING = L_BLOCKS_OFF + L_CANNONS_OFF + L_COINS_OFF + L_DEAD_ENDS_OFF + L_GAPS_OFF + L_HIDDEN_BLOCKS_OFF
 												  	          + L_PLATFORMS_OFF + L_LADDERS_OFF + L_TUBES_OFF;
 	
 	/**
-	 * Level with hills + coins + Visualization(x2)
+	 * Level with hills + coins.
 	 */
-	public static final String FAST_VISx2_03_COLLECTING = VIS_ON + VIS_SCALE_2X + L_BLOCKS_OFF + L_CANNONS_OFF + L_COINS_ON + L_DEAD_ENDS_OFF + L_GAPS_OFF + L_HIDDEN_BLOCKS_OFF
+	public static final String LEVEL_03_COLLECTING = L_BLOCKS_OFF + L_CANNONS_OFF + L_COINS_ON + L_DEAD_ENDS_OFF + L_GAPS_OFF + L_HIDDEN_BLOCKS_OFF
 	  	       												     + L_PLATFORMS_OFF + L_LADDERS_OFF + L_TUBES_OFF;
 	
 	/**
-	 * Level with hills + block (can be crushed) + coins + Visualization(x2)
+	 * Level with hills + block (can be crushed) + coins.
 	 */
-	public static final String FAST_VISx2_04_BLOCKS = VIS_ON + VIS_SCALE_2X + L_BLOCKS_ON + L_CANNONS_OFF + L_COINS_ON + L_DEAD_ENDS_OFF + L_GAPS_OFF + L_HIDDEN_BLOCKS_OFF
+	public static final String LEVEL_04_BLOCKS = L_BLOCKS_ON + L_CANNONS_OFF + L_COINS_ON + L_DEAD_ENDS_OFF + L_GAPS_OFF + L_HIDDEN_BLOCKS_OFF
 													         + L_PLATFORMS_OFF + L_LADDERS_OFF + L_TUBES_OFF;
 	
 	/**
-	 * Level with hills + gaps (holes in the ground) + Visualization(x2)
+	 * Level with hills + gaps (holes in the ground).
 	 */
-	public static final String FAST_VISx2_05_GAPS = VIS_ON + VIS_SCALE_2X + L_BLOCKS_OFF + L_CANNONS_OFF + L_COINS_OFF + L_DEAD_ENDS_OFF + L_GAPS_ON + L_HIDDEN_BLOCKS_OFF
+	public static final String LEVEL_05_GAPS = L_BLOCKS_OFF + L_CANNONS_OFF + L_COINS_OFF + L_DEAD_ENDS_OFF + L_GAPS_ON + L_HIDDEN_BLOCKS_OFF
 	         										       + L_PLATFORMS_OFF + L_LADDERS_OFF + L_TUBES_OFF + L_DIFFICULTY(1);	
 	
 	/**
-	 * Level with hills + GOOMBA (walking mushroom) + Visualization(x2)
+	 * Level with hills + GOOMBA (walking mushroom).
 	 */
-	public static final String FAST_VISx2_06_GOOMBA = VIS_ON + VIS_SCALE_2X + L_BLOCKS_OFF + L_CANNONS_OFF + L_COINS_OFF + L_DEAD_ENDS_OFF + L_GAPS_OFF + L_HIDDEN_BLOCKS_OFF
+	public static final String LEVEL_06_GOOMBA = L_BLOCKS_OFF + L_CANNONS_OFF + L_COINS_OFF + L_DEAD_ENDS_OFF + L_GAPS_OFF + L_HIDDEN_BLOCKS_OFF
 		       														     + L_PLATFORMS_OFF + L_LADDERS_OFF + L_TUBES_OFF + L_ENEMY(Enemy.GOOMBA);
 	
 	/**
 	 * Level with hills + GOOMBA (walking mushroom) + SPIKY (walking thorned something) + Visualization(x2)
 	 */
-	public static final String FAST_VISx2_07_SPIKY = VIS_ON + VIS_SCALE_2X + L_BLOCKS_OFF + L_CANNONS_OFF + L_COINS_OFF + L_DEAD_ENDS_OFF + L_GAPS_OFF + L_HIDDEN_BLOCKS_OFF
+	public static final String LEVEL_07_SPIKY = L_BLOCKS_OFF + L_CANNONS_OFF + L_COINS_OFF + L_DEAD_ENDS_OFF + L_GAPS_OFF + L_HIDDEN_BLOCKS_OFF
 			     										    + L_PLATFORMS_OFF + L_LADDERS_OFF + L_TUBES_OFF + L_ENEMY(Enemy.GOOMBA, Enemy.SPIKY);
 	
 }
