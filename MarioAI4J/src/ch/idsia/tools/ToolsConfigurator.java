@@ -27,44 +27,7 @@
 
 package ch.idsia.tools;
 
-import java.awt.BorderLayout;
-import java.awt.Checkbox;
-import java.awt.Choice;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Label;
-import java.awt.Point;
-import java.awt.TextArea;
-import java.awt.TextField;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.util.Random;
-import java.util.Set;
-
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.border.TitledBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.plaf.basic.BasicArrowButton;
-
-import ch.idsia.agents.IAgent;
-import ch.idsia.agents.controllers.MarioAgentBase;
-import ch.idsia.agents.pool.AgentsPool;
-import ch.idsia.benchmark.mario.engine.SimulatorOptions;
-import ch.idsia.benchmark.mario.engine.VisualizationComponent;
-import ch.idsia.benchmark.mario.engine.level.LevelGenerator;
-import ch.idsia.benchmark.mario.options.AIOptions;
-import ch.idsia.benchmark.mario.options.SimulationOptions;
-import ch.idsia.benchmark.mario.options.SystemOptions;
 
 /**
  * Created by IntelliJ IDEA.

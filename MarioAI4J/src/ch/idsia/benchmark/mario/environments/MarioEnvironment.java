@@ -56,7 +56,6 @@ import ch.idsia.benchmark.mario.options.SystemOptions;
 import ch.idsia.benchmark.mario.options.VisualizationOptions;
 import ch.idsia.tasks.SystemOfValues;
 import ch.idsia.tools.EvaluationInfo;
-import ch.idsia.tools.punj.PunctualJudge;
 
 /**
  * Created by IntelliJ IDEA. 
@@ -213,7 +212,6 @@ public final class MarioEnvironment implements IEnvironment {
 			}
 		}
 		evaluationInfo.reset();
-		PunctualJudge.resetCounter();
 		agent.reset(new AgentOptions(this));
 	}
 
@@ -475,7 +473,6 @@ public final class MarioEnvironment implements IEnvironment {
 		evaluationInfo.marioTraceFileName = marioTraceFile;
 		evaluationInfo.marioTrace = levelScene.level.marioTrace;
 		evaluationInfo.greenMushroomsDevoured = Mario.greenMushroomsDevoured;
-		evaluationInfo.bytecodeInstructions = PunctualJudge.getCounter();
 	}
 
 	public IAgent getAgent() {

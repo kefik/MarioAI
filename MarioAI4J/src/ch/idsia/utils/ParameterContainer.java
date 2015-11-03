@@ -27,9 +27,6 @@
 
 package ch.idsia.utils;
 
-import ch.idsia.agents.IAgent;
-import ch.idsia.agents.pool.AgentsPool;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -161,20 +158,6 @@ public class ParameterContainer {
 
 	public String asString(Object i) {
 		return String.valueOf(i);
-	}
-
-	public String asString(IAgent a) {
-		try {
-			if (AgentsPool.getAgentByName(a.getName()) == null)	AgentsPool.addAgent(a);
-			return a.getName();
-		} catch (NullPointerException e) {
-			System.err.println("[MarioAI ERROR] ~ Agent Not Found");
-			return "";
-		}
-	}
-
-	public IAgent asAgent(String s) {
-		return AgentsPool.getAgentByName(s);
 	}
 
 	public boolean asBoolean(String s) {

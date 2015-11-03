@@ -78,9 +78,6 @@ public final class EvaluationInfo implements Cloneable {
 	public int totalNumberOfFlowers = MagicNumberUnDef;
 	public int totalNumberOfCreatures = MagicNumberUnDef; // including spiky
 															// flowers
-
-	public long bytecodeInstructions = MagicNumberUnDef;
-
 	public int levelLength = MagicNumberUnDef;
 
 	public int collisionsWithCreatures = MagicNumberUnDef;
@@ -257,7 +254,6 @@ public final class EvaluationInfo implements Cloneable {
 				+ "\n              kills By Fire : " + killsByFire
 				+ "\n             kills By Shell : " + killsByShell
 				+ "\n             kills By Stomp : " + killsByStomp
-				+ "\n                       PunJ : " + Long.toString(bytecodeInstructions)
 				+ ((Memo.equals("")) ? "" : "\nMEMO INFO: " + Memo);
 	}
 
