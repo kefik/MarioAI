@@ -49,6 +49,14 @@ import ch.idsia.tasks.SystemOfValues;
  */
 
 public final class EvaluationInfo implements Cloneable {
+	
+	public static enum EvaluationResult {
+		LEVEL_TIMEDOUT,
+		MARIO_DIED,
+		VICTORY,
+		SIMULATION_RUNNING
+	}
+	
 	private static final int MagicNumberUnDef = -42;
 
 	public static final int numberOfElements = 14;
@@ -99,6 +107,27 @@ public final class EvaluationInfo implements Cloneable {
 	public EvaluationInfo() {
 		System.arraycopy(EvaluationInfo.zeros, 0, retFloatArray, 0,
 				EvaluationInfo.numberOfElements);
+	}
+	
+	public EvaluationResult getResult() {
+		switch (marioStatus) {
+		case Mario.STATUS_RUNNING:
+			if (timeLeft <= 0) {
+				return EvaluationResult.LEVEL_TIMEDOUT;
+			} else {
+				return EvaluationResult.SIMULATION_RUNNING;
+			}
+			
+		case Mario.STATUS_WIN:
+			return EvaluationResult.VICTORY;
+			
+		case Mario.STATUS_DEAD:
+			return EvaluationResult.MARIO_DIED;
+			
+		default:
+			throw new RuntimeException("Invalid evaluation state. Cannot determine result.");
+		}
+
 	}
 
 	public int computeBasicFitness() {
@@ -337,5 +366,19 @@ public final class EvaluationInfo implements Cloneable {
 
 	public void reset() {
 		evaluationStarted = System.currentTimeMillis();
+	}
+	
+	public String getCSVHeader() {
+		return "result;marioMode;timeLeft;timeSpent;marioStatus;distancePassedCells;distancePassedPhys;flowersDevoured;killsByFire;killsByShell;killsByStomp;killsTotal;mushroomsDevoured"
+			   +  ";greenMushroomsDevoured;coinsGained;hiddenBlocksFound;totalNumberOfCoins;totalNumberOfHiddenBlocks;totalNumberOfMushrooms;totalNumberOfFlowers;totalNumberOfCreatures"
+			   + ";levelLength;collisionsWithCreatures";
+	}
+	
+	public String getCSV() {
+		return getResult() + ";" + marioMode + ";" + timeLeft + ";" + timeSpent + ";" + marioStatus + ";" + distancePassedCells
+			   + ";" + distancePassedPhys + ";" + flowersDevoured + ";" + killsByFire + ";" + killsByShell + ";" + killsByStomp + ";" + killsTotal
+			   + ";" + mushroomsDevoured + ";" + greenMushroomsDevoured + ";" + coinsGained + ";" + hiddenBlocksFound 
+			   + ";" + totalNumberOfCoins + ";" + totalNumberOfHiddenBlocks + ";" + totalNumberOfMushrooms + ";" + totalNumberOfFlowers 
+			   + ";" + totalNumberOfCreatures + ";" + levelLength + ";" + collisionsWithCreatures;		
 	}
 }

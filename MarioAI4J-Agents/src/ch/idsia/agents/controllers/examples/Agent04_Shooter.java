@@ -87,23 +87,23 @@ public class Agent04_Shooter extends MarioHijackAIBase implements IAgent {
 			
 			EvaluationInfo info = simulator.run(agent);
 			
-			switch (info.marioStatus) {
-			case Mario.STATUS_RUNNING:
-				if (info.timeLeft <= 0) {
-					System.out.println("LEVEL TIMED OUT!");
-				} else {
-					throw new RuntimeException("Invalid state...");
-				}
+			switch (info.getResult()) {
+			case LEVEL_TIMEDOUT:
+				System.out.println("LEVEL TIMED OUT!");
 				break;
-			case Mario.STATUS_WIN:
-				System.out.println("VICTORY");
-				break;
-			case Mario.STATUS_DEAD:
+				
+			case MARIO_DIED:
 				System.out.println("MARIO KILLED");
+				break;
+				
+			case SIMULATION_RUNNING:
+				System.out.println("SIMULATION STILL RUNNING?");
+				throw new RuntimeException("Invalid evaluation info state, simulation should not be running.");
+				
+			case VICTORY:
+				System.out.println("VICTORY!!!");
 				break;
 			}
 		}
-		
-		//System.exit(0);
 	}
 }

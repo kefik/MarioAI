@@ -117,7 +117,7 @@ public class MarioSimulator {
 		
 		System.out.println("[MarioSimulator] Simulator terminated.");
 		
-		return result;		
+		return result.clone(); // result is shared instance ... we must clone it to maintain sanity 		
 	}
 	
 	public static void main(String[] args) {
