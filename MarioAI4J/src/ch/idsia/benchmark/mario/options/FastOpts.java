@@ -4,6 +4,7 @@ import ch.idsia.benchmark.mario.engine.SimulatorOptions.ReceptiveFieldMode;
 import ch.idsia.benchmark.mario.engine.generalization.Enemy;
 import ch.idsia.benchmark.mario.engine.generalization.EntityGeneralizer;
 import ch.idsia.benchmark.mario.engine.generalization.TileGeneralizer;
+import ch.idsia.benchmark.mario.environments.MarioEnvironment;
 import ch.idsia.benchmark.mario.options.MarioOptions.BoolOption;
 import ch.idsia.benchmark.mario.options.MarioOptions.IntOption;
 import ch.idsia.benchmark.mario.options.MarioOptions.StringOption;
@@ -56,6 +57,16 @@ public class FastOpts {
 	 * Generalization levels: Tiles = 1, Entities = 1
 	 */
 	public static final String AI_ZL_1_1 = AI_TILE_Z(1) + AI_ENTITY_Z(1);
+	
+	/**
+	 * Mario receptive field, see {@link MarioEnvironment#reset()}
+	 * @param width
+	 * @param height
+	 * @return
+	 */
+	public static String AI_RECEPTIVE_FIELD(int width, int height) {
+		return " " + IntOption.AI_RECEPTIVE_FIELD_WIDTH.getParam() + " " + width + IntOption.AI_RECEPTIVE_FIELD_HEIGHT.getParam() + " " + height;
+	}
 	
 	// =======================
 	// LEVEL GENERATOR OPTIONS
