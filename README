@@ -10,33 +10,35 @@ MarioAI4J-Tournament -> provides means for agent evaluations from console (check
 
 Things, which are different from original MarioAI v0.2.0 project:
 
-1) only JAVA agents can be used now
+1) only JAVA agents can be used now;
 
-2) GameViewer + ToolsConfigurator are not working (not refactored/broken)
+2) GameViewer + ToolsConfigurator are not working (not refactored/broken);
 
-3) New agent base types: especially interesting is MarioHijackAIBase, which is an agent you can interrupt anytime during its run, hijacking its controls and manually control Mario from keyboard (press 'H'ijack to start controlling agent manually) - this is great for debugging as you can let your AI to run "dry" and watch logs / debug draws as you position MARIO into a concrete situation
+3) New agent base types: especially interesting is MarioHijackAIBase, which is an agent you can interrupt anytime during its run, hijacking its controls and manually control Mario from keyboard (press 'H'ijack to start controlling agent manually) - this is great for debugging as you can let your AI to run "dry" and watch logs / debug draws as you position MARIO into a concrete situation;
 
-4) Agents now may implement IMarioDebugDraw interface, which is a callback that is regularly called to render custom debugging information inside the visualization component
+4) Agents now may implement IMarioDebugDraw interface, which is a callback that is regularly called to render custom debugging information inside the visualization component;
 
-5) All options are now grouped within MarioOptions class that contains different enums for different types of options (boolean, int, float, string) ... these options are then read and used by respective option categories (AIOptions, LevelOptions, SimulationOptions, SystemOptions, VisualizationOptions)
+5) All options are now grouped within MarioOptions class that contains different enums for different types of options (boolean, int, float, string) ... these options are then read and used by respective option categories (AIOptions, LevelOptions, SimulationOptions, SystemOptions, VisualizationOptions);
 
-6) Options string can now be created fast using constants and functions from FastOpts
+6) Options string can now be created fast using constants and functions from FastOpts;
 
-7) Running simulation is now encapsulated within MarioSimulator class that is instantiated using some "options" and then can be used to run(IAgent)
+7) Running simulation is now encapsulated within MarioSimulator class that is instantiated using some "options" and then can be used to run(IAgent);
 
 WARNING - 1 JVM can run 1 SIMULATION (visualized or headless) at max (I did not change the original architecture that is using statics a lot).
 
-8) Agent environment interface has been refactored, many information is now encapsulated inside enums and classes rather than bytes, ints, named constants and C-like function calls ... especially querying tiles / entities has been simplified by implementing Tiles and Entities sensory modules.
+8) Agent environment interface has been refactored, many information is now encapsulated inside enums and classes rather than bytes, ints, named constants and C-like function calls ... especially querying tiles / entities has been simplified by implementing Tiles and Entities sensory modules;
 
-9) Mario controls has been refactored as well, pressing/releasing of buttons that control Mario is now encapsulated within MarioInput class.
+9) Mario controls has been refactored as well, pressing/releasing of buttons that control Mario is now encapsulated within MarioInput class. Or even better, use MarioControl instead of MarioInput as it brushes out shoot/sprint glitches.
 
-10) Example agents have been reimplemented using new agent base classes and environment interface; they are more readable now.
+10) When using MarioHijackAIBase, you can "space" to pause the simulation and then press "n" to compute next simulation frame, very handy when debugging;
 
-11) Receptive field visualization has been fixed (now it correctly aligns with respective simulation tiles) + it now includes "relative position" / "tiles" / "entity" visualization modes so you can quickly see how to "reference concrete tile" / "what tiles are written within RF" / "what entities are present within RF"
+11) Example agents have been reimplemented using new agent base classes and environment interface; they are more readable now;
 
-12) Generalization of tiles / entities has been improved, especially it is very easy to query current speed of entities and relative position wrt. Mario position in pixels
+12) Receptive field visualization has been fixed (now it correctly aligns with respective simulation tiles) + it now includes "relative position" / "tiles" / "entity" visualization modes so you can quickly see how to "reference concrete tile" / "what tiles are written within RF" / "what entities are present within RF";
 
-13) I've tried to javadoc crucial parts regarding Mario agent development, hope it saves some time to someone
+13) Generalization of tiles / entities has been improved, especially it is very easy to query current speed of entities and relative position wrt. Mario position in pixels;
+
+14) I've tried to javadoc crucial parts regarding Mario agent development, hope it saves some time to someone.
 
 I did not mavenized projects as I usually do... so far you have to setup them within your IDE manually, but as they need only 2 libraries and projects feature rather standard Java project layout, it is trivial task (projects are directly importable into Eclipse).
 
