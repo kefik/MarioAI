@@ -176,8 +176,13 @@ public final class LevelScene implements SpriteContext {
 	}
 
 	public void tick() {
-		if (SimulatorOptions.isGameplayStopped)
-			return;
+		if (SimulatorOptions.isGameplayStopped) {
+			if (SimulatorOptions.nextFrameIfPaused) {
+				SimulatorOptions.nextFrameIfPaused = false;
+			} else {
+				return;
+			}
+		}
 
 		timeLeft--;
 		if (timeLeft == 0)

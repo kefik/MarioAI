@@ -229,6 +229,7 @@ public final class MarioEnvironment implements IEnvironment {
 		mario.sprite = levelScene.mario;
 		mario.speed.x = levelScene.mario.xa;
 		mario.speed.y = levelScene.mario.ya;
+		if (levelScene.isMarioOnGround()) mario.speed.y = 0;
 		mario.height = levelScene.mario.y;
 		mario.mode = levelScene.mario.getMode();
 		mario.onGround = levelScene.isMarioOnGround();
@@ -243,6 +244,9 @@ public final class MarioEnvironment implements IEnvironment {
 		mario.timeSpent = levelScene.getTimeSpent();
 		mario.status = levelScene.getMarioStatus();
 		mario.state = levelScene.getMarioState();
+		mario.inTileX = (int)mario.sprite.x - mario.sprite.mapX * LevelScene.cellSize; 
+		mario.inTileY = (int)mario.sprite.y - mario.sprite.mapY * LevelScene.cellSize; 
+
 	}
 	
 	private void computeTiles(int ZLevel) {

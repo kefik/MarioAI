@@ -27,11 +27,16 @@
 
 package ch.idsia.agents.controllers;
 
+import java.awt.Graphics;
+
 import ch.idsia.agents.AgentOptions;
 import ch.idsia.agents.IAgent;
 import ch.idsia.agents.controllers.modules.Entities;
 import ch.idsia.agents.controllers.modules.Tiles;
+import ch.idsia.benchmark.mario.engine.LevelScene;
+import ch.idsia.benchmark.mario.engine.VisualizationComponent;
 import ch.idsia.benchmark.mario.engine.generalization.MarioEntity;
+import ch.idsia.benchmark.mario.engine.input.MarioControl;
 import ch.idsia.benchmark.mario.engine.input.MarioInput;
 import ch.idsia.benchmark.mario.environments.IEnvironment;
 
@@ -59,6 +64,11 @@ public abstract class MarioAIBase extends MarioAgentBase {
 	 */
 	protected MarioInput action = new MarioInput();
 	
+	/**
+	 * Layer over {@link #action} that provides programming-friendly abstraction of Mario actions.
+	 */
+	protected MarioControl control = new MarioControl(action);
+	
 	protected Entities e = new Entities();
 	
 	protected Tiles t = new Tiles();
@@ -75,6 +85,7 @@ public abstract class MarioAIBase extends MarioAgentBase {
 	@Override
 	public void reset(AgentOptions options) {
 		super.reset(options);
+		control.reset();
 		action.reset();
 		e.reset(options);
 		t.reset(options);
@@ -86,10 +97,13 @@ public abstract class MarioAIBase extends MarioAgentBase {
 	}
 	
 	public void observe(IEnvironment environment) {
-		mario         = environment.getMario();		
+		mario         = environment.getMario();
+		control.setMario(mario);
 		t.tileField   = environment.getTileField();
 		e.entityField = environment.getEntityField();
 		e.entities    = environment.getEntities();
+		action.tick();
+		control.tick();
 	}
 
 	public void receiveReward(float intermediateReward) {

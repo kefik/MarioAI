@@ -55,6 +55,7 @@ public class SimulationOptions {
 	public static void reset() {
 		SimulatorOptions.isPowerRestoration = isPowerRestoration();
 		SimulatorOptions.isGameplayStopped = isGameplayStopped();
+		SimulatorOptions.nextFrameIfPaused = false;
 	}
 	
 	public static boolean isCreaturesFrozen() {

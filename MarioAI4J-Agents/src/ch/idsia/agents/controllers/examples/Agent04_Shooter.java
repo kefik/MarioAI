@@ -1,14 +1,19 @@
 package ch.idsia.agents.controllers.examples;
 
+import java.awt.Graphics;
+
 import ch.idsia.agents.AgentOptions;
 import ch.idsia.agents.IAgent;
 import ch.idsia.agents.controllers.MarioHijackAIBase;
 import ch.idsia.benchmark.mario.MarioSimulator;
+import ch.idsia.benchmark.mario.engine.LevelScene;
+import ch.idsia.benchmark.mario.engine.VisualizationComponent;
 import ch.idsia.benchmark.mario.engine.generalization.Enemy;
 import ch.idsia.benchmark.mario.engine.generalization.Entity;
 import ch.idsia.benchmark.mario.engine.input.MarioInput;
 import ch.idsia.benchmark.mario.engine.input.MarioKey;
 import ch.idsia.benchmark.mario.engine.sprites.Mario;
+import ch.idsia.benchmark.mario.environments.IEnvironment;
 import ch.idsia.benchmark.mario.options.FastOpts;
 import ch.idsia.tools.EvaluationInfo;
 
@@ -19,8 +24,6 @@ import ch.idsia.tools.EvaluationInfo;
  */
 public class Agent04_Shooter extends MarioHijackAIBase implements IAgent {
 
-	private boolean shooting = false;
-	
 	@Override
 	public void reset(AgentOptions options) {
 		super.reset(options);
@@ -42,68 +45,45 @@ public class Agent04_Shooter extends MarioHijackAIBase implements IAgent {
 
 	public MarioInput actionSelectionAI() {
 		// ALWAYS RUN RIGHT
-		action.press(MarioKey.RIGHT);
+		control.runRight();
 		
 		// ENEMY || BRICK AHEAD => JUMP
 		// WARNING: do not press JUMP if UNABLE TO JUMP!
-		action.set(MarioKey.JUMP, (enemyAhead() || brickAhead()) && mario.mayJump);
-		
-		
+		if (enemyAhead() || brickAhead()) control.jump();		
 		
 		// If in the air => keep JUMPing
-		if (!mario.onGround) {
-			action.press(MarioKey.JUMP);
-		}
-		
-		if (mario.mayShoot) {
-			if (shooting) {
-				shooting = false;
-				action.release(MarioKey.SPEED);
-			} else 
-			if (action.isPressed(MarioKey.SPEED)) {				
-				action.release(MarioKey.SPEED);
-			} else {
-				shooting = true;
-				action.press(MarioKey.SPEED);
-			}
-		} else {
-			if (shooting) {
-				shooting = false;
-				action.release(MarioKey.SPEED);
-			}
-		}
+		if (!mario.onGround) control.jump();
+
+		control.shoot();
 		
 		return action;
 	}
 	
-	public static void main(String[] args) {
-		// IMPLEMENTS END-LESS RUNS
-		while (true) {
-			String options = FastOpts.VIS_ON_2X + FastOpts.LEVEL_02_JUMPING + FastOpts.L_ENEMY(Enemy.GOOMBA, Enemy.SPIKY) + FastOpts.L_TUBES_ON + FastOpts.L_RANDOMIZE;
-			
-			MarioSimulator simulator = new MarioSimulator(options);
-			
-			IAgent agent = new Agent04_Shooter();
-			
-			EvaluationInfo info = simulator.run(agent);
-			
-			switch (info.getResult()) {
-			case LEVEL_TIMEDOUT:
-				System.out.println("LEVEL TIMED OUT!");
-				break;
-				
-			case MARIO_DIED:
-				System.out.println("MARIO KILLED");
-				break;
-				
-			case SIMULATION_RUNNING:
-				System.out.println("SIMULATION STILL RUNNING?");
-				throw new RuntimeException("Invalid evaluation info state, simulation should not be running.");
-				
-			case VICTORY:
-				System.out.println("VICTORY!!!");
-				break;
-			}
+	@Override
+	public void debugDraw(VisualizationComponent vis, LevelScene level, IEnvironment env, Graphics g) {
+		super.debugDraw(vis, level, env, g);
+		String debug = "";
+		if (enemyAhead()) {
+			debug += "|ENEMY AHEAD|";
 		}
+		if (brickAhead()) {
+			debug += "|BRICK AHEAD|";
+		}
+		if (mario != null && mario.onGround) {
+			debug += "|ON GROUND|";
+		}
+		VisualizationComponent.drawStringDropShadow(g, debug, 0, 12, 1);
+	}
+	
+	public static void main(String[] args) {
+		String options = FastOpts.VIS_ON_2X + FastOpts.LEVEL_02_JUMPING + FastOpts.L_ENEMY(Enemy.GOOMBA, Enemy.SPIKY) + FastOpts.L_TUBES_ON + FastOpts.L_RANDOMIZE;
+		
+		MarioSimulator simulator = new MarioSimulator(options);
+		
+		IAgent agent = new Agent03_Forward();
+		
+		simulator.run(agent);
+		
+		System.exit(0);
 	}
 }

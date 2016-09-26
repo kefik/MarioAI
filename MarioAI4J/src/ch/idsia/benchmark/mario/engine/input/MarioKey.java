@@ -5,6 +5,11 @@ import java.util.Map;
 
 import ch.idsia.benchmark.mario.engine.generalization.MarioEntity;
 
+/**
+ * Represents keys that {@link IAgent} may use via {@link MarioInput}.
+ *  
+ * @author Jakub 'Jimmy' Gemrot, gemrot@gamedev.cuni.cz
+ */
 public class MarioKey {
 	
 	private static Map<Integer, MarioKey> marioKeys = new HashMap<Integer, MarioKey>();

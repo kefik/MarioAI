@@ -75,7 +75,33 @@ public class MarioEntity extends Entity<Mario> {
 	
 	public int timeLeft;
 	public int timeSpent;
-
+	
+	/**
+	 * X-position of the Mario within its tile.
+	 */
+	public int inTileX;
+	
+	/**
+	 * Y-position of the Marion within its tile.
+	 */
+	public int inTileY;
+	
+	/**
+	 * Whether Mario is currently jumping (moving UP).
+	 * @return
+	 */
+	public boolean isJumping() {
+		return speed.y < 0;
+	}
+	
+	/**
+	 * Whether Mario is currently falling (moving DOWN).
+	 * @return
+	 */
+	public boolean isFalling() {
+		return speed.y > 0;
+	}
+	
 	public MarioEntity() {
 		super(null, EntityType.MARIO, 0, 0, 0, 0, 0);
 	}

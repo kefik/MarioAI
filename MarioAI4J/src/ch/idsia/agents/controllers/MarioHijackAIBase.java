@@ -3,6 +3,10 @@ package ch.idsia.agents.controllers;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+
+import javax.swing.text.NumberFormatter;
 
 import ch.idsia.benchmark.mario.engine.LevelScene;
 import ch.idsia.benchmark.mario.engine.SimulatorOptions;
@@ -25,6 +29,8 @@ public class MarioHijackAIBase extends MarioAIBase implements KeyListener, IMari
 	
 	protected boolean hijacked = false;
 	
+	protected DecimalFormat floatFormat = new DecimalFormat("0.0");	 
+		
 	@Override
 	public final MarioInput actionSelection() {
 		if (hijacked) return actionSelectionKeyboard();
@@ -51,10 +57,13 @@ public class MarioHijackAIBase extends MarioAIBase implements KeyListener, IMari
 					else msg += " ";
 					msg += pressedKey.getDebug();
 				}
-				VisualizationComponent.drawStringDropShadow(g, msg, 0, 8, 6);
+				VisualizationComponent.drawStringDropShadow(g, msg, 0, 9, 6);
 			}
 		}
-		
+		if (mario != null) {
+			VisualizationComponent.drawStringDropShadow(g, "InTile[X,Y] = [" + mario.inTileX + "," + mario.inTileY + "]", 0, 10, 6);
+			VisualizationComponent.drawStringDropShadow(g, "Speed[X,Y] = [" + floatFormat.format(mario.speed.x).replace(",", ".") + "," + floatFormat.format(mario.speed.y).replace(",", ".") + "]", 0, 11, 6);
+		}
 	}
 	
 	@Override
@@ -132,6 +141,11 @@ public class MarioHijackAIBase extends MarioAIBase implements KeyListener, IMari
 		case KeyEvent.VK_R:
 			if (isPressed) {
 				SimulatorOptions.isRecording = !SimulatorOptions.isRecording;
+			}
+			return;
+		case KeyEvent.VK_N:
+			if (isPressed) {
+				SimulatorOptions.nextFrameIfPaused = true;
 			}
 			return;
 		}

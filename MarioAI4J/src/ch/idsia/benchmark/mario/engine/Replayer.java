@@ -40,118 +40,101 @@ import ch.idsia.benchmark.mario.environments.IEnvironment;
 import ch.idsia.tools.ReplayerOptions;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Sergey Karakovskiy, firstName_at_idsia_dot_ch
- * Date: May 5, 2009
- * Time: 9:34:33 PM
- * Package: ch.idsia.utils
+ * Created by IntelliJ IDEA. User: Sergey Karakovskiy, firstName_at_idsia_dot_ch
+ * Date: May 5, 2009 Time: 9:34:33 PM Package: ch.idsia.utils
  */
-public class Replayer
-{
-private ZipFile zf = null;
-private ZipEntry ze = null;
-private BufferedInputStream fis;
-private ReplayerOptions options;
+public class Replayer {
+	private ZipFile zf = null;
+	private ZipEntry ze = null;
+	private BufferedInputStream fis;
+	private ReplayerOptions options;
 
-public Replayer(String replayOptions)
-{
-    this.options = new ReplayerOptions(replayOptions);
-}
+	public Replayer(String replayOptions) {
+		this.options = new ReplayerOptions(replayOptions);
+	}
 
-public boolean openNextReplayFile() throws IOException
-{
-//    if (zf != null)
-//        zf.close();
+	public boolean openNextReplayFile() throws IOException {
+		// if (zf != null)
+		// zf.close();
 
-    String fileName = options.getNextReplayFile();
-    if (fileName == null)
-        return false;
+		String fileName = options.getNextReplayFile();
+		if (fileName == null)
+			return false;
 
-    if (!fileName.endsWith(".zip"))
-        fileName += ".zip";
+		if (!fileName.endsWith(".zip"))
+			fileName += ".zip";
 
-    zf = new ZipFile(fileName);
-    ze = null;
-    fis = null;
+		zf = new ZipFile(fileName);
+		ze = null;
+		fis = null;
 
-    try
-    {
-        openFile("chunks");
-        options.setChunks((Queue) readObject());
-    } catch (Exception ignored)
-    {} //if file with replay chunks not found, than use user specified chunks
+		try {
+			openFile("chunks");
+			options.setChunks((Queue) readObject());
+		} catch (Exception ignored) {
+		} // if file with replay chunks not found, than use user specified
+			// chunks
 
-    return true;
-}
+		return true;
+	}
 
-public void openFile(String filename) throws Exception
-{
-    ze = zf.getEntry(filename);
+	public void openFile(String filename) throws Exception {
+		ze = zf.getEntry(filename);
 
-    if (ze == null)
-        throw new Exception("[Mario AI EXCEPTION] : File <" + filename + "> not found in the archive");
-}
+		if (ze == null)
+			throw new Exception("[Mario AI EXCEPTION] : File <" + filename + "> not found in the archive");
+	}
 
-private void openBufferedInputStream() throws IOException
-{
-    fis = new BufferedInputStream(zf.getInputStream(ze));
-}
+	private void openBufferedInputStream() throws IOException {
+		fis = new BufferedInputStream(zf.getInputStream(ze));
+	}
 
-public void readAction(MarioInput keys) throws IOException
-{
-    if (fis == null)
-        openBufferedInputStream();
+	public void readAction(MarioInput keys) throws IOException {
+		if (fis == null)
+			openBufferedInputStream();
 
-//    int count = fis.read(buffer, 0, size);
-    byte actions = (byte) fis.read();
-    for (int i = 0; i < MarioKey.numberOfKeys; i++)
-    {
-        if ((actions & (1 << i)) > 0)
-            keys.press(MarioKey.getMarioKey(i));
-        else
-        	keys.release(MarioKey.getMarioKey(i));
-    }
-}
+		// int count = fis.read(buffer, 0, size);
+		byte actions = (byte) fis.read();
+		for (int i = 0; i < MarioKey.numberOfKeys; i++) {
+			if ((actions & (1 << i)) > 0)
+				keys.press(MarioKey.getMarioKey(i));
+			else
+				keys.release(MarioKey.getMarioKey(i));
+		}
+	}
 
-public Object readObject() throws IOException, ClassNotFoundException
-{
-    ObjectInputStream ois = new ObjectInputStream(zf.getInputStream(ze));
-    Object res = ois.readObject();
-//    ois.close();
+	public Object readObject() throws IOException, ClassNotFoundException {
+		ObjectInputStream ois = new ObjectInputStream(zf.getInputStream(ze));
+		Object res = ois.readObject();
+		// ois.close();
 
-    return res;
-}
+		return res;
+	}
 
-public void closeFile() throws IOException
-{
-//    fis.close();
-}
+	public void closeFile() throws IOException {
+		// fis.close();
+	}
 
-public void closeReplayFile() throws IOException
-{
-    zf.close();
-}
+	public void closeReplayFile() throws IOException {
+		zf.close();
+	}
 
-public boolean hasMoreChunks()
-{
-    return options.hasMoreChunks();
-}
+	public boolean hasMoreChunks() {
+		return options.hasMoreChunks();
+	}
 
-public int actionsFileSize()
-{
-    int size = (int) ze.getSize();
-    if (size == -1)
-        size = Integer.MAX_VALUE;
-    return size;
-}
+	public int actionsFileSize() {
+		int size = (int) ze.getSize();
+		if (size == -1)
+			size = Integer.MAX_VALUE;
+		return size;
+	}
 
-public ReplayerOptions.Interval getNextIntervalInMarioseconds()
-{
-    return options.getNextIntervalInMarioseconds();
-}
+	public ReplayerOptions.Interval getNextIntervalInMarioseconds() {
+		return options.getNextIntervalInMarioseconds();
+	}
 
-public ReplayerOptions.Interval getNextIntervalInTicks()
-{
-    return options.getNextIntervalInTicks();
-}
+	public ReplayerOptions.Interval getNextIntervalInTicks() {
+		return options.getNextIntervalInTicks();
+	}
 }

@@ -1,14 +1,19 @@
 package ch.idsia.agents.controllers.examples;
 
+import java.awt.Graphics;
+
 import ch.idsia.agents.AgentOptions;
 import ch.idsia.agents.IAgent;
 import ch.idsia.agents.controllers.MarioHijackAIBase;
 import ch.idsia.benchmark.mario.MarioSimulator;
+import ch.idsia.benchmark.mario.engine.LevelScene;
+import ch.idsia.benchmark.mario.engine.VisualizationComponent;
 import ch.idsia.benchmark.mario.engine.generalization.Enemy;
 import ch.idsia.benchmark.mario.engine.generalization.EntityType;
 import ch.idsia.benchmark.mario.engine.generalization.Tile;
 import ch.idsia.benchmark.mario.engine.input.MarioInput;
 import ch.idsia.benchmark.mario.engine.input.MarioKey;
+import ch.idsia.benchmark.mario.environments.IEnvironment;
 import ch.idsia.benchmark.mario.options.FastOpts;
 
 /**
@@ -36,21 +41,36 @@ public class Agent03_Forward extends MarioHijackAIBase implements IAgent {
 				|| t.brick(2, 0) || t.brick(2, -1)
 				|| t.brick(3, 0) || t.brick(3, -1);
 	}
+	
+	@Override
+	public void debugDraw(VisualizationComponent vis, LevelScene level, IEnvironment env, Graphics g) {
+		super.debugDraw(vis, level, env, g);
+		String debug = "";
+		if (enemyAhead()) {
+			debug += "|ENEMY AHEAD|";
+		}
+		if (brickAhead()) {
+			debug += "|BRICK AHEAD|";
+		}
+		if (mario != null && mario.onGround) {
+			debug += "|ON GROUND|";
+		}
+		VisualizationComponent.drawStringDropShadow(g, debug, 0, 12, 1);
+	}
 
 	public MarioInput actionSelectionAI() {
 		// ALWAYS RUN RIGHT
-		action.press(MarioKey.RIGHT);
+		control.runRight();
 		
 		// ALWAYS SPEED RUN
-		action.press(MarioKey.SPEED);
+		control.sprint();
 		
-		// ENEMY || BRICK AHEAD => JUMP
-		// WARNING: do not press JUMP if UNABLE TO JUMP!
-		action.set(MarioKey.JUMP, (enemyAhead() || brickAhead()) && mario.mayJump);
+		// IF (ENEMY || BRICK AHEAD) => JUMP
+		if (enemyAhead() || brickAhead()) control.jump();
 		
-		// If in the air => keep JUMPing
+		// If (In the air) => keep JUMPing
 		if (!mario.onGround) {
-			action.press(MarioKey.JUMP);
+			control.jump();
 		}
 		
 		return action;

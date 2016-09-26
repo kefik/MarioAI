@@ -1,7 +1,7 @@
 package ch.idsia.benchmark.mario.engine.generalization;
 
-public enum Tile {
 
+public enum Tile {
 	/**
 	 * ZLevel: 0 only 
 	 */

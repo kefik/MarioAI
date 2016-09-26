@@ -110,6 +110,11 @@ public class CheaterKeyboardAgent extends KeyboardAgent {
 				SimulatorOptions.isRecording = !SimulatorOptions.isRecording;
 			}
 			return;
+		case KeyEvent.VK_N:
+			if (isPressed) {
+				SimulatorOptions.nextFrameIfPaused = true;
+			}
+			return;
 		}
 		// NOT HANDLED YET
 		// => ask parent

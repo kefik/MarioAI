@@ -57,13 +57,15 @@ public class Agent02_Jumpee extends MarioHijackAIBase implements IAgent {
 	@Override
 	public MarioInput actionSelectionAI() {
 		// ALWAYS RUN RIGHT
-		action.press(MarioKey.RIGHT);
+		control.runRight();
 		
-		// ALWAYS SPEED RUN
-		action.press(MarioKey.SPEED);
+		// ALWAYS SPRINT
+		control.sprint();
 		
 		// JUMP IF YOU CAN!
-		action.set(MarioKey.JUMP, mario.mayJump || mario.speed.y < 0);
+		// ... this will make Mario to jump as high as possible
+		control.jump();
+
 		return action;
 	}
 	
@@ -75,7 +77,7 @@ public class Agent02_Jumpee extends MarioHijackAIBase implements IAgent {
 		MarioSimulator simulator = new MarioSimulator(options);
 		
 		// CREATE AGENT
-		IAgent agent = new Agent01_SprintForward();
+		IAgent agent = new Agent02_Jumpee();
 		
 		// RUN SIMULATOR w/ AGENT
 		simulator.run(agent);

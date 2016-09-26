@@ -51,10 +51,10 @@ public class Agent01_SprintForward extends MarioHijackAIBase {
 	@Override
 	public MarioInput actionSelectionAI() {
 		// ALWAYS RUN RIGHT
-		action.press(MarioKey.RIGHT);
+		control.runRight();
 		
-		// ALWAYS SPEED RUN
-		action.press(MarioKey.SPEED);
+		// ALWAYS SPRINT
+		control.sprint();
 
 		return action;
 	}

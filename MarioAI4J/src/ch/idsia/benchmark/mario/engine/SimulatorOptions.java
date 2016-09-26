@@ -100,6 +100,7 @@ public abstract class SimulatorOptions {
 	public static boolean isScale2x = false;
 	public static boolean isRecording = false;
 	public static boolean isReplaying = false;
+	public static boolean nextFrameIfPaused = false;
 
 	public static int getPrimaryVersionUID() {
 		return primaryVerionUID;

@@ -24,6 +24,7 @@ public class Tiles {
 	}
 	
 	public Tile getTile(int mapX, int mapY) {
+		if (tileField == null) return Tile.NOTHING;
 		if (mapY < 0 || mapY >= tileField.length || mapX < 0 || mapX >= tileField[0].length) return Tile.NOTHING;
 		return tileField[mapY][mapX];
 	}

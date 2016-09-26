@@ -8,6 +8,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+/**
+ * Represents configurable keyboard. Keyboard is configured via {@link #register(int, MarioKey)},
+ * than it acts as {@link KeyListener}.
+ *  
+ * @author Jakub 'Jimmy' Gemrot, gemrot@gamedev.cuni.cz
+ */
 public class MarioKeyboard implements KeyListener {
 
 	private Map<Integer, MarioKey> mapping = new HashMap<Integer, MarioKey>();
