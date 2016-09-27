@@ -27,11 +27,15 @@ public class MarioEntity extends Entity<Mario> {
 
 	/**
 	 * READ-ONLY
+	 * Where Mario is positioned within receptive field. Does not change during runtime.
+	 * Usual value is 8 for receptive field 16x16.
 	 */
 	public int egoRow;
 	
 	/**
 	 * READ-ONLY
+	 * Where ario is positioned within receptive field. Does not change during runtime.
+	 * Usual value is 8 for receptive field 16x16.
 	 */
 	public int egoCol;
 		

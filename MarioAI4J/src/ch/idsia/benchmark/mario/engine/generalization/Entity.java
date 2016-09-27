@@ -10,7 +10,7 @@ import ch.idsia.benchmark.mario.engine.sprites.Sprite;
 public class Entity<SPRITE extends Sprite> {
 
 	/**
-	 * Maintains speed of the entity.
+	 * Maintains speed of the entity in pixels.
 	 * @author Jimmy
 	 */
 	public static class Speed {

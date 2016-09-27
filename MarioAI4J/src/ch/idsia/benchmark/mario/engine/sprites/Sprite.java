@@ -66,15 +66,29 @@ public class Sprite {
 	protected static float GROUND_INERTIA = 0.89f;
 	protected static float AIR_INERTIA = 0.89f;
 
-	public float xOld, yOld, x, y, xa, ya;
+	public float xOld, yOld;
+	
+	/**
+	 * Pixel-perfect position of the sprite within the MAP:
+	 * x / 16 == map tile x-coordinate
+	 * y / 16 == map tile y-coordinate
+	 */
+	public float x, y;
+	
+	/**
+	 * These are magical and mysterious, do not interpret in your AI.
+	 */
+	public float xa, ya;
 
 	/**
+	 * Position of the tile the sprite is within the map.
 	 * Sprites are 16x16 long, mapX = x / 16, mapY = y / 16...
 	 * See {@link Sprite#tick()}.
 	 */
 	public int mapX, mapY;
 
 	public int xPic, yPic;
+	
 	public int wPic = 32;
 	public int hPic = 32;
 	public int xPicO, yPicO;
