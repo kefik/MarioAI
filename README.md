@@ -56,7 +56,7 @@ Follows the list of keys (controls) you can press when running visualized simula
 1. "space" or "P": Pauses the simulation
 2. "N": when the simulation is paused, this will poke the simulator to compute next frame, i.e., you can check step-by-step what is hapenning
 3. "H": size the control of Mario, i.e., you may take control over Mario actions manually and navigate Mario into the situation you want to observe + you will still see what is the output of your AI!
-4. "G": cycle between modes of receptive field visualization, see what is "around" your Mario
+4. "G": cycle between modes of receptive field visualization, see what is "around" your Mario; 0 == OFF, 1 == visualize receptive field grid with tile coordinates relative to Mario (see EntityType); 2 == grid visualizing tile types (see Tile), 3 == grid visualizing entities, 4 == grid visualizing highest threats on given tile (see EntityKind)
 5. "O": freeze creatures, they will stop moving
 6. "E": render extra debug stuff about your Mario, see _MarioHijackAIBase.debugDraw(...)_ for details
 7. "L": render positions of sprites within the map

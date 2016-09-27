@@ -227,8 +227,8 @@ public final class MarioEnvironment implements IEnvironment {
 
 	private void updateMario() {
 		mario.sprite = levelScene.mario;
-		mario.speed.x = levelScene.mario.xa;
-		mario.speed.y = levelScene.mario.ya;
+		mario.speed.x = levelScene.mario.x - levelScene.mario.xOld;
+		mario.speed.y = levelScene.mario.x - levelScene.mario.yOld;
 		if (levelScene.isMarioOnGround()) mario.speed.y = 0;
 		mario.height = levelScene.mario.y;
 		mario.mode = levelScene.mario.getMode();
@@ -288,9 +288,18 @@ public final class MarioEnvironment implements IEnvironment {
 				int row = sprite.mapY - levelScene.mario.mapY + mario.egoRow;
 				int col = sprite.mapX - levelScene.mario.mapX + mario.egoCol;
 
-				EntityType entityKind = EntityGeneralizer.generalize(sprite.kind, ZLevel); 
+				EntityType entityType = EntityGeneralizer.generalize(sprite.kind, ZLevel); 
+				if (entityType == EntityType.SHELL_STILL || entityType == EntityType.SHELL_MOVING) {
+					if (Math.abs(sprite.x - sprite.xOld) > 0.001 || Math.abs(sprite.y - sprite.yOld) > 0.001) {
+						entityType = EntityType.SHELL_MOVING;
+					} else {
+						entityType = EntityType.SHELL_STILL;
+					}
+				}
 				
-				Entity<Sprite> entity = new Entity<Sprite>(sprite, entityKind, col - mario.egoCol, row - mario.egoRow, levelScene.mario.x - sprite.x, levelScene.mario.y - sprite.y, sprite.y);
+				Entity<Sprite> entity = new Entity<Sprite>(sprite, entityType, col - mario.egoCol, row - mario.egoRow, levelScene.mario.x - sprite.x, levelScene.mario.y - sprite.y, sprite.y);
+				entity.speed.x = entity.sprite.x - entity.sprite.xOld;
+				entity.speed.y = entity.sprite.y - entity.sprite.yOld;
 				
 				entityField[row][col].add(entity);
 				

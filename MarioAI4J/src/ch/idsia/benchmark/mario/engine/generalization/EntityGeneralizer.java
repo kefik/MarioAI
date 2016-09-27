@@ -38,6 +38,8 @@ import ch.idsia.benchmark.mario.engine.sprites.Sprite;
  * 
  * Provides generalization of entities that can be placed over {@link Tile}.
  * 
+ * TODO: investigate, seems like ad-hoc stuff for some competition or experiment, reconsider to cut it out completely...
+ * 
  * @author Sergey Karakovskiy, sergey@idsia.ch
  * @author Jakub 'Jimmy' Gemrot, gemrot@gamedev.cuni.cz
  */
@@ -74,7 +76,7 @@ public class EntityGeneralizer {
 			case Sprite.KIND_RED_KOOPA_WINGED:
 				return EntityType.RED_KOOPA_WINGED;
 			case Sprite.KIND_SHELL:
-				return EntityType.SHELL;
+				return EntityType.SHELL_STILL;
 			case Sprite.KIND_WAVE_GOOMBA:
 				return EntityType.WAVE_GOOMBA;
 			case Sprite.KIND_SPIKY:

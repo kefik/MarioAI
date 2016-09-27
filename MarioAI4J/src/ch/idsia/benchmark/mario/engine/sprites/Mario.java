@@ -134,6 +134,7 @@ public final class Mario extends Sprite {
 	private float xJumpSpeed;
 	private float yJumpSpeed;
 
+	private boolean speedButtonNotPressed = false;
 	private boolean ableToShoot = false;
 
 	int width = 4;
@@ -382,15 +383,18 @@ public final class Mario extends Sprite {
 			sliding = false;
 		}
 
-		if (keys.isPressed(MarioKey.SPEED) && ableToShoot && Mario.fire
-				&& levelScene.fireballsOnScreen < 2) {
-			levelScene.addSprite(new Fireball(levelScene, x + facing * 6,
-					y - 20, facing));
+		// SPEED/SHOOT button is pressed and was not pressed before + we can fire and there is not too many fireballs on screen
+		if (keys.isPressed(MarioKey.SPEED) && speedButtonNotPressed && Mario.fire && levelScene.fireballsOnScreen < 2) {
+			// => FIRE NEXT FIREBALL!
+			levelScene.addSprite(new Fireball(levelScene, x + facing * 6, y - 20, facing));
+			++levelScene.fireballsOnScreen;
 		}
+		
+		// CHECK WHETHER MARIO STILL CAN SHOOT
+		ableToShoot = Mario.fire && levelScene.fireballsOnScreen < 2;
+		
 		// Cheats:
-		if (SimulatorOptions.isPowerRestoration && keys.isPressed(MarioKey.SPEED)
-				&& (!Mario.large || !Mario.fire))
-			setMode(true, true);
+		if (SimulatorOptions.isPowerRestoration && keys.isPressed(MarioKey.SPEED) && (!Mario.large || !Mario.fire))	setMode(true, true);
 		// if (cheatKeys[KEY_LIFE_UP])
 		// this.lives++;
 
@@ -404,7 +408,7 @@ public final class Mario extends Sprite {
 		// e.printStackTrace(); //To change body of catch statement use File |
 		// Settings | File Templates.
 		// }
-		ableToShoot = !keys.isPressed(MarioKey.SPEED);
+		speedButtonNotPressed = !keys.isPressed(MarioKey.SPEED);
 
 		mayJump = (onGround || sliding) && !keys.isPressed(MarioKey.JUMP);
 
@@ -749,18 +753,18 @@ public final class Mario extends Sprite {
 			return;
 
 		++collisionsWithCreatures;
-		levelScene
-				.appendBonusPoints(-MarioEnvironment.IntermediateRewardsSystemOfValues.kills);
+		levelScene.appendBonusPoints(-MarioEnvironment.IntermediateRewardsSystemOfValues.kills);
 		if (large) {
 			// levelScene.paused = true;
 			// powerUpTime = -3 * FractionalPowerUpTime;
 			if (fire) {
-				levelScene.mario.setMode(true, false);
+				levelScene.mario.setMode(true, false); // Mario loses shooting
 			} else {
-				levelScene.mario.setMode(false, false);
+				levelScene.mario.setMode(false, false); // Mario loses LARGE
 			}
 			invulnerableTime = 32;
 		} else {
+			// Mario dies
 			die("Collision with a creature ["
 					+ Sprite.getNameByKind(spriteKind) + "]");
 		}
@@ -771,8 +775,7 @@ public final class Mario extends Sprite {
 		yDeathPos = (int) y;
 		winTime = 1;
 		status = Mario.STATUS_WIN;
-		levelScene
-				.appendBonusPoints(MarioEnvironment.IntermediateRewardsSystemOfValues.win);
+		levelScene.appendBonusPoints(MarioEnvironment.IntermediateRewardsSystemOfValues.win);
 	}
 
 	public void die(final String reasonOfDeath) {
@@ -880,6 +883,10 @@ public final class Mario extends Sprite {
 		return mayJump;
 	}
 
+	public boolean isSpeedButtonNotPressed() {
+		return speedButtonNotPressed;
+	}
+	
 	public boolean isAbleToShoot() {
 		return ableToShoot;
 	}

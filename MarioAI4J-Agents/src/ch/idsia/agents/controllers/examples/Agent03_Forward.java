@@ -55,7 +55,7 @@ public class Agent03_Forward extends MarioHijackAIBase implements IAgent {
 		if (mario != null && mario.onGround) {
 			debug += "|ON GROUND|";
 		}
-		VisualizationComponent.drawStringDropShadow(g, debug, 0, 12, 1);
+		VisualizationComponent.drawStringDropShadow(g, debug, 0, 15, 1);
 	}
 
 	public MarioInput actionSelectionAI() {

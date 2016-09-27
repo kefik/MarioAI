@@ -47,14 +47,18 @@ public class Agent04_Shooter extends MarioHijackAIBase implements IAgent {
 		// ALWAYS RUN RIGHT
 		control.runRight();
 		
+		// ALWAYS SPRINT		
+		control.sprint();
+		
+		// ALWAYS SHOOT (if able ... max 2 fireballs at once!)
+		control.shoot();
+		
 		// ENEMY || BRICK AHEAD => JUMP
 		// WARNING: do not press JUMP if UNABLE TO JUMP!
 		if (enemyAhead() || brickAhead()) control.jump();		
 		
 		// If in the air => keep JUMPing
 		if (!mario.onGround) control.jump();
-
-		control.shoot();
 		
 		return action;
 	}
@@ -62,25 +66,21 @@ public class Agent04_Shooter extends MarioHijackAIBase implements IAgent {
 	@Override
 	public void debugDraw(VisualizationComponent vis, LevelScene level, IEnvironment env, Graphics g) {
 		super.debugDraw(vis, level, env, g);
+		if (mario == null) return;
 		String debug = "";
-		if (enemyAhead()) {
-			debug += "|ENEMY AHEAD|";
-		}
-		if (brickAhead()) {
-			debug += "|BRICK AHEAD|";
-		}
-		if (mario != null && mario.onGround) {
-			debug += "|ON GROUND|";
-		}
-		VisualizationComponent.drawStringDropShadow(g, debug, 0, 12, 1);
+		if (enemyAhead()) debug += "|ENEMY AHEAD|";
+		else debug += "|-----------|";
+		if (brickAhead()) debug += "|BRICK AHEAD|";
+		else debug += "|-----------|";
+		VisualizationComponent.drawStringDropShadow(g, debug, 0, 26, 1);
 	}
 	
 	public static void main(String[] args) {
-		String options = FastOpts.VIS_ON_2X + FastOpts.LEVEL_02_JUMPING + FastOpts.L_ENEMY(Enemy.GOOMBA, Enemy.SPIKY) + FastOpts.L_TUBES_ON + FastOpts.L_RANDOMIZE;
+		String options = FastOpts.VIS_ON_2X + FastOpts.LEVEL_02_JUMPING + FastOpts.L_ENEMY(Enemy.GOOMBA) + FastOpts.L_TUBES_ON + FastOpts.L_RANDOMIZE;
 		
 		MarioSimulator simulator = new MarioSimulator(options);
 		
-		IAgent agent = new Agent03_Forward();
+		IAgent agent = new Agent04_Shooter();
 		
 		simulator.run(agent);
 		

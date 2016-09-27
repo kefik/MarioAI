@@ -45,6 +45,7 @@ import ch.idsia.agents.IAgent;
 import ch.idsia.agents.controllers.IMarioDebugDraw;
 import ch.idsia.benchmark.mario.engine.SimulatorOptions.ReceptiveFieldMode;
 import ch.idsia.benchmark.mario.engine.generalization.Entity;
+import ch.idsia.benchmark.mario.engine.generalization.EntityKind;
 import ch.idsia.benchmark.mario.engine.generalization.EntityType;
 import ch.idsia.benchmark.mario.engine.generalization.Tile;
 import ch.idsia.benchmark.mario.engine.input.MarioCheatKey;
@@ -421,7 +422,8 @@ public class VisualizationComponent extends JComponent {
 		
 		switch (SimulatorOptions.receptiveFieldMode) {
 		case NONE:
-		case GRID:
+			break;
+		case GRID:			
 			og.setColor(Color.DARK_GRAY);
 			og.setFont(numFont);
 			for (int row = 0; row < SimulatorOptions.receptiveFieldHeight; ++row) {
@@ -436,7 +438,7 @@ public class VisualizationComponent extends JComponent {
 				}
 			}
 			break;
-		case GRID_TILES:
+		case GRID_TILES:			
 			for (int row = 0; row < SimulatorOptions.receptiveFieldHeight; ++row) {
 				for (int col = 0; col < SimulatorOptions.receptiveFieldWidth; ++col) {
 					Tile tile = marioEnvironment.getTileField()[row][col];
@@ -449,7 +451,7 @@ public class VisualizationComponent extends JComponent {
 				}
 			}
 			break;
-		case GRID_ENTITIES:
+		case GRID_ENTITIES:			
 			for (Entity entity : marioEnvironment.getEntities()) {
 				EntityType type = entity.type;
 				if (type == EntityType.NOTHING) continue;
@@ -460,6 +462,23 @@ public class VisualizationComponent extends JComponent {
 				drawString(og, type.getDebug(), x, y, 7);
 			}
 			break;
+		case GRID_THREAT_LEVEL:			
+			for (int row = 0; row < SimulatorOptions.receptiveFieldHeight; ++row) {
+				for (int col = 0; col < SimulatorOptions.receptiveFieldWidth; ++col) {
+					List<Entity> entities = marioEnvironment.getEntityField()[row][col];
+					if (entities == null || entities.size() == 0) continue;
+					Entity entity = entities.get(0);
+					for (Entity otherEntity : entities) {
+						if (otherEntity.type.getKind().getThreatLevel() < entity.type.getKind().getThreatLevel()) entity = otherEntity;
+					}
+					
+					int x = (int)(marioX + cellWidth * (col - marioCol) - 8);
+					int y = (int)(marioY + cellHeight * (row - marioRow) - 8);
+					
+					drawString(og, entity.type.getKind().getDebug(), x, y, 7);
+				}
+			}			
+			break;			
 		}
 		
 		{
@@ -467,6 +486,7 @@ public class VisualizationComponent extends JComponent {
 			int x = (int)(marioX - 8);
 			int y = (int)(marioY - 8);
 			
+			drawString(og, "G" + SimulatorOptions.receptiveFieldMode.getCode(), x, y - 8, 4);
 			drawString(og, EntityType.MARIO.getDebug(), x, y, 7);
 		}
 		

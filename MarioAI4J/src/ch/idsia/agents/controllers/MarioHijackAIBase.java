@@ -66,11 +66,32 @@ public class MarioHijackAIBase extends MarioAIBase implements KeyListener, IMari
 		
 		if (!renderExtraDebugInfo) return;
 		
+		int row = 10;
 		
-		VisualizationComponent.drawStringDropShadow(g, "Mario[X,Y]  = [" + mario.sprite.x + "," + mario.sprite.y + "]", 0, 10, 7);
-		VisualizationComponent.drawStringDropShadow(g, "InTile[X,Y] = [" + mario.inTileX + "," + mario.inTileY + "]", 0, 11, 7);
-		VisualizationComponent.drawStringDropShadow(g, "Speed[X,Y]  = [" + floatFormat.format(mario.speed.x).replace(",", ".") + "," + floatFormat.format(mario.speed.y).replace(",", ".") + "]", 0, 12, 7);
+		String marioState = "";
+		marioState += "|FBs:" + level.fireballsOnScreen + "|";
+		if (mario.mayJump) marioState += "|M.JUMP|";
+		else marioState += "|------|";
+		if (mario.mayShoot) marioState += "|M.SHOOT|";
+		else marioState += "|-------|";
+		if (mario.onGround) marioState += "|ON.GRND|";
+		else marioState += "|-------|";
+		VisualizationComponent.drawStringDropShadow(g, marioState, 0, row++, 7);
+		marioState = "";
+		if (control.wantsShoot()) marioState += "|WANT SHOOT|";
+		else marioState += "|-----|";
+		if (control.wantsSprint()) marioState += "|WANT SPRINT|";
+		else marioState += "|------|";
+		VisualizationComponent.drawStringDropShadow(g, marioState, 0, row++, 7);		
+		VisualizationComponent.drawStringDropShadow(g, "m.s.[x,y] = [" + floatFormat(mario.sprite.x) + "," + floatFormat(mario.sprite.y) + "]", 0, row++, 7);
+		VisualizationComponent.drawStringDropShadow(g, "m.s.[xOld,yOld] = [" + floatFormat(mario.sprite.xOld) + "," + floatFormat(mario.sprite.yOld) + "]", 0, row++, 7);
+		VisualizationComponent.drawStringDropShadow(g, "m.inTile[X,Y] = [" + mario.inTileX + "," + mario.inTileY + "]", 0, row++, 7);
+		VisualizationComponent.drawStringDropShadow(g, "m.speed.[x,y] = [" + floatFormat(mario.speed.x) + "," + floatFormat(mario.speed.y) + "]", 0, row++, 7);
 		
+	}
+	
+	private String floatFormat(float num) {
+		return floatFormat.format(num).replace(",", ".");
 	}
 	
 	@Override

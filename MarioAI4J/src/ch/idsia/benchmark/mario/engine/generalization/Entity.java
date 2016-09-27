@@ -91,7 +91,7 @@ public class Entity<SPRITE extends Sprite> {
 	public float height;
 	
 	/**
-	 * Current speed of the entity.
+	 * Current speed of the entity, equals to [sprite.x - sprite.xOld, sprite.y - sprite.yOld].
 	 */
 	public Speed speed;	
 	

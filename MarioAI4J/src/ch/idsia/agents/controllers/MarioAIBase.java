@@ -28,12 +28,15 @@
 package ch.idsia.agents.controllers;
 
 import java.awt.Graphics;
+import java.util.Random;
 
 import ch.idsia.agents.AgentOptions;
 import ch.idsia.agents.IAgent;
 import ch.idsia.agents.controllers.modules.Entities;
 import ch.idsia.agents.controllers.modules.Tiles;
+import ch.idsia.benchmark.mario.MarioSimulator;
 import ch.idsia.benchmark.mario.engine.LevelScene;
+import ch.idsia.benchmark.mario.engine.SimulatorOptions;
 import ch.idsia.benchmark.mario.engine.VisualizationComponent;
 import ch.idsia.benchmark.mario.engine.generalization.MarioEntity;
 import ch.idsia.benchmark.mario.engine.input.MarioControl;

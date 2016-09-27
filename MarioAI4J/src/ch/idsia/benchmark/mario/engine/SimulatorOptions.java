@@ -42,6 +42,7 @@ public abstract class SimulatorOptions {
 		GRID(1),
 		GRID_TILES(2),
 		GRID_ENTITIES(3),
+		GRID_THREAT_LEVEL(4),
 		;
 		
 		private int code;
@@ -66,7 +67,7 @@ public abstract class SimulatorOptions {
 	
 	public static final int primaryVerionUID = 0;
 	public static final int minorVerionUID = 3;
-	public static final int minorSubVerionID = 0;
+	public static final int minorSubVerionID = 1;
 
 	public static boolean areLabels = false;
 	public static boolean isCameraCenteredOnMario = false;

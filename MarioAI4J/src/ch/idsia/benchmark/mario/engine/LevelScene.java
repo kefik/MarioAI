@@ -429,7 +429,7 @@ public final class LevelScene implements SpriteContext {
 		marioState[1] = this.getMarioMode().getCode();
 		marioState[2] = this.isMarioOnGround() ? 1 : 0;
 		marioState[3] = this.isMarioAbleToJump() ? 1 : 0;
-		marioState[4] = this.isMarioAbleToShoot() ? 1 : 0;
+		marioState[4] = this.isSpeedButtonNotPressed() ? 1 : 0;
 		marioState[5] = this.isMarioCarrying() ? 1 : 0;
 		marioState[6] = this.getKillsTotal();
 		marioState[7] = this.getKillsByFire();
@@ -448,6 +448,10 @@ public final class LevelScene implements SpriteContext {
 		return (mario.getStatus() != Mario.STATUS_RUNNING);
 	}
 
+	public boolean isSpeedButtonNotPressed() {
+		return mario.isSpeedButtonNotPressed();
+	}
+	
 	public boolean isMarioAbleToShoot() {
 		return mario.isAbleToShoot();
 	}
