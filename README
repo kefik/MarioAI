@@ -6,7 +6,7 @@ MarioAI4J -> main project containing MarioSimulator (runnable as is), which is f
 
 MarioAI4J-Agents -> example agents, this project must reference MarioAI4J in order to compile ... start to develop your own agent right away by editting MyAgent class.
 
-MarioAI4J-Tournament -> provides means for agent evaluations from console (check EvaluateAgentConsole class) producing detailed CSV reports
+MarioAI4J-Tournament -> provides means for agent evaluations from console (check EvaluateAgentConsole class) producing detailed CSV reports.
 
 Things, which are different from original MarioAI v0.2.0 project:
 
