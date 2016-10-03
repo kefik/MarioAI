@@ -46,8 +46,6 @@ public class MarioAgent extends MarioHijackAIBase implements IAgent {
 		// ALWAYS RUN RIGHT
 		control.runRight();
 		
-		control.sprint();
-		
 		// RETURN THE RESULT
 		return action;
 	}
