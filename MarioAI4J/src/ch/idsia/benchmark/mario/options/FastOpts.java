@@ -79,7 +79,7 @@ public class FastOpts {
 					+ " " + IntOption.LEVEL_TYPE.getParam() + " 0";
 	
 	/**
-	 * Graphics will be rendered with "undergroung" tile set. Also such a level contain ceiling.  
+	 * Graphics will be rendered with "underground" tile set. Also such a level contain ceiling.  
 	 */
 	public static final String L_UNDERGROUND = ""
 			+ " " + IntOption.LEVEL_TYPE.getParam() + " 1";
@@ -170,6 +170,12 @@ public class FastOpts {
 	 */
 	public static final String L_FLAT = ""
 			+ " " + BoolOption.LEVEL_FLAT.getParam() + " on";
+	
+	/**
+	 * DO NOT generate level as FLAT.
+	 */
+	public static final String L_FLAT_OFF = ""
+			+ " " + BoolOption.LEVEL_FLAT.getParam() + " off";
 	
 	/**
 	 * Enable generation of gaps.
@@ -371,44 +377,44 @@ public class FastOpts {
 	// ==============
 	
 	/**
-	 * Flat level.
+	 * Flat level. WARNING: enemy cannot be generated into this level ({@link #L_ENEMY(Enemy...)} will not work with this option).
 	 */
 	public static final String LEVEL_01_FLAT = L_FLAT;
 	
 	/**
 	 * Level with hills.
 	 */
-	public static final String LEVEL_02_JUMPING = L_BLOCKS_OFF + L_CANNONS_OFF + L_COINS_OFF + L_DEAD_ENDS_OFF + L_GAPS_OFF + L_HIDDEN_BLOCKS_OFF
+	public static final String LEVEL_02_JUMPING = L_FLAT_OFF + L_BLOCKS_OFF + L_CANNONS_OFF + L_COINS_OFF + L_DEAD_ENDS_OFF + L_GAPS_OFF + L_HIDDEN_BLOCKS_OFF
 												  	          + L_PLATFORMS_OFF + L_LADDERS_OFF + L_TUBES_OFF;
 	
 	/**
 	 * Level with hills + coins.
 	 */
-	public static final String LEVEL_03_COLLECTING = L_BLOCKS_OFF + L_CANNONS_OFF + L_COINS_ON + L_DEAD_ENDS_OFF + L_GAPS_OFF + L_HIDDEN_BLOCKS_OFF
+	public static final String LEVEL_03_COLLECTING = L_FLAT_OFF + L_BLOCKS_OFF + L_CANNONS_OFF + L_COINS_ON + L_DEAD_ENDS_OFF + L_GAPS_OFF + L_HIDDEN_BLOCKS_OFF
 	  	       												     + L_PLATFORMS_OFF + L_LADDERS_OFF + L_TUBES_OFF;
 	
 	/**
 	 * Level with hills + block (can be crushed) + coins.
 	 */
-	public static final String LEVEL_04_BLOCKS = L_BLOCKS_ON + L_CANNONS_OFF + L_COINS_ON + L_DEAD_ENDS_OFF + L_GAPS_OFF + L_HIDDEN_BLOCKS_OFF
+	public static final String LEVEL_04_BLOCKS = L_FLAT_OFF + L_BLOCKS_ON + L_CANNONS_OFF + L_COINS_ON + L_DEAD_ENDS_OFF + L_GAPS_OFF + L_HIDDEN_BLOCKS_OFF
 													         + L_PLATFORMS_OFF + L_LADDERS_OFF + L_TUBES_OFF;
 	
 	/**
 	 * Level with hills + gaps (holes in the ground).
 	 */
-	public static final String LEVEL_05_GAPS = L_BLOCKS_OFF + L_CANNONS_OFF + L_COINS_OFF + L_DEAD_ENDS_OFF + L_GAPS_ON + L_HIDDEN_BLOCKS_OFF
+	public static final String LEVEL_05_GAPS = L_FLAT_OFF + L_BLOCKS_OFF + L_CANNONS_OFF + L_COINS_OFF + L_DEAD_ENDS_OFF + L_GAPS_ON + L_HIDDEN_BLOCKS_OFF
 	         										       + L_PLATFORMS_OFF + L_LADDERS_OFF + L_TUBES_OFF + L_DIFFICULTY(1);	
 	
 	/**
 	 * Level with hills + GOOMBA (walking mushroom).
 	 */
-	public static final String LEVEL_06_GOOMBA = L_BLOCKS_OFF + L_CANNONS_OFF + L_COINS_OFF + L_DEAD_ENDS_OFF + L_GAPS_OFF + L_HIDDEN_BLOCKS_OFF
+	public static final String LEVEL_06_GOOMBA = L_FLAT_OFF + L_BLOCKS_OFF + L_CANNONS_OFF + L_COINS_OFF + L_DEAD_ENDS_OFF + L_GAPS_OFF + L_HIDDEN_BLOCKS_OFF
 		       														     + L_PLATFORMS_OFF + L_LADDERS_OFF + L_TUBES_OFF + L_ENEMY(Enemy.GOOMBA);
 	
 	/**
 	 * Level with hills + GOOMBA (walking mushroom) + SPIKY (walking thorned something) + Visualization(x2)
 	 */
-	public static final String LEVEL_07_SPIKY = L_BLOCKS_OFF + L_CANNONS_OFF + L_COINS_OFF + L_DEAD_ENDS_OFF + L_GAPS_OFF + L_HIDDEN_BLOCKS_OFF
+	public static final String LEVEL_07_SPIKY = L_FLAT_OFF + L_BLOCKS_OFF + L_CANNONS_OFF + L_COINS_OFF + L_DEAD_ENDS_OFF + L_GAPS_OFF + L_HIDDEN_BLOCKS_OFF
 			     										    + L_PLATFORMS_OFF + L_LADDERS_OFF + L_TUBES_OFF + L_ENEMY(Enemy.GOOMBA, Enemy.SPIKY);
 	
 }

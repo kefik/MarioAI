@@ -4,18 +4,17 @@ import java.io.File;
 import java.lang.reflect.Constructor;
 import java.util.Iterator;
 
-import ch.idsia.agents.IAgent;
-import ch.idsia.benchmark.mario.engine.generalization.Enemy;
-import ch.idsia.benchmark.mario.options.FastOpts;
-
 import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 
+import ch.idsia.agents.IAgent;
+import ch.idsia.benchmark.mario.engine.generalization.Enemy;
+import ch.idsia.benchmark.mario.options.FastOpts;
+import ch.idsia.benchmark.mario.options.LevelOptions;
+import ch.idsia.benchmark.mario.options.MarioOptions;
 import cz.cuni.mff.amis.mario.tournament.run.MarioRunResults;
-import cz.cuni.mff.amis.mario.tournament.run.MarioRuns;
-import cz.cuni.mff.amis.mario.tournament.run.MarioRunsGenerator;
 
 public class EvaluateAgentConsole {
 	
@@ -275,9 +274,9 @@ public class EvaluateAgentConsole {
 	    System.out.println("Sanity checks OK!");
 	}
 	
-	private static void evaluateAgent() {
+	private static MarioRunResults evaluateAgent() {
 		EvaluateAgent evaluate = new EvaluateAgent(seed, levelOptions, runCount, oneLevelRepetitions, resultDirFile);
-		evaluate.evaluateAgent(agentId, agent);		
+		return evaluate.evaluateAgent(agentId, agent);		
 	}
 		
 	// ==============
@@ -297,26 +296,56 @@ public class EvaluateAgentConsole {
 		};
 	}
 	
-	
-	public static void main(String[] args) throws JSAPException {
-		// -----------
-		// FOR TESTING
-		// -----------
-		args = getTestArgs();		
-		
+	public static MarioRunResults evaluate(String[] args) {
 		// --------------
 		// IMPLEMENTATION
 		// --------------
 		
-		initJSAP();
-	    
-	    header();
-	    
-	    readConfig(args);
-	    
-	    sanityChecks();
-	    
-	    evaluateAgent();
+		try {
+				
+			try {
+				initJSAP();
+			} catch (Exception e) {
+				throw new RuntimeException("Failed to parse arguments.", e);
+			}
+				    
+			header();
+			    
+			readConfig(args);
+				    
+			sanityChecks();
+				    
+			return evaluateAgent();
+			
+		} finally {
+			cleanUp();
+			MarioOptions.reset();
+		}
+	}
+	
+	
+	private static void cleanUp() {
+		seed = 0;
+		levelOptions = null;
+		runCount = 0;
+		oneLevelRepetitions = 0;
+		agentFQCN = null;
+		agentClass = null;
+		agent = null;
+		agentId = null;
+		resultDir = null;
+		resultDirFile = null;
+		headerOutput = false;
+		config = null;
+	}
+
+	public static void main(String[] args) {
+		// -----------
+		// FOR TESTING
+		// -----------
+		//args = getTestArgs();		
+		
+	    evaluate(args);
 	    
 	    System.out.println("---// FINISHED //---");
 	}

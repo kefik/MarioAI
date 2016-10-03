@@ -36,7 +36,7 @@ public class EvaluateAgent {
 		System.out.println("[" + agentId + "] " + msg);
 	}
 	
-	public void evaluateAgent(String agentId, IAgent agent) {
+	public MarioRunResults evaluateAgent(String agentId, IAgent agent) {
 		agentId = Sanitize.idify(agentId);
 		
 		log(agentId, "EVALUATING AGENT IN " + runCount + " LEVELS with " + oneLevelRepetitions + " level-repetition, TOTAL " + (runCount * oneLevelRepetitions) + " SIMULATIONS!");
@@ -58,7 +58,9 @@ public class EvaluateAgent {
 		log(agentId, "EVALUATION FINISHED!");
 		log(agentId, results.toString());
 		
-		outputResults(agentId, results);		
+		outputResults(agentId, results);	
+		
+		return results;
 	}
 
 	private void outputResults(String agentId, MarioRunResults results) {		

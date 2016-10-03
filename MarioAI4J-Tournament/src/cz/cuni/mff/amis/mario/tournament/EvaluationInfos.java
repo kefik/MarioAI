@@ -16,7 +16,14 @@ public class EvaluationInfos {
 	public int totalTimedout;
 	public double avgTimedout;
 	
+	/**
+	 * In seconds; if the simulation runs headless, the time is approximated from the number of simulation frames.
+	 */
 	public int totalTimeSpent;
+	
+	/**
+	 * In seconds; if the simulation runs headless, the time is approximated from the number of simulation frames.
+	 */
 	public double avgTimeSpent;
 		
 	public List<EvaluationInfo> getResults() {
@@ -60,6 +67,10 @@ public class EvaluationInfos {
 		for (EvaluationInfo info : results) {
 			addResult(info);
 		}
+	}
+
+	public int getTotalRuns() {
+		return totalDeaths + totalTimedout + totalVictories;
 	}
 	
 	public String getCSVHeader() {
