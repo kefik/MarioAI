@@ -6,9 +6,11 @@ Refactored MarioAI code from: http://code.google.com/p/marioai/
 
 **MarioAI4J** -> main project containing MarioSimulator (runnable as is), which is featuring keyboard-controlled mario, use arrows + A(jump) + S(peed/hoot) ... oh and do not forget to try to press 'G' (multiple times) to visualize Mario's receptive field
 
-**MarioAI4J-Agents** -> example agents, this project must reference MarioAI4J in order to compile ... start to develop your own agent right away by editting MyAgent class.
+**MarioAI4J-Agents** -> example agents, this project must reference MarioAI4J in order to compile
 
 **MarioAI4J-Tournament** -> provides means for agent evaluations from console (check EvaluateAgentConsole class) producing detailed CSV reports.
+
+**MarioAI4J-Playground** -> here you can start coding your own Mario AI right away, just navigate to MarioAgent and fool around (required MarioAI4J, MarioAI4J-Tournament + its libs on path).
 
 I did not mavenized projects as I usually do... so far you have to setup them within your IDE manually, but as they need only 2 libraries and projects feature rather standard Java project layout, it is trivial task (projects are directly importable into Eclipse).
 
@@ -47,7 +49,7 @@ MarioHijackAIBase
 
 ## MarioHijackAIBase 
 
-All example AIs within project MarioAI4J-Agents are using this class as their base.
+All example AIs within project MarioAI4J-Agents and MarioAI4J-Playground are using this class as their base.
 
 It allows you to visualize / perform extra debugging stuff, which is extremely useful when developing.
 
