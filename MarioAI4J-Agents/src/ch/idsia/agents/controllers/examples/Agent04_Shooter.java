@@ -20,6 +20,8 @@ import ch.idsia.tools.EvaluationInfo;
 /**
  * Agent that sprints forward, jumps and shoots.
  * 
+ * This agent has successful rate ~ 50%.
+ * 
  * @author Jakub 'Jimmy' Gemrot, gemrot@gamedev.cuni.cz
  */
 public class Agent04_Shooter extends MarioHijackAIBase implements IAgent {
@@ -76,7 +78,7 @@ public class Agent04_Shooter extends MarioHijackAIBase implements IAgent {
 	}
 	
 	public static void main(String[] args) {
-		String options = FastOpts.VIS_ON_2X + FastOpts.LEVEL_02_JUMPING + FastOpts.L_ENEMY(Enemy.GOOMBA) + FastOpts.L_TUBES_ON + FastOpts.L_RANDOMIZE;
+		String options = FastOpts.VIS_ON_2X + FastOpts.LEVEL_02_JUMPING + FastOpts.L_ENEMY(Enemy.GOOMBA, Enemy.SPIKY) + FastOpts.L_TUBES_ON + FastOpts.L_RANDOMIZE;
 		
 		MarioSimulator simulator = new MarioSimulator(options);
 		
