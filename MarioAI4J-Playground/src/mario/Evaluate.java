@@ -20,19 +20,19 @@ public class Evaluate {
 	/**
 	 * Hoa many randomized level configs we should evaluate per level.
 	 */
-	public static final int LEVEL_COUNT = 100;
+	public static final int MAPS_COUNT = 200;
 	
 	/**
 	 * How many times we should eveluate the same level configuration.
 	 */
-	public static final int LEVEL_REPETITIONS = 3;
+	public static final int MAP_REPETITIONS = 1;
 	
 	private static String[] getEvaluationOptions(int seed, String levelOptions) {
 		return new String[] {
 				  "-s", String.valueOf(seed) // "seed"
 				, "-o", levelOptions
-				, "-c", String.valueOf(LEVEL_COUNT)  // level-count
-				, "-r", String.valueOf(LEVEL_REPETITIONS)  // one-run-repetitions
+				, "-c", String.valueOf(MAPS_COUNT)  // level-count
+				, "-r", String.valueOf(MAP_REPETITIONS)  // one-run-repetitions
 				, "-a", "mario.MarioAgent"
 				, "-i", "MarioAI"   // agent-id
 				, "-d", "./results" // result-dir"	
@@ -62,6 +62,23 @@ public class Evaluate {
 		System.out.println("-------------------");
 	}
 	
+	public static void evaluateLevels(int seed, LevelConfig... configs) {
+		Map<LevelConfig, MarioRunResults> results = new HashMap<LevelConfig, MarioRunResults>();
+		
+		for (LevelConfig level : configs) {
+			MarioRunResults r = evaluateLevel(seed, level);
+			results.put(level,  r);
+		}
+		
+		System.out.println("===================================");
+		System.out.println("RESULTS (Maps per level: " + MAPS_COUNT + ", Map reptitions: " + MAP_REPETITIONS);
+		System.out.println("===================================");
+		
+		for (LevelConfig level : LevelConfig.values()) { 
+			printResults(level, results.get(level));
+		}
+	}
+	
 	public static void evaluateAll(int seed) {
 		Map<LevelConfig, MarioRunResults> results = new HashMap<LevelConfig, MarioRunResults>();
 		
@@ -85,15 +102,18 @@ public class Evaluate {
 	 * @param args
 	 */
 	public static void main(String[] args)  {
-		// Change the seed to receive evaluation for different levels ~ it alters procedural generation of the level.
-		int seed = 20;
+		// Change the seed to receive evaluation for different levels ~ it alters procedural generation of level maps.
+		int masterSeed = 20;
 		
-		//evaluateLevel(seed, LevelConfig.LEVEL_0_FLAT);
-		//evaluateLevel(seed, LevelConfig.LEVEL_1_JUMPING);
-		//evaluateLevel(seed, LevelConfig.LEVEL_2_GOOMBAS);
-		//evaluateLevel(seed, LevelConfig.LEVEL_3_TUBES);
+		evaluateLevel(masterSeed, LevelConfig.LEVEL_0_FLAT);
+		//evaluateLevel(masterSeed, LevelConfig.LEVEL_1_JUMPING);
+		//evaluateLevel(masterSeed, LevelConfig.LEVEL_2_GOOMBAS);
+		//evaluateLevel(masterSeed, LevelConfig.LEVEL_3_TUBES);
+		//evaluateLevel(masterSeed, LevelConfig.LEVEL_4_SPIKIES);
 		
-		evaluateAll(seed);
+		//evaluateLevels(masterSeed, LevelConfig.LEVEL_0_FLAT, LevelConfig.LEVEL_1_JUMPING, LevelConfig.LEVEL_2_GOOMBAS);
+		
+		//evaluateAll(masterSeed);
 	}
 
 }

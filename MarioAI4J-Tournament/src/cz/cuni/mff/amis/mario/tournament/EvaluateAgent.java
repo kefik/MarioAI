@@ -80,7 +80,7 @@ public class EvaluateAgent {
 		try {
 			writer = new PrintWriter(new FileOutputStream(file));
 			
-			writer.println("agentId;configNumber;repetitions;simulationNumber;" + results.getResults().get(0).getCSVHeader());
+			writer.println("agentId;configNumber;repetitions;simulationNumber;levelSeed;" + results.getResults().get(0).getCSVHeader());
 			int simulationNumber = 0;
 			int configNumber = 0;
 			for (MarioConfig config : results.getConfigs()) {
@@ -91,6 +91,7 @@ public class EvaluateAgent {
 					writer.print(";" + configNumber);
 					writer.print(";" + config.getRepetitions());
 					writer.print(";" + simulationNumber);
+					writer.print(";" + config.getSeed());
 					EvaluationInfo info = results.getResults().get(simulationNumber-1);
 					writer.println(";" + info.getCSV());
 				}

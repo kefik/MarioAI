@@ -131,7 +131,7 @@ public class EvaluateAgentConsole {
 	    	.setDefault("10")
 	    	.setShortFlag(ARG_ONE_RUN_REPETITIONS_SHORT)
 	    	.setLongFlag(ARG_ONE_RUN_REPETITIONS_LONG);    
-	    opt3.setHelp("How many times should be one MarioSimulator configuration be repeated (in order to gain statistically sound data).");
+	    opt3.setHelp("How many times should be one MarioSimulator configuration (~ one generated level map) be repeated (in order to gain statistically sound data).");
 	    
 	    jsap.registerParameter(opt3);
 	    
@@ -140,7 +140,7 @@ public class EvaluateAgentConsole {
 	    	.setRequired(true) 
 	    	.setShortFlag(ARG_PROTOTYPE_OPTIONS_SHORT)
 	    	.setLongFlag(ARG_PROTOTYPE_OPTIONS_LONG);    
-	    opt31.setHelp("List of options to be used for generating the level.");
+	    opt31.setHelp("List of options to be used for generating the level map.");
 	
 	    jsap.registerParameter(opt31);
 	    
@@ -170,7 +170,7 @@ public class EvaluateAgentConsole {
 	    	.setDefault("0")
 	    	.setShortFlag(ARG_SEED_SHORT)
 	    	.setLongFlag(ARG_SEED_LONG);    
-	    opt6.setHelp("Seed to be used when generating seeds for respective levels.");
+	    opt6.setHelp("Master seed - seed to be used when generating seeds for respective levels.");
 	
 	    jsap.registerParameter(opt6);
    	}
