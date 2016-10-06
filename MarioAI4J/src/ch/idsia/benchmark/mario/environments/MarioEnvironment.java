@@ -228,7 +228,7 @@ public final class MarioEnvironment implements IEnvironment {
 	private void updateMario() {
 		mario.sprite = levelScene.mario;
 		mario.speed.x = levelScene.mario.x - levelScene.mario.xOld;
-		mario.speed.y = levelScene.mario.x - levelScene.mario.yOld;
+		mario.speed.y = levelScene.mario.y - levelScene.mario.yOld;
 		if (levelScene.isMarioOnGround()) mario.speed.y = 0;
 		mario.height = levelScene.mario.y;
 		mario.mode = levelScene.mario.getMode();
