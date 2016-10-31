@@ -56,7 +56,7 @@ public class Evaluate {
 	
 	public static void printResults(LevelConfig level, MarioRunResults results) {
 		System.out.println(level.name());
-		System.out.println("  +-- VICTORIES:  " + results.totalVictories + " / " + results.getTotalRuns());
+		System.out.println("  +-- VICTORIES:  " + results.totalVictories + " / " + results.getTotalRuns() + " (" + ((double)results.totalVictories / (double)results.getTotalRuns()) + "%)");
 		System.out.println("  +-- AVG   TIME: " + ((double)results.totalTimeSpent / (double)results.getTotalRuns() ) + "s");
 		System.out.println("  +-- TOTAL TIME: " + results.totalTimeSpent + "s");
 		System.out.println("-------------------");
@@ -74,7 +74,7 @@ public class Evaluate {
 		System.out.println("RESULTS (Maps per level: " + MAPS_COUNT + ", Map reptitions: " + MAP_REPETITIONS);
 		System.out.println("===================================");
 		
-		for (LevelConfig level : LevelConfig.values()) { 
+		for (LevelConfig level : configs) { 
 			printResults(level, results.get(level));
 		}
 	}

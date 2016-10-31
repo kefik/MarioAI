@@ -64,6 +64,7 @@ public class MarioControl {
 		input.release(MarioKey.LEFT);
 		input.release(MarioKey.RIGHT);
 		input.release(MarioKey.JUMP);
+		input.release(MarioKey.DOWN);
 	}
 	
 	public void reset() {
