@@ -2,6 +2,8 @@ Refactored MarioAI code from: http://code.google.com/p/marioai/
 
 # MarioAI Version 0.3.1
 
+![alt tag](https://github.com/kefik/MarioAI/raw/master/MarioAI4J/MatioAI4J.png)
+
 ## Project structure
 
 **MarioAI4J** -> main project containing MarioSimulator (runnable as is), which is featuring keyboard-controlled mario, use arrows + A(jump) + S(peed/hoot) ... oh and do not forget to try to press 'G' (multiple times) to visualize Mario's receptive field
