@@ -36,6 +36,7 @@ import ch.idsia.benchmark.mario.engine.sprites.Mario;
 import ch.idsia.benchmark.mario.engine.sprites.Mario.MarioMode;
 import ch.idsia.tasks.MarioSystemOfValues;
 import ch.idsia.tasks.SystemOfValues;
+import ch.idsia.utils.MarioLog;
 
 /**
  * Created by IntelliJ IDEA. 
@@ -193,10 +194,9 @@ public final class EvaluationInfo implements Cloneable {
 
 				{
 					for (int i = 0; i < marioTrace.length; ++i) {
-						System.out.print(spaceFormat(marioTrace[i][j]));
+						//MarioLog.trace(spaceFormat(marioTrace[i][j]));
 						pw.print(spaceFormat(marioTrace[i][j]));
 					}
-					System.out.println();
 					pw.println();
 				}
 				pw.flush();
@@ -323,7 +323,7 @@ public final class EvaluationInfo implements Cloneable {
 			// TODO:!H!:double check the validity of this change!
 			return (EvaluationInfo) super.clone();
 		} catch (CloneNotSupportedException e) {
-			System.err.println(e);
+			MarioLog.error(e.toString());
 			return null;
 		}
 

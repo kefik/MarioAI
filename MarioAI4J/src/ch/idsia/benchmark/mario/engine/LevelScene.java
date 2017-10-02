@@ -58,6 +58,7 @@ import ch.idsia.benchmark.mario.options.LevelOptions;
 import ch.idsia.benchmark.mario.options.SimulationOptions;
 import ch.idsia.benchmark.mario.options.SystemOptions;
 import ch.idsia.benchmark.mario.options.VisualizationOptions;
+import ch.idsia.utils.MarioLog;
 
 public final class LevelScene implements SpriteContext {
 
@@ -117,8 +118,7 @@ public final class LevelScene implements SpriteContext {
 		try {
 			Level.loadBehaviors(new DataInputStream(LevelScene.class.getResourceAsStream("resources/tiles.dat")));
 		} catch (IOException e) {
-			System.err
-					.println("[MarioAI ERROR] : error loading file resources/tiles.dat ; ensure this file exists in ch/idsia/benchmark/mario/engine ");
+			MarioLog.error("[MarioAI ERROR] : error loading file resources/tiles.dat ; ensure this file exists in ch/idsia/benchmark/mario/engine ");
 			e.printStackTrace();
 			System.exit(0);
 		}
@@ -507,7 +507,7 @@ public final class LevelScene implements SpriteContext {
 				// replayer.closeFile();
 				// replayer.closeRecorder();
 			} catch (IOException e) {
-				System.err.println("[Mario AI Exception] ~ level reading failed");
+				MarioLog.error("[Mario AI Exception] ~ level reading failed");
 				e.printStackTrace();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -520,7 +520,7 @@ public final class LevelScene implements SpriteContext {
 			try {
 				Level.save(level, new ObjectOutputStream(new FileOutputStream(SystemOptions.getSaveLevelFileName())));
 			} catch (IOException e) {
-				System.err.println("[Mario AI Exception] ~ Cannot write to file " + SystemOptions.getSaveLevelFileName());
+				MarioLog.error("[Mario AI Exception] ~ Cannot write to file " + SystemOptions.getSaveLevelFileName());
 				e.printStackTrace();
 			}
 		}

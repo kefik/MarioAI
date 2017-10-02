@@ -27,6 +27,7 @@
 
 package ch.idsia.benchmark.mario.engine;
 
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -45,7 +46,6 @@ import ch.idsia.agents.IAgent;
 import ch.idsia.agents.controllers.IMarioDebugDraw;
 import ch.idsia.benchmark.mario.engine.SimulatorOptions.ReceptiveFieldMode;
 import ch.idsia.benchmark.mario.engine.generalization.Entity;
-import ch.idsia.benchmark.mario.engine.generalization.EntityKind;
 import ch.idsia.benchmark.mario.engine.generalization.EntityType;
 import ch.idsia.benchmark.mario.engine.generalization.Tile;
 import ch.idsia.benchmark.mario.engine.input.MarioCheatKey;
@@ -58,6 +58,8 @@ import ch.idsia.benchmark.mario.engine.tools.Scale2x;
 import ch.idsia.benchmark.mario.environments.MarioEnvironment;
 import ch.idsia.benchmark.mario.options.VisualizationOptions;
 import ch.idsia.tools.GameViewer;
+import ch.idsia.utils.MarioLog;
+import cz.cuni.amis.utils.simple_logging.SimpleLogging;
 
 /**
  * Created by IntelliJ IDEA. 
@@ -594,16 +596,16 @@ public class VisualizationComponent extends JComponent {
 		this.agentNameStr = agent.getName();
 		if (agent instanceof KeyListener) {
 			if (prevHumanKeyBoardAgent != null) {
-				System.out.println("[MarioVisualComponent] ~ Unregistering OLD agent's KeyListener callback...");
+				MarioLog.trace("[MarioVisualComponent] ~ Unregistering OLD agent's KeyListener callback...");
 				this.removeKeyListener(prevHumanKeyBoardAgent);
 			}
-			System.out.println("[MarioVisualComponent] ~ Registering agent's KeyListener callback...");			
+			MarioLog.trace("[MarioVisualComponent] ~ Registering agent's KeyListener callback...");			
 			
 			this.prevHumanKeyBoardAgent = (KeyListener) agent;
 			this.addKeyListener(this.prevHumanKeyBoardAgent);
 		} else {
 			if (prevHumanKeyBoardAgent != null) {
-				System.out.println("[MarioVisualComponent] ~ Unregistering OLD agent's KeyListener callback...");
+				MarioLog.trace("[MarioVisualComponent] ~ Unregistering OLD agent's KeyListener callback...");
 				this.removeKeyListener(prevHumanKeyBoardAgent);
 				this.prevHumanKeyBoardAgent = null;
 			}

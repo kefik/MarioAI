@@ -34,6 +34,7 @@ import ch.idsia.agents.IAgent;
 import ch.idsia.benchmark.mario.engine.Replayer;
 import ch.idsia.benchmark.mario.engine.input.MarioInput;
 import ch.idsia.benchmark.mario.environments.IEnvironment;
+import ch.idsia.utils.MarioLog;
 
 /**
  * Created by IntelliJ IDEA. 
@@ -79,7 +80,7 @@ public class ReplayAgent implements IAgent {
 			keys.reset();
 			replayer.readAction(keys);
 		} catch (IOException e) {
-			System.err.println("[Mario AI Exception] : ReplayAgent is not able to read next action");
+			MarioLog.error("[Mario AI Exception] : ReplayAgent is not able to read next action");
 			e.printStackTrace();
 		}
 		return keys;

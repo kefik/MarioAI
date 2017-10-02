@@ -2,12 +2,12 @@ package ch.idsia.benchmark.mario.options;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
 import ch.idsia.benchmark.mario.MarioSimulator;
 import ch.idsia.benchmark.mario.engine.level.LevelGenerator;
+import ch.idsia.utils.MarioLog;
 
 /**
  * Serves as a storage for all options that can adjust Mario AI / Level Generation / Simulation / System / Visualization.
@@ -260,11 +260,11 @@ public class MarioOptions {
 	public boolean getBool(BoolOption option) {
 		if (bools.containsKey(option)) {
 			boolean value = bools.get(option);
-			System.out.println("[MarioOptions] " + option.name() + "[-" + option.param + "] specified as: " + value);
+			MarioLog.trace("[MarioOptions] " + option.name() + "[-" + option.param + "] specified as: " + value);
 			return value;
 		}
 		
-		System.out.println("[MarioOptions] " + option.name() + "[-" + option.param + "] default value used: " + option.defaultValue);
+		MarioLog.trace("[MarioOptions] " + option.name() + "[-" + option.param + "] default value used: " + option.defaultValue);
 		
 		return option.defaultValue;
 	}
@@ -272,22 +272,22 @@ public class MarioOptions {
 	public void setBool(BoolOption option, String strValue) {
 		boolean value = ("on".equalsIgnoreCase(strValue) || "true".equals(strValue) ? true : false); 
 		bools.put(option, value);
-		System.out.println("[MarioOptions] " + option.name() + "[-" + option.param + "] set as: " + value);
+		MarioLog.trace("[MarioOptions] " + option.name() + "[-" + option.param + "] set as: " + value);
 	}
 	
 	public void setBool(BoolOption option, boolean value) {
 		bools.put(option, value);
-		System.out.println("[MarioOptions] " + option.name() + "[-" + option.param + "] set as: " + value);
+		MarioLog.trace("[MarioOptions] " + option.name() + "[-" + option.param + "] set as: " + value);
 	}
 	
 	public int getInt(IntOption option) {
 		if (ints.containsKey(option)) {
 			int value = ints.get(option);
-			System.out.println("[MarioOptions] " + option.name() + "[-" + option.param + "] specified as: " + value);
+			MarioLog.trace("[MarioOptions] " + option.name() + "[-" + option.param + "] specified as: " + value);
 			return value;
 		}
 		
-		System.out.println("[MarioOptions] " + option.name() + "[-" + option.param + "] default value used: " + option.defaultValue);
+		MarioLog.trace("[MarioOptions] " + option.name() + "[-" + option.param + "] default value used: " + option.defaultValue);
 		
 		return option.defaultValue;
 	}
@@ -297,26 +297,26 @@ public class MarioOptions {
 		try {
 			value = Integer.parseInt(strValue);
 		} catch (Exception e) {
-			System.err.println("[MarioOptions] ~ INVALID VALUE, CANNOT SET " + option.name() + "[-" + option.param + "] AS: " + strValue);
+			MarioLog.error("[MarioOptions] ~ INVALID VALUE, CANNOT SET " + option.name() + "[-" + option.param + "] AS: " + strValue);
 			return;
 		}
 		ints.put(option, value);
-		System.out.println("[MarioOptions] " + option.name() + "[-" + option.param + "] set as: " + value);
+		MarioLog.trace("[MarioOptions] " + option.name() + "[-" + option.param + "] set as: " + value);
 	}
 	
 	public void setInt(IntOption option, int value) {
 		ints.put(option, value);
-		System.out.println("[MarioOptions] " + option.name() + "[-" + option.param + "] set as: " + value);
+		MarioLog.trace("[MarioOptions] " + option.name() + "[-" + option.param + "] set as: " + value);
 	}
 	
 	public float getFloat(FloatOption option) {
 		if (floats.containsKey(option)) {
 			float value = floats.get(option);
-			System.out.println("[MarioOptions] " + option.name() + "[-" + option.param + "] specified as: " + value);
+			MarioLog.trace("[MarioOptions] " + option.name() + "[-" + option.param + "] specified as: " + value);
 			return value;
 		}
 		
-		System.out.println("[MarioOptions] " + option.name() + "[-" + option.param + "] default value used: " + option.defaultValue);
+		MarioLog.trace("[MarioOptions] " + option.name() + "[-" + option.param + "] default value used: " + option.defaultValue);
 		
 		return option.defaultValue;
 	}
@@ -326,40 +326,40 @@ public class MarioOptions {
 		try {
 			value = Float.parseFloat(strValue);
 		} catch (Exception e) {
-			System.err.println("[MarioOptions] ~ INVALID VALUE, CANNOT SET " + option.name() + "[-" + option.param + "] AS: " + strValue);
+			MarioLog.error("[MarioOptions] ~ INVALID VALUE, CANNOT SET " + option.name() + "[-" + option.param + "] AS: " + strValue);
 			return;
 		}
 		floats.put(option, value);
-		System.out.println("[MarioOptions] " + option.name() + "[-" + option.param + "] set as: " + value);
+		MarioLog.trace("[MarioOptions] " + option.name() + "[-" + option.param + "] set as: " + value);
 	}
 	
 	public void setFloat(FloatOption option, float value) {
 		floats.put(option, value);
-		System.out.println("[MarioOptions] " + option.name() + "[-" + option.param + "] set as: " + value);
+		MarioLog.trace("[MarioOptions] " + option.name() + "[-" + option.param + "] set as: " + value);
 	}
 	
 	public String getString(StringOption option) {
 		if (strings.containsKey(option)) {
 			String value = strings.get(option);
-			System.out.println("[MarioOptions] " + option.name() + "[-" + option.param + "] specified as: " + value);
+			MarioLog.trace("[MarioOptions] " + option.name() + "[-" + option.param + "] specified as: " + value);
 			return value;
 		}
 		
-		System.out.println("[MarioOptions] " + option.name() + "[-" + option.param + "] default value used: " + option.defaultValue);
+		MarioLog.trace("[MarioOptions] " + option.name() + "[-" + option.param + "] default value used: " + option.defaultValue);
 		
 		return option.defaultValue;
 	}
 	
 	public void setString(StringOption option, String value) {
 		strings.put(option, value);
-		System.out.println("[MarioOptions] " + option.name() + "[-" + option.param + "] set as: " + value);
+		MarioLog.trace("[MarioOptions] " + option.name() + "[-" + option.param + "] set as: " + value);
 	}
 	
 	public void setOption(String argument, String value) {
 		if (argument.startsWith("-")) argument = argument.substring(1);
 		Object option = options.get(argument);
 		if (option == null) {
-			System.err.println("[MarioOptions] IGNORING UNRECOGNIZED PARAMETER [-" + argument + "] -> " + value);
+			MarioLog.error("[MarioOptions] IGNORING UNRECOGNIZED PARAMETER [-" + argument + "] -> " + value);
 		} else {
 			setOption(option, value); 
 		}
@@ -378,7 +378,7 @@ public class MarioOptions {
 		if (option instanceof StringOption) {
 			setString((StringOption)option, value);
 		} else {
-			System.err.println("[MarioOptions] CANNOT SET " + option + " AS: " + value);
+			MarioLog.error("[MarioOptions] CANNOT SET " + option + " AS: " + value);
 		}
 	}
 	
@@ -427,14 +427,14 @@ public class MarioOptions {
 		}
 		args = processedArgs.toArray(new String[0]);		
 		
-		System.out.print("[MarioOptions] Parsing " + args.length + " arguments ~ " + (args.length / 2) + " parameters:");
+		MarioLog.trace("[MarioOptions] Parsing " + args.length + " arguments ~ " + (args.length / 2) + " parameters:");
 		for (String arg : args) {
-			System.out.print(" " + arg);
+			MarioLog.trace(" " + arg);
 		}
-		System.out.println();
+		MarioLog.trace("");
 		
 		if (args.length % 2 != 0) {
-			System.err.print("[MarioOptions] INVALID NUMBER OF ARGUMENTS (" + args.length + ")!");
+			MarioLog.error("[MarioOptions] INVALID NUMBER OF ARGUMENTS (" + args.length + ")!");
 			throw new RuntimeException("Invalid number of arguments (" + args.length + ").");
 		}
 				
@@ -449,7 +449,7 @@ public class MarioOptions {
 			index += 2;			
 		}
 		
-		System.out.println("[MarioOptions] Parameters parsed.");		
+		MarioLog.trace("[MarioOptions] Parameters parsed.");		
 	}
 	
 	// ==============

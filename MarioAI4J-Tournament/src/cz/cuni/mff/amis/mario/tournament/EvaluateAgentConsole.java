@@ -12,8 +12,8 @@ import com.martiansoftware.jsap.JSAPResult;
 import ch.idsia.agents.IAgent;
 import ch.idsia.benchmark.mario.engine.generalization.Enemy;
 import ch.idsia.benchmark.mario.options.FastOpts;
-import ch.idsia.benchmark.mario.options.LevelOptions;
 import ch.idsia.benchmark.mario.options.MarioOptions;
+import ch.idsia.utils.MarioLog;
 import cz.cuni.mff.amis.mario.tournament.run.MarioRunResults;
 
 public class EvaluateAgentConsole {
@@ -80,27 +80,27 @@ public class EvaluateAgentConsole {
 
 	private static void fail(String errorMessage, Throwable e) {
 		header();
-		System.out.println("ERROR: " + errorMessage);
-		System.out.println();
+		MarioLog.info("ERROR: " + errorMessage);
+		MarioLog.info("");
 		if (e != null) {
 			e.printStackTrace();
-			System.out.println("");
+			MarioLog.info("");
 		}		
-        System.out.println("Usage: java -jar marioai4j-tournament.jar ");
-        System.out.println("                " + jsap.getUsage());
-        System.out.println();
-        System.out.println(jsap.getHelp());
-        System.out.println();
+        MarioLog.info("Usage: java -jar marioai4j-tournament.jar ");
+        MarioLog.info("                " + jsap.getUsage());
+        MarioLog.info("");
+        MarioLog.info(jsap.getHelp());
+        MarioLog.info("");
         throw new RuntimeException("FAILURE: " + errorMessage);
 	}
 
 	private static void header() {
 		if (headerOutput) return;
-		System.out.println();
-		System.out.println("=========================");
-		System.out.println("MarioAI4J Agent Evaluator");
-		System.out.println("=========================");
-		System.out.println();
+		MarioLog.info("");
+		MarioLog.info("=========================");
+		MarioLog.info("MarioAI4J Agent Evaluator");
+		MarioLog.info("=========================");
+		MarioLog.info("");
 		headerOutput = true;
 	}
 		
@@ -176,13 +176,13 @@ public class EvaluateAgentConsole {
    	}
 
 	private static void readConfig(String[] args) {
-		System.out.println("Parsing command arguments.");
+		MarioLog.info("Parsing command arguments.");
 		
 		try {
 	    	config = jsap.parse(args);
 	    } catch (Exception e) {
 	    	fail(e.getMessage());
-	    	System.out.println("");
+	    	MarioLog.info("");
 	    	e.printStackTrace();
 	    	throw new RuntimeException("FAILURE!");
 	    }
@@ -217,19 +217,19 @@ public class EvaluateAgentConsole {
 	}
 	
 	private static void sanityChecks() {
-		System.out.println("Sanity checks...");
+		MarioLog.info("Sanity checks...");
 		
 		// UT2004
-		System.out.println("-- seed: " + seed);
-		System.out.println("-- level options: " + levelOptions);
-		System.out.println("-- run count: " + runCount);
-		System.out.println("-- single level repetitions: " + oneLevelRepetitions);
+		MarioLog.info("-- seed: " + seed);
+		MarioLog.info("-- level options: " + levelOptions);
+		MarioLog.info("-- run count: " + runCount);
+		MarioLog.info("-- single level repetitions: " + oneLevelRepetitions);
 		
 		resultDirFile = new File(resultDir);
-		System.out.println("-- result dir: " + resultDir + " --> " + resultDirFile.getAbsolutePath());
+		MarioLog.info("-- result dir: " + resultDir + " --> " + resultDirFile.getAbsolutePath());
 		
 		if (!resultDirFile.exists()) {
-			System.out.println("---- result dir does not exist, creating!");
+			MarioLog.info("---- result dir does not exist, creating!");
 			resultDirFile.mkdirs();
 		}
 		if (!resultDirFile.exists()) {
@@ -238,9 +238,9 @@ public class EvaluateAgentConsole {
 		if (!resultDirFile.isDirectory()) {
 			fail("Result dir is not a directory. Parsed as: " + resultDir + " --> " + resultDirFile.getAbsolutePath());
 		}
-		System.out.println("---- result directory exists, ok");
+		MarioLog.info("---- result directory exists, ok");
 		
-		System.out.println("-- resolving agent FQCN: " + agentFQCN);
+		MarioLog.info("-- resolving agent FQCN: " + agentFQCN);
 		try {
 			agentClass = Class.forName(agentFQCN);
 		} catch (ClassNotFoundException e) {
@@ -249,7 +249,7 @@ public class EvaluateAgentConsole {
 		if (agentClass == null) {
 			fail("Failed to find agent class: " + agentFQCN);
 		}
-		System.out.println("---- agent class found");
+		MarioLog.info("---- agent class found");
 		Constructor agentCtor = null;
 		try {
 			agentCtor = agentClass.getConstructor();
@@ -259,7 +259,7 @@ public class EvaluateAgentConsole {
 		if (agentCtor == null) {
 			fail("Failed to locate parameterless constructor for agent class: " + agentClass.getName());
 		}
-		System.out.println("---- agent parameterless constructor found");
+		MarioLog.info("---- agent parameterless constructor found");
 		try {
 			agent = (IAgent) agentCtor.newInstance();
 		} catch (Exception e) {
@@ -269,12 +269,13 @@ public class EvaluateAgentConsole {
 			fail("Failed to construct the agent instance.");
 		}
 		
-		System.out.println("---- agent instantiated");
+		MarioLog.info("---- agent instantiated");
 		
-	    System.out.println("Sanity checks OK!");
+	    MarioLog.info("Sanity checks OK!");
 	}
 	
 	private static MarioRunResults evaluateAgent() {
+		MarioLog.info("Evaluating...");
 		EvaluateAgent evaluate = new EvaluateAgent(seed, levelOptions, runCount, oneLevelRepetitions, resultDirFile);
 		return evaluate.evaluateAgent(agentId, agent);		
 	}
@@ -347,7 +348,7 @@ public class EvaluateAgentConsole {
 		
 	    evaluate(args);
 	    
-	    System.out.println("---// FINISHED //---");
+	    MarioLog.info("---// FINISHED //---");
 	}
 
 }

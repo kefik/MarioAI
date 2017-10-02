@@ -2,7 +2,9 @@ package mario;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
+import ch.idsia.utils.MarioLog;
 import cz.cuni.mff.amis.mario.tournament.EvaluateAgentConsole;
 import cz.cuni.mff.amis.mario.tournament.run.MarioRunResults;
 
@@ -44,8 +46,8 @@ public class Evaluate {
 	}
 	
 	public static MarioRunResults evaluateLevel(int seed, LevelConfig level) {
-		System.out.println("EVALUATING " + level.name());
-		System.out.println("EVALUATING " + level.getOptions());
+		MarioLog.info("EVALUATING " + level.name());
+		MarioLog.info("EVALUATING " + level.getOptions());
 		
 		MarioRunResults results = EvaluateAgentConsole.evaluate(getEvaluationOptions(seed, level));
 		
@@ -55,11 +57,11 @@ public class Evaluate {
 	}
 	
 	public static void printResults(LevelConfig level, MarioRunResults results) {
-		System.out.println(level.name());
-		System.out.println("  +-- VICTORIES:  " + results.totalVictories + " / " + results.getTotalRuns() + " (" + ((double)results.totalVictories / (double)results.getTotalRuns()) + "%)");
-		System.out.println("  +-- AVG   TIME: " + ((double)results.totalTimeSpent / (double)results.getTotalRuns() ) + "s");
-		System.out.println("  +-- TOTAL TIME: " + results.totalTimeSpent + "s");
-		System.out.println("-------------------");
+		MarioLog.info(level.name());
+		MarioLog.info("  +-- VICTORIES:  " + results.totalVictories + " / " + results.getTotalRuns() + " (" + (100 * (double)results.totalVictories / (double)results.getTotalRuns()) + "%)");
+		MarioLog.info("  +-- AVG   TIME: " + ((double)results.totalTimeSpent / (double)results.getTotalRuns() ) + "s");
+		MarioLog.info("  +-- TOTAL TIME: " + results.totalTimeSpent + "s");
+		MarioLog.info("-------------------");
 	}
 	
 	public static void evaluateLevels(int seed, LevelConfig... configs) {
@@ -70,9 +72,9 @@ public class Evaluate {
 			results.put(level,  r);
 		}
 		
-		System.out.println("===================================");
-		System.out.println("RESULTS (Maps per level: " + MAPS_COUNT + ", Map reptitions: " + MAP_REPETITIONS);
-		System.out.println("===================================");
+		MarioLog.info("===================================");
+		MarioLog.info("RESULTS (Maps per level: " + MAPS_COUNT + ", Map reptitions: " + MAP_REPETITIONS);
+		MarioLog.info("===================================");
 		
 		for (LevelConfig level : configs) { 
 			printResults(level, results.get(level));
@@ -87,9 +89,9 @@ public class Evaluate {
 			results.put(level,  r);
 		}
 		
-		System.out.println("=======");
-		System.out.println("RESULTS");
-		System.out.println("=======");
+		MarioLog.info("=======");
+		MarioLog.info("RESULTS");
+		MarioLog.info("=======");
 		
 		for (LevelConfig level : LevelConfig.values()) { 
 			printResults(level, results.get(level));

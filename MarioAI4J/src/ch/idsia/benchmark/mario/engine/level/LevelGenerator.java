@@ -32,6 +32,7 @@ import ch.idsia.benchmark.mario.options.AIOptions;
 import ch.idsia.benchmark.mario.options.LevelOptions;
 import ch.idsia.tools.RandomCreatureGenerator;
 import ch.idsia.utils.ErrorCodes;
+import ch.idsia.utils.MarioLog;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -104,21 +105,17 @@ public class LevelGenerator {
 		try {
 			if (filePath.equals("")) // This must never happen
 			{
-				System.err
-						.println("[MarioAI ERROR] : level file path is empty; exiting...");
+				MarioLog.error("[MarioAI ERROR] : level file path is empty; exiting...");
 				System.exit(ErrorCodes.FILE_NAME_OR_LOAD_PROBLEM);
 			}
 
 			level = Level.load(new ObjectInputStream(new FileInputStream(
 					filePath)));
 		} catch (IOException e) {
-			System.err
-					.println("[MarioAI EXCEPTION] : failed while trying to loadAgent "
-							+ filePath);
+			MarioLog.error("[MarioAI EXCEPTION] : failed while trying to loadAgent " + filePath);
 			System.exit(ErrorCodes.FILE_NAME_OR_LOAD_PROBLEM);
 		} catch (ClassNotFoundException e) {
-			System.err.println("[MarioAI EXCEPTION] : class not found in "
-					+ filePath);
+			MarioLog.error("[MarioAI EXCEPTION] : class not found in " + filePath);
 			System.exit(ErrorCodes.FILE_NAME_OR_LOAD_PROBLEM);
 		}
 	}
@@ -141,8 +138,7 @@ public class LevelGenerator {
 		length = LevelOptions.getLevelLength();
 		height = LevelOptions.getLevelHeight();
 		if (height < 15) {
-			System.err
-					.println("[Mario AI WARNING] : Level height changed to minimal allowed value 15");
+			MarioLog.warn("[Mario AI WARNING] : Level height changed to minimal allowed value 15");
 			height = 15;
 		}
 		isFlatLevel = LevelOptions.isFlat();
@@ -168,8 +164,7 @@ public class LevelGenerator {
 			odds[i] = totalOdds - odds[i];
 		}
 		if (totalOdds <= 0) {
-			System.err
-					.println("[Mario AI SURPRISE] : UNEXPECTED level will be generated");
+			MarioLog.warn("[Mario AI SURPRISE] : UNEXPECTED level will be generated");
 			totalOdds = 1;
 		}
 

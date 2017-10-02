@@ -29,6 +29,7 @@ package ch.idsia.benchmark.mario.engine.mapedit;
 
 import ch.idsia.benchmark.mario.engine.LevelScene;
 import ch.idsia.benchmark.mario.engine.level.Level;
+import ch.idsia.utils.MarioLog;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -57,7 +58,7 @@ public LevelEditor()
 
     try
     {
-        System.out.println("System.getProperty(\"user.dir()\") = " + System.getProperty("user.dir"));
+        MarioLog.fine("System.getProperty(\"user.dir()\") = " + System.getProperty("user.dir"));
         Level.loadBehaviors(new DataInputStream(LevelScene.class.getResourceAsStream("resources/tiles.dat")));
 //            Level.loadBehaviors(new DataInputStream(new FileInputStream("ch/idsia/mario/resources/tiles.dat")));
     }
@@ -112,7 +113,7 @@ public JPanel buildBitmapPanel()
 
                 try
                 {
-                    System.out.println("bm = " + bm);
+                	MarioLog.trace("bm = " + bm);
                     Level.saveBehaviors(new DataOutputStream(new FileOutputStream("SAVEDtiles.dat")));
                 }
                 catch (Exception e)

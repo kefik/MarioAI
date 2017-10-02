@@ -33,6 +33,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Vector;
 
+import ch.idsia.utils.MarioLog;
+
 /**
  * This class is used to model the statistics
  * of a fix of numbers.  For the statistics
@@ -311,7 +313,7 @@ public void save(String path)
         oos.close();
     } catch (Exception e)
     {
-        System.out.println(e);
+    	MarioLog.error(e.toString());
     }
 }
 
@@ -327,7 +329,7 @@ public static StatisticalSummary load(String path)
         return ss;
     } catch (Exception e)
     {
-        System.out.println(e);
+    	MarioLog.error(e.toString());
         return null;
     }
 }

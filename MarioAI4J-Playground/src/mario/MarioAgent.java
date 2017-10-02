@@ -1,6 +1,7 @@
 package mario;
 
 import java.awt.Graphics;
+import java.util.logging.Level;
 
 import ch.idsia.agents.AgentOptions;
 import ch.idsia.agents.IAgent;
@@ -16,6 +17,7 @@ import ch.idsia.benchmark.mario.engine.input.MarioControl;
 import ch.idsia.benchmark.mario.engine.input.MarioInput;
 import ch.idsia.benchmark.mario.environments.IEnvironment;
 import ch.idsia.tools.EvaluationInfo;
+import ch.idsia.utils.MarioLog;
 
 /**
  * Code your custom agent here!
@@ -68,6 +70,9 @@ public class MarioAgent extends MarioHijackAIBase implements IAgent {
 	}
 	
 	public static void main(String[] args) {
+		// YOU MAY RISE LEVEL OF LOGGING, even though there are probably no inforamation you need to know...
+		//MarioLog.setLogLevel(Level.ALL);
+		
 		// UNCOMMENT THE LINE OF THE LEVEL YOU WISH TO RUN
 		
 		LevelConfig level = LevelConfig.LEVEL_0_FLAT;
@@ -92,19 +97,19 @@ public class MarioAgent extends MarioHijackAIBase implements IAgent {
 		// CHECK RESULT
 		switch (info.getResult()) {
 		case LEVEL_TIMEDOUT:
-			System.out.println("LEVEL TIMED OUT!");
+			MarioLog.warn("LEVEL TIMED OUT!");
 			break;
 			
 		case MARIO_DIED:
-			System.out.println("MARIO KILLED");
+			MarioLog.warn("MARIO KILLED");
 			break;
 			
 		case SIMULATION_RUNNING:
-			System.out.println("SIMULATION STILL RUNNING?");
+			MarioLog.error("SIMULATION STILL RUNNING?");
 			throw new RuntimeException("Invalid evaluation info state, simulation should not be running.");
 			
 		case VICTORY:
-			System.out.println("VICTORY!!!");
+			MarioLog.warn("VICTORY!!!");
 			break;
 		}
 	}

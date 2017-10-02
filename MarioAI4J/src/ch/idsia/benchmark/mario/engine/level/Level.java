@@ -29,6 +29,7 @@ package ch.idsia.benchmark.mario.engine.level;
 
 import ch.idsia.benchmark.mario.options.AIOptions;
 import ch.idsia.benchmark.mario.options.LevelOptions;
+import ch.idsia.utils.MarioLog;
 
 import java.io.*;
 
@@ -154,8 +155,7 @@ public class Level implements Serializable {
 
 			marioTrace = new int[length][height + 1];
 		} catch (OutOfMemoryError e) {
-			System.err
-					.println("Java: MarioAI MEMORY EXCEPTION: OutOfMemory exception. Exiting...");
+			MarioLog.error("Java: MarioAI MEMORY EXCEPTION: OutOfMemory exception. Exiting...");
 			e.printStackTrace();
 			System.exit(-3);
 		}

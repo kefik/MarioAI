@@ -27,6 +27,8 @@
 
 package ch.idsia.benchmark.mario.engine.generalization;
 
+import ch.idsia.utils.MarioLog;
+
 /**
  * Created by IntelliJ IDEA. 
  * User: Sergey Karakovskiy, sergey@idsia.ch 
@@ -184,7 +186,7 @@ public class TileGeneralizer {
 			case (-1):
 				return Tile.PRINCESS;
 			}
-			System.err.println("GeneralizerLevelScene.generalize(el=" + el + ", zLevel=" + zLevel + "): Unknown value el = " + el + ". Possible Level tiles bug!");
+			MarioLog.error("GeneralizerLevelScene.generalize(el=" + el + ", zLevel=" + zLevel + "): Unknown value el = " + el + ". Possible Level tiles bug!");
 			return Tile.SOMETHING; // everything else is "something", so it is 1
 		case (2):
 			switch (el) {
@@ -220,7 +222,7 @@ public class TileGeneralizer {
 			}
 			return Tile.SOMETHING; // everything else is "something", so it is 1
 		}
-		System.err.println("Unkown ZLevel Z" + zLevel);
+		MarioLog.error("Unkown ZLevel Z" + zLevel);
 		
 		throw new RuntimeException("Invalid ZLevel[" + zLevel + "], a tile cannot be interpreted. Have you correctly set up your zLevel for the scene in your agent?");
 	}

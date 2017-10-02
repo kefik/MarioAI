@@ -28,6 +28,7 @@
 package ch.idsia.benchmark.mario.engine.generalization;
 
 import ch.idsia.benchmark.mario.engine.sprites.Sprite;
+import ch.idsia.utils.MarioLog;
 
 /**
  * Created by IntelliJ IDEA. 
@@ -88,7 +89,7 @@ public class EntityGeneralizer {
 			case Sprite.KIND_PRINCESS:
 				return EntityType.PRINCESS;
 			}
-			System.err.println("EntityGeneralizer.generalize(el=" + el + ", zLevel=" + zLevel + "): Failed to interpret el = " + el + "! Returning SOMETHING!");
+			MarioLog.error("EntityGeneralizer.generalize(el=" + el + ", zLevel=" + zLevel + "): Failed to interpret el = " + el + "! Returning SOMETHING!");
 			return EntityType.SOMETHING;
 		case (1):
 			switch (el) {
@@ -120,7 +121,7 @@ public class EntityGeneralizer {
 			case Sprite.KIND_PRINCESS:
 				return EntityType.PRINCESS;
 			}
-			System.err.println("EntityGeneralizer.generalize(el=" + el + ", zLevel=" + zLevel + "): Failed to interpret el = " + el + "! Returning SOMETHING!");
+			MarioLog.error("EntityGeneralizer.generalize(el=" + el + ", zLevel=" + zLevel + "): Failed to interpret el = " + el + "! Returning SOMETHING!");
 			return EntityType.SOMETHING;
 		case (2):
 			switch (el) {
@@ -149,7 +150,7 @@ public class EntityGeneralizer {
 				return EntityType.DANGER;
 			
 			}
-			System.err.println("EntityGeneralizer.generalize(el=" + el + ", zLevel=" + zLevel + "): Failed to interpret el = " + el + "! Returning SOMETHING!");
+			MarioLog.error("EntityGeneralizer.generalize(el=" + el + ", zLevel=" + zLevel + "): Failed to interpret el = " + el + "! Returning SOMETHING!");
 			return EntityType.SOMETHING;
 		}
 		

@@ -56,6 +56,7 @@ import ch.idsia.benchmark.mario.options.SystemOptions;
 import ch.idsia.benchmark.mario.options.VisualizationOptions;
 import ch.idsia.tasks.SystemOfValues;
 import ch.idsia.tools.EvaluationInfo;
+import ch.idsia.utils.MarioLog;
 
 /**
  * Created by IntelliJ IDEA. 
@@ -116,13 +117,13 @@ public final class MarioEnvironment implements IEnvironment {
 	}
 
 	private MarioEnvironment() {
-		System.out.println(SimulatorOptions.getBenchmarkName());
+		MarioLog.fine(SimulatorOptions.getBenchmarkName());
 		levelScene = new LevelScene();
 	}
 
 	public void reset(IAgent agent) {
 		if (agent == null) {
-			System.err.println("MarioEnvironment.reset(agent): agent is NULL! Invalid.");
+			MarioLog.error("MarioEnvironment.reset(agent): agent is NULL! Invalid.");
 			throw new RuntimeException("Agent is null, environment cannot be reset.");
 		}
 		this.agent = agent;
@@ -132,7 +133,7 @@ public final class MarioEnvironment implements IEnvironment {
 	@SuppressWarnings("unchecked")
 	public void reset() {
 		if (agent == null) {
-			System.err.println("MarioEnvironment.reset(): no agent bound to the environment, cannot reset. Use MarioEnvironment.reset(agent) first!");
+			MarioLog.error("MarioEnvironment.reset(): no agent bound to the environment, cannot reset. Use MarioEnvironment.reset(agent) first!");
 			throw new RuntimeException("Agent is null, environment cannot be reset, use MarioEnvironment.reset(agent) first!");
 		}
 		
@@ -203,11 +204,9 @@ public final class MarioEnvironment implements IEnvironment {
 
 				recorder.createFile("actions.act");
 			} catch (FileNotFoundException e) {
-				System.err
-						.println("[Mario AI EXCEPTION] : Some of the recording components were not created. Recording failed");
+				MarioLog.error("[Mario AI EXCEPTION] : Some of the recording components were not created. Recording failed");
 			} catch (IOException e) {
-				System.err
-						.println("[Mario AI EXCEPTION] : Some of the recording components were not created. Recording failed");
+				MarioLog.error("[Mario AI EXCEPTION] : Some of the recording components were not created. Recording failed");
 				e.printStackTrace();
 			}
 		}
@@ -530,7 +529,7 @@ public final class MarioEnvironment implements IEnvironment {
 			try {
 				recorder.saveLastRun(filename);
 			} catch (IOException ex) {
-				System.err.println("[Mario AI EXCEPTION] : Recording could not be saved.");
+				MarioLog.error("[Mario AI EXCEPTION] : Recording could not be saved.");
 				ex.printStackTrace();
 			}
 		}

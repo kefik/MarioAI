@@ -36,6 +36,7 @@ import ch.idsia.benchmark.mario.environments.MarioEnvironment;
 import ch.idsia.benchmark.mario.options.FastOpts;
 import ch.idsia.benchmark.mario.options.MarioOptions;
 import ch.idsia.tools.EvaluationInfo;
+import ch.idsia.utils.MarioLog;
 
 /**
  * Created by IntelliJ IDEA.
@@ -78,22 +79,22 @@ public class MarioSimulator {
 	}
 	
 	public synchronized EvaluationInfo run(IAgent agent) {
-		System.out.println("[MarioSimulator] run(" + (agent == null ? "NULL" : agent.getClass().getName()) + ")");
+		MarioLog.fine("[MarioSimulator] run(" + (agent == null ? "NULL" : agent.getClass().getName()) + ")");
 		if (agent == null) {
-			System.err.println("[MarioSimulator] agent is NULL! Aborting!");
+			MarioLog.error("[MarioSimulator] agent is NULL! Aborting!");
 			throw new RuntimeException("Agent is NULL! Please specify correct agent to run within the simulator.");
 		}
 		
-		System.out.println("[MarioSimulator] Initializing MarioOptions..");
+		MarioLog.trace("[MarioSimulator] Initializing MarioOptions..");
 		
 		MarioOptions.reset(options);
 		
-		System.out.println("[MarioSimulator] Initializing the environment and the agent...");
+		MarioLog.trace("[MarioSimulator] Initializing the environment and the agent...");
 		
 		IEnvironment environment = MarioEnvironment.getInstance();
 		environment.reset(agent);
 				
-		System.out.println("[MarioSimulator] SIMULATION RUNNING!");
+		MarioLog.trace("[MarioSimulator] SIMULATION RUNNING!");
 		
 		while (!environment.isLevelFinished()) {
 			// UPDATE THE ENVIRONMENT
@@ -108,14 +109,14 @@ public class MarioSimulator {
 			agent.receiveReward(environment.getIntermediateReward());
 		}
 		
-		System.out.println("[MarioSimulator] SIMULATION ENDED!");
+		MarioLog.trace("[MarioSimulator] SIMULATION ENDED!");
 		
 		EvaluationInfo result = environment.getEvaluationInfo();
 		
-		System.out.println("[MarioSimulator] RESULT:");
-		System.out.println(result.toString());
+		MarioLog.fine("[MarioSimulator] RESULT:");
+		MarioLog.fine(result.toString());
 		
-		System.out.println("[MarioSimulator] Simulator terminated.");
+		MarioLog.trace("[MarioSimulator] Simulator terminated.");
 		
 		return result.clone(); // result is shared instance ... we must clone it to maintain sanity 		
 	}

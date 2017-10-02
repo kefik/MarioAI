@@ -31,6 +31,7 @@ import ch.idsia.benchmark.mario.engine.SimulatorOptions;
 import ch.idsia.benchmark.mario.engine.VisualizationComponent;
 import ch.idsia.benchmark.mario.options.AIOptions;
 import ch.idsia.benchmark.mario.options.VisualizationOptions;
+import ch.idsia.utils.MarioLog;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -65,7 +66,7 @@ public class GameViewer extends JFrame {
 		int fps = FPS; // GlobalOptions.FPS;
 		delay = (fps > 0) ? (fps >= SimulatorOptions.MaxFPS) ? 0 : (1000 / fps)
 				: 100;
-		System.out.println("Game Viewer animator delay: " + delay);
+		MarioLog.trace("Game Viewer animator delay: " + delay);
 	}
 
 	GameViewerView gameViewerViewPanel = new GameViewerView();
@@ -236,7 +237,7 @@ public class GameViewer extends JFrame {
 				LabelConsole.setText("TextFieldConsole sent message:");
 				//toolsConfigurator.setConsoleText(Console.getText());
 			} else if (ob == btnUpdate) {
-				System.out.println("ob = " + ob);
+				MarioLog.trace("ob = " + ob);
 				gameViewerViewPanel.repaint();
 			}
 			// else

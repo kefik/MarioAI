@@ -3,9 +3,11 @@ package cz.cuni.mff.amis.mario.tournament;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
+import java.util.logging.Level;
 
 import ch.idsia.agents.IAgent;
 import ch.idsia.tools.EvaluationInfo;
+import ch.idsia.utils.MarioLog;
 import cz.cuni.mff.amis.mario.tournament.run.MarioRun;
 import cz.cuni.mff.amis.mario.tournament.run.MarioRunResult;
 import cz.cuni.mff.amis.mario.tournament.run.MarioRunResults;
@@ -33,7 +35,7 @@ public class EvaluateAgent {
 	}
 	
 	private void log(String agentId, String msg) {
-		System.out.println("[" + agentId + "] " + msg);
+		MarioLog.info("[" + agentId + "] " + msg);
 	}
 	
 	public MarioRunResults evaluateAgent(String agentId, IAgent agent) {
@@ -74,7 +76,7 @@ public class EvaluateAgent {
 	
 	private void outputAgentResults(String agentId, MarioRunResults results) {
 		File file = new File(resultDirFile, agentId + ".runs.csv");
-		System.out.println("[" + agentId + "] Outputing runs into: " + file.getAbsolutePath());
+		MarioLog.info("[" + agentId + "] Outputing runs into: " + file.getAbsolutePath());
 		
 		PrintWriter writer = null;
 		try {
@@ -107,7 +109,7 @@ public class EvaluateAgent {
 	
 	private void outputAgentAvgs(String agentId, MarioRunResults results) {
 		File file = new File(resultDirFile, agentId + ".runs.avgs.csv");
-		System.out.println("[" + agentId + "] Outputing runs avgs into: " + file.getAbsolutePath());
+		MarioLog.info("[" + agentId + "] Outputing runs avgs into: " + file.getAbsolutePath());
 		
 		PrintWriter writer = null;
 		try {
@@ -130,7 +132,7 @@ public class EvaluateAgent {
 	
 	private void outputAgentGlobalAvgs(String agentId, MarioRunResults results) {
 		File file = new File(resultDirFile, "results.csv");		
-		System.out.println("[" + agentId + "] Outputing total avgs into: " + file.getAbsolutePath());
+		MarioLog.info("[" + agentId + "] Outputing total avgs into: " + file.getAbsolutePath());
 		
 		PrintWriter writer = null;
 		try {
