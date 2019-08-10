@@ -24,7 +24,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="MarioAI4J-Agents" />
     <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
   </component>
 </module>
