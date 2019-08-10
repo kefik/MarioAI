@@ -39,6 +39,7 @@ import java.util.Random;
 import ch.idsia.benchmark.mario.engine.input.MarioInput;
 import ch.idsia.benchmark.mario.engine.level.Level;
 import ch.idsia.benchmark.mario.engine.level.LevelGenerator;
+import ch.idsia.benchmark.mario.engine.level.LevelGeneratorImpl;
 import ch.idsia.benchmark.mario.engine.level.SpriteTemplate;
 import ch.idsia.benchmark.mario.engine.sprites.BulletBill;
 import ch.idsia.benchmark.mario.engine.sprites.CoinAnim;
@@ -68,6 +69,7 @@ public final class LevelScene implements SpriteContext {
 	final private List<Sprite> spritesToAdd = new ArrayList<Sprite>();
 	final private List<Sprite> spritesToRemove = new ArrayList<Sprite>();
 
+	public LevelGenerator levelGenerator = new LevelGeneratorImpl();
 	public Level level;
 	public Mario mario;
 	public float xCam, yCam, xCamO, yCamO;
@@ -513,7 +515,7 @@ public final class LevelScene implements SpriteContext {
 				e.printStackTrace();
 			}
 		} else {
-			level = LevelGenerator.createLevel();
+			level = this.levelGenerator.createLevel();
 		}
 
 		if (SystemOptions.isSaveLevelFileName()) {

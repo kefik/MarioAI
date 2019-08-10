@@ -60,7 +60,7 @@ private Level createLevel(long seed)
 
     switch (type)
     {
-        case LevelGenerator.TYPE_OVERGROUND:
+        case LevelGeneratorImpl.TYPE_OVERGROUND:
         {
 
             int range = distant ? 4 : 6;
@@ -110,7 +110,7 @@ private Level createLevel(long seed)
             }
             break;
         }
-        case LevelGenerator.TYPE_UNDERGROUND:
+        case LevelGeneratorImpl.TYPE_UNDERGROUND:
         {
             if (distant)
             {
@@ -154,7 +154,7 @@ private Level createLevel(long seed)
             }
             break;
         }
-        case LevelGenerator.TYPE_CASTLE:
+        case LevelGeneratorImpl.TYPE_CASTLE:
         {
             if (distant)
             {
