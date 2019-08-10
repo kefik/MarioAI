@@ -5,3 +5,5 @@
 bin
 /MarioAI4J-Playground/results
 /MarioAI4J-Tournament/results
+.idea/
+lib/
