@@ -1,9 +1,9 @@
 package cz.cuni.mff.aspect.doubleev.agent
 
-import cz.cuni.mff.aspect.doubleev.game.MarioMap
+import cz.cuni.mff.aspect.doubleev.generator.EvolutionaryGenerator
 
 interface EvolutionaryAgent {
 
-    fun evolve(map: MarioMap)
+    fun evolve(levelGenerator: EvolutionaryGenerator)
 
 }
