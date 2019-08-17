@@ -3,10 +3,10 @@ package cz.cuni.mff.aspect.mario
 import ch.idsia.benchmark.mario.engine.level.Level
 import ch.idsia.benchmark.mario.engine.level.SpriteTemplate
 import ch.idsia.benchmark.mario.engine.sprites.Sprite
-import cz.cuni.mff.aspect.doubleev.game.Enemies
-import cz.cuni.mff.aspect.doubleev.game.LevelTypes
-import cz.cuni.mff.aspect.doubleev.game.Tiles
-import cz.cuni.mff.aspect.doubleev.generator.EvolutionaryGenerator
+import cz.cuni.mff.aspect.coevolution.game.Enemies
+import cz.cuni.mff.aspect.coevolution.game.LevelTypes
+import cz.cuni.mff.aspect.coevolution.game.Tiles
+import cz.cuni.mff.aspect.coevolution.generator.EvolutionaryGenerator
 
 class LevelGenerator(private val evoGenerator: EvolutionaryGenerator) : ch.idsia.benchmark.mario.engine.level.LevelGenerator {
 

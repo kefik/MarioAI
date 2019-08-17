@@ -1,7 +1,7 @@
-package cz.cuni.mff.aspect.doubleev
+package cz.cuni.mff.aspect.coevolution
 
-import cz.cuni.mff.aspect.doubleev.agent.EvolutionaryAgent
-import cz.cuni.mff.aspect.doubleev.generator.EvolutionaryGenerator
+import cz.cuni.mff.aspect.coevolution.agent.EvolutionaryAgent
+import cz.cuni.mff.aspect.coevolution.generator.EvolutionaryGenerator
 
 class MarioEvolver {
 

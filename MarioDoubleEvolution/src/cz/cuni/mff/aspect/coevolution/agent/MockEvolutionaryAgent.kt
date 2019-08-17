@@ -1,6 +1,6 @@
-package cz.cuni.mff.aspect.doubleev.agent
+package cz.cuni.mff.aspect.coevolution.agent
 
-import cz.cuni.mff.aspect.doubleev.generator.EvolutionaryGenerator
+import cz.cuni.mff.aspect.coevolution.generator.EvolutionaryGenerator
 
 class MockEvolutionaryAgent : EvolutionaryAgent {
 

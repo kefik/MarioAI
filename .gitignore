@@ -7,3 +7,8 @@ bin
 /MarioAI4J-Tournament/results
 .idea/
 lib/
+
+*.gradle/
+*gradle/
+*build/
+*gradlew*

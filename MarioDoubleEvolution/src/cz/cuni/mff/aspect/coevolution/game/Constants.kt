@@ -1,4 +1,4 @@
-package cz.cuni.mff.aspect.doubleev.game
+package cz.cuni.mff.aspect.coevolution.game
 
 import ch.idsia.benchmark.mario.engine.sprites.Sprite
 

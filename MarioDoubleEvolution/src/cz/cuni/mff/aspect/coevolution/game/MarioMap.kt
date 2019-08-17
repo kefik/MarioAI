@@ -1,4 +1,4 @@
-package cz.cuni.mff.aspect.doubleev.game
+package cz.cuni.mff.aspect.coevolution.game
 
 interface MarioMap {
 

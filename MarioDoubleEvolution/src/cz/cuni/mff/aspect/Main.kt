@@ -1,12 +1,10 @@
 package cz.cuni.mff.aspect
 
-import cz.cuni.mff.aspect.doubleev.MarioEvolver
-import cz.cuni.mff.aspect.doubleev.agent.EvolutionaryAgent
-import cz.cuni.mff.aspect.doubleev.agent.MockEvolutionaryAgent
-import cz.cuni.mff.aspect.doubleev.generator.EvolutionaryGenerator
-import cz.cuni.mff.aspect.doubleev.generator.MockEvolutionaryGenerator
-import cz.cuni.mff.aspect.mario.LevelGenerator
-import cz.cuni.mff.aspect.mario.MarioAgent
+import cz.cuni.mff.aspect.coevolution.MarioEvolver
+import cz.cuni.mff.aspect.coevolution.agent.EvolutionaryAgent
+import cz.cuni.mff.aspect.coevolution.agent.MockEvolutionaryAgent
+import cz.cuni.mff.aspect.coevolution.generator.EvolutionaryGenerator
+import cz.cuni.mff.aspect.coevolution.generator.MockEvolutionaryGenerator
 import cz.cuni.mff.aspect.mario.MarioSimulator
 import kotlin.system.exitProcess
 
@@ -18,9 +16,7 @@ fun main() {
     evolution.evolve(evoAgent, evoGenerator)
 
     val marioSimulator = MarioSimulator()
-    val marioAgent = MarioAgent(evoAgent)
-    val marioLevelGenerator = LevelGenerator(evoGenerator)
-    marioSimulator.playMario(marioAgent, marioLevelGenerator)
+    marioSimulator.playMario(evoAgent, evoGenerator)
 
     exitProcess(0)
 }

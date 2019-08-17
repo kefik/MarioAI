@@ -4,7 +4,7 @@ import ch.idsia.agents.AgentOptions
 import ch.idsia.agents.IAgent
 import ch.idsia.agents.controllers.MarioHijackAIBase
 import ch.idsia.benchmark.mario.engine.input.MarioInput
-import cz.cuni.mff.aspect.doubleev.agent.EvolutionaryAgent
+import cz.cuni.mff.aspect.coevolution.agent.EvolutionaryAgent
 
 class MarioAgent(private val _evolvedAgent: EvolutionaryAgent) : MarioHijackAIBase(), IAgent {
 
