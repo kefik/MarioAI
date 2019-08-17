@@ -1,9 +1,16 @@
 plugins {
     `java-library`
+    kotlin("jvm") version "1.3.41"
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
 }
 
 dependencies {
-    implementation(project(":mario-simulator"))
+    implementation(project(":MarioAI4J"))
+    implementation(kotlin("stdlib"))
 }
 
 sourceSets {
@@ -16,7 +23,7 @@ sourceSets {
 
 val jar by tasks.getting(Jar::class) {
     manifest {
-        attributes["Main-Class"] = "ch.cuni.mff.aspect.Main"
+        attributes["Main-Class"] = "cz.cuni.mff.aspect.MainKt"
     }
 
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })

@@ -1,2 +1,2 @@
 rootProject.name = "mario"
-include("mario-simulator", "mario-coevolution")
+include("MarioAI4J", "MarioDoubleEvolution")
