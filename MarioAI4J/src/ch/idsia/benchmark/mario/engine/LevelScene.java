@@ -319,7 +319,7 @@ public final class LevelScene implements SpriteContext {
 
 		for (Fireball fireball : fireballsToCheck)
 			for (Sprite sprite : sprites)
-				if (sprite != null && sprite != fireball && fireball != null && !fireball.dead)
+				if (sprite != fireball && !fireball.dead)
 					if (sprite.fireballCollideCheck(fireball))
 						fireball.die();
 		fireballsToCheck.clear();

@@ -268,7 +268,7 @@ public final class MarioEnvironment implements IEnvironment {
 				entityField[w][h].clear();
 		entities.clear();
 		for (Sprite sprite : levelScene.sprites) {
-			if (sprite == null || sprite.isDead() || sprite.kind == levelScene.mario.kind)
+			if (sprite.isDead() || sprite.kind == levelScene.mario.kind)
 				continue;
 			// IS SPRITE WITHIN RECEPTIVE FIELD?
 			if (sprite.mapX >= 0
