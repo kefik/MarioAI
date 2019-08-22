@@ -78,8 +78,8 @@ class SimpleNeuroEvolutionaryAgent : EvolutionaryAgent {
     }
 
     companion object {
-        private const val POPULATION_SIZE = 100
-        private const val GENERATIONS_COUNT: Long = 1000
+        private const val POPULATION_SIZE = 50
+        private const val GENERATIONS_COUNT: Long = 20
     }
 
 }

@@ -28,7 +28,6 @@
 package ch.idsia.benchmark.mario.engine.sprites;
 
 import ch.idsia.benchmark.mario.engine.SimulatorOptions;
-import ch.idsia.benchmark.mario.engine.VisualizationComponent;
 import ch.idsia.benchmark.mario.engine.level.SpriteTemplate;
 
 import java.awt.*;
@@ -60,7 +59,7 @@ public class Sprite {
 	
 	public static final int KIND_UNDEF = -42;
 
-	public static SpriteContext spriteContext;
+	public final SpriteContext spriteContext;
 	public byte kind = KIND_UNDEF;
 
 	protected static float GROUND_INERTIA = 0.89f;
@@ -103,7 +102,8 @@ public class Sprite {
 
 	public SpriteTemplate spriteTemplate;
 
-	public Sprite() {
+	public Sprite(SpriteContext spriteContext) {
+		this.spriteContext = spriteContext;
 	}
 
 	public static void setCreaturesGravity(final float creaturesGravity) {

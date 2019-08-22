@@ -33,13 +33,14 @@ public class Particle extends Sprite
 {
 public int life;
 
-public Particle(int x, int y, float xa, float ya)
+public Particle(SpriteContext spriteContext, int x, int y, float xa, float ya)
 {
-    this(x, y, xa, ya, (int) (Math.random() * 2), 0);
+    this(spriteContext, x, y, xa, ya, (int) (Math.random() * 2), 0);
 }
 
-public Particle(int x, int y, float xa, float ya, int xPic, int yPic)
+public Particle(SpriteContext spriteContext, int x, int y, float xa, float ya, int xPic, int yPic)
 {
+    super(spriteContext);
     kind = KIND_PARTICLE;
     sheet = Art.particles;
     this.x = x;
@@ -58,7 +59,7 @@ public Particle(int x, int y, float xa, float ya, int xPic, int yPic)
 
 public void move()
 {
-    if (life-- < 0) Sprite.spriteContext.removeSprite(this);
+    if (life-- < 0) this.spriteContext.removeSprite(this);
     x += xa;
     y += ya;
     ya *= 0.95f;

@@ -53,6 +53,7 @@ private int life;
 
 public GreenMushroom(LevelScene world, int x, int y)
 {
+    super(world);
     kind = KIND_GREEN_MUSHROOM;
     sheet = Art.items;
 

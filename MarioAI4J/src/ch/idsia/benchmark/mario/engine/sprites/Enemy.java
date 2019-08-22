@@ -71,6 +71,7 @@ public boolean noFireballDeath;
 
 public Enemy(LevelScene levelScene, int x, int y, int dir, int type, boolean winged, int mapX, int mapY)
 {
+    super(levelScene);
     kind = (byte) type;
     sheet = Art.enemies;
     this.winged = winged;
@@ -181,7 +182,7 @@ public void move()
             deadTime = 1;
             for (int i = 0; i < 8; i++)
             {
-                levelScene.addSprite(new Sparkle((int) (x + Math.random() * 16 - 8) + 4, (int) (y - Math.random() * 8) + 4, (float) (Math.random() * 2 - 1), (float) Math.random() * -1, 0, 1, 5));
+                levelScene.addSprite(new Sparkle(levelScene, (int) (x + Math.random() * 16 - 8) + 4, (int) (y - Math.random() * 8) + 4, (float) (Math.random() * 2 - 1), (float) Math.random() * -1, 0, 1, 5));
             }
             spriteContext.removeSprite(this);
         }

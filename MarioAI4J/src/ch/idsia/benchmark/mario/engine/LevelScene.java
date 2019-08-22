@@ -177,9 +177,7 @@ public final class LevelScene implements SpriteContext {
 	List<Fireball> fireballsToCheck = new ArrayList<Fireball>();
 
 	public void checkFireballCollide(Fireball fireball) {
-		synchronized (lock) {
-			fireballsToCheck.add(fireball);
-		}
+		fireballsToCheck.add(fireball);
 	}
 
 	public void tick() {
@@ -269,7 +267,7 @@ public final class LevelScene implements SpriteContext {
 							if ((tickCount - x * 2) % 100 == 0) {
 								// xCannon = x;
 								for (int i = 0; i < 8; i++) {
-									addSprite(new Sparkle(x * cellSize + 8, y
+									addSprite(new Sparkle(this, x * cellSize + 8, y
 											* cellSize
 											+ (int) (Math.random() * cellSize),
 											(float) Math.random() * dir, 0, 0,
@@ -302,33 +300,29 @@ public final class LevelScene implements SpriteContext {
 		for (Sprite sprite : sprites)
 			sprite.collideCheck();
 
-		synchronized (lock) {
-			for (Shell shell : shellsToCheck) {
-				for (Sprite sprite : sprites) {
-					if (sprite != shell && !shell.dead) {
-						if (sprite.shellCollideCheck(shell)) {
-							if (mario.carried == shell && !shell.dead) {
-								mario.carried = null;
-								mario.setRacoon(false);
-								// System.out.println("sprite = " + sprite);
-								shell.die();
-								++this.killedCreaturesTotal;
-							}
+		for (Shell shell : shellsToCheck) {
+			for (Sprite sprite : sprites) {
+				if (sprite != shell && !shell.dead) {
+					if (sprite.shellCollideCheck(shell)) {
+						if (mario.carried == shell && !shell.dead) {
+							mario.carried = null;
+							mario.setRacoon(false);
+							// System.out.println("sprite = " + sprite);
+							shell.die();
+							++this.killedCreaturesTotal;
 						}
 					}
 				}
 			}
-			shellsToCheck.clear();
 		}
+		shellsToCheck.clear();
 
-		synchronized (lock) {
-			for (Fireball fireball : fireballsToCheck)
-				for (Sprite sprite : sprites)
-					if (sprite != null && sprite != fireball && fireball != null && !fireball.dead)
-						if (sprite.fireballCollideCheck(fireball))
-							fireball.die();
-			fireballsToCheck.clear();
-		}
+		for (Fireball fireball : fireballsToCheck)
+			for (Sprite sprite : sprites)
+				if (sprite != null && sprite != fireball && fireball != null && !fireball.dead)
+					if (sprite.fireballCollideCheck(fireball))
+						fireball.die();
+		fireballsToCheck.clear();
 
 		sprites.addAll(0, spritesToAdd);
 		sprites.removeAll(spritesToRemove);
@@ -352,7 +346,7 @@ public final class LevelScene implements SpriteContext {
 
 		if ((Level.TILE_BEHAVIORS[block & 0xff] & Level.BIT_BUMPABLE) > 0) {
 			if (block == 1)
-				Mario.gainHiddenBlock();
+				this.mario.gainHiddenBlock();
 			bumpInto(x, y - 1);
 			byte blockData = level.getBlockData(x, y);
 			if (blockData < 0)
@@ -380,8 +374,8 @@ public final class LevelScene implements SpriteContext {
 					}
 				}
 			} else {
-				Mario.gainCoin();
-				addSprite(new CoinAnim(x, y));
+				this.mario.gainCoin();
+				addSprite(new CoinAnim(this, x, y));
 			}
 		}
 
@@ -391,7 +385,7 @@ public final class LevelScene implements SpriteContext {
 				level.setBlock(x, y, (byte) 0);
 				for (int xx = 0; xx < 2; xx++)
 					for (int yy = 0; yy < 2; yy++)
-						addSprite(new Particle(x * cellSize + xx * 8 + 4, y
+						addSprite(new Particle(this, x * cellSize + xx * 8 + 4, y
 								* cellSize + yy * 8 + 4, (xx * 2 - 1) * 4,
 								(yy * 2 - 1) * 4 - 8));
 			} else {
@@ -403,15 +397,13 @@ public final class LevelScene implements SpriteContext {
 	public void bumpInto(int x, int y) {
 		byte block = level.getBlock(x, y);
 		if (((Level.TILE_BEHAVIORS[block & 0xff]) & Level.BIT_PICKUPABLE) > 0) {
-			Mario.gainCoin();
+			this.mario.gainCoin();
 			level.setBlock(x, y, (byte) 0);
-			addSprite(new CoinAnim(x, y + 1));
+			addSprite(new CoinAnim(this, x, y + 1));
 		}
 
-		synchronized (lock) {
-			for (Sprite sprite : sprites) {
-				sprite.bumpCheck(x, y);
-			}
+		for (Sprite sprite : sprites) {
+			sprite.bumpCheck(x, y);
 		}
 	}
 
@@ -545,7 +537,6 @@ public final class LevelScene implements SpriteContext {
 		this.levelType = level.type;
 		this.levelDifficulty = level.difficulty;
 
-		Sprite.spriteContext = this;
 		sprites.clear();
 		this.width = SimulatorOptions.VISUAL_COMPONENT_WIDTH;
 		this.height = SimulatorOptions.VISUAL_COMPONENT_HEIGHT;

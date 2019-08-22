@@ -44,6 +44,7 @@ private int life;
 
 public FireFlower(LevelScene world, int x, int y)
 {
+    super(world);
     kind = KIND_FIRE_FLOWER;
     sheet = Art.items;
 

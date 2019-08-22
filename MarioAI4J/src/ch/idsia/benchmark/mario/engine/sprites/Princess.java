@@ -37,6 +37,7 @@ private int runTime = 0;
 
 public Princess(LevelScene world, int x, int y, int mapX, int mapY)
 {
+    super(world);
     kind = KIND_PRINCESS;
     sheet = Art.princess;
 

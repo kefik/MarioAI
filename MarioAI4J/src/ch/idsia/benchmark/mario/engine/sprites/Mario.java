@@ -34,7 +34,6 @@ import ch.idsia.benchmark.mario.engine.input.MarioInput;
 import ch.idsia.benchmark.mario.engine.input.MarioKey;
 import ch.idsia.benchmark.mario.engine.level.Level;
 import ch.idsia.benchmark.mario.environments.MarioEnvironment;
-import ch.idsia.benchmark.mario.options.AIOptions;
 import ch.idsia.benchmark.mario.options.SimulationOptions;
 import ch.idsia.benchmark.mario.options.SystemOptions;
 
@@ -140,7 +139,7 @@ public final class Mario extends Sprite {
 	int width = 4;
 	int height = 24;
 
-	private static LevelScene levelScene;
+	private LevelScene levelScene;
 	public int facing;
 
 	public int xDeathPos, yDeathPos;
@@ -154,6 +153,7 @@ public final class Mario extends Sprite {
 	// private static Mario instance;
 
 	public Mario(LevelScene levelScene) {
+		super(levelScene);
 		kind = KIND_MARIO;
 		// Mario.instance = this;
 		this.levelScene = levelScene;
@@ -424,7 +424,7 @@ public final class Mario extends Sprite {
 
 		if (sliding) {
 			for (int i = 0; i < 1; i++) {
-				levelScene.addSprite(new Sparkle(
+				levelScene.addSprite(new Sparkle(levelScene,
 						(int) (x + Math.random() * 4 - 2) + facing * 8,
 						(int) (y + Math.random() * 4) - 24, (float) (Math
 								.random() * 2 - 1), (float) Math.random() * 1,
@@ -554,7 +554,7 @@ public final class Mario extends Sprite {
 
 			if (xa > 3 || xa < -3) {
 				for (int i = 0; i < 3; i++) {
-					levelScene.addSprite(new Sparkle((int) (x + Math.random()
+					levelScene.addSprite(new Sparkle(levelScene, (int) (x + Math.random()
 							* 8 - 4), (int) (y + Math.random() * 4),
 							(float) (Math.random() * 2 - 1), (float) Math
 									.random() * -1, 0, 1, 5));
@@ -685,11 +685,11 @@ public final class Mario extends Sprite {
 		byte block = levelScene.level.getBlock(x, y);
 
 		if (((Level.TILE_BEHAVIORS[block & 0xff]) & Level.BIT_PICKUPABLE) > 0) {
-			Mario.gainCoin();
+			this.gainCoin();
 			levelScene.level.setBlock(x, y, (byte) 0);
 			for (int xx = 0; xx < 2; xx++)
 				for (int yy = 0; yy < 2; yy++)
-					levelScene.addSprite(new Sparkle(x * 16 + xx * 8
+					levelScene.addSprite(new Sparkle(levelScene, x * 16 + xx * 8
 							+ (int) (Math.random() * 8), y * 16 + yy * 8
 							+ (int) (Math.random() * 8), 0, 0, 0, 2, 5));
 		}
@@ -795,7 +795,7 @@ public final class Mario extends Sprite {
 		if (!fire) {
 			levelScene.mario.setMode(true, true);
 		} else {
-			Mario.gainCoin();
+			this.gainCoin();
 		}
 		++flowersDevoured;
 		levelScene
@@ -809,7 +809,7 @@ public final class Mario extends Sprite {
 		if (!large) {
 			levelScene.mario.setMode(true, false);
 		} else {
-			Mario.gainCoin();
+			this.gainCoin();
 		}
 		++mushroomsDevoured;
 		levelScene
@@ -853,22 +853,19 @@ public final class Mario extends Sprite {
 		onGround = false;
 		sliding = false;
 		invulnerableTime = 1;
-		levelScene
-				.appendBonusPoints(MarioEnvironment.IntermediateRewardsSystemOfValues.stomp);
+		levelScene.appendBonusPoints(MarioEnvironment.IntermediateRewardsSystemOfValues.stomp);
 	}
 
-	public static void gainCoin() {
+	public void gainCoin() {
 		coins++;
-		levelScene
-				.appendBonusPoints(MarioEnvironment.IntermediateRewardsSystemOfValues.coins);
+		levelScene.appendBonusPoints(MarioEnvironment.IntermediateRewardsSystemOfValues.coins);
 		// if (coins % 100 == 0)
 		// get1Up();
 	}
 
-	public static void gainHiddenBlock() {
+	public void gainHiddenBlock() {
 		++hiddenBlocksFound;
-		levelScene
-				.appendBonusPoints(MarioEnvironment.IntermediateRewardsSystemOfValues.hiddenBlock);
+		levelScene.appendBonusPoints(MarioEnvironment.IntermediateRewardsSystemOfValues.hiddenBlock);
 	}
 
 	public int getStatus() {
