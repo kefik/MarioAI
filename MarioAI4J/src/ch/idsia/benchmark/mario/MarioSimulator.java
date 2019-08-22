@@ -31,6 +31,7 @@ import ch.idsia.agents.IAgent;
 import ch.idsia.agents.controllers.keyboard.CheaterKeyboardAgent;
 import ch.idsia.benchmark.mario.engine.generalization.Enemy;
 import ch.idsia.benchmark.mario.engine.input.MarioInput;
+import ch.idsia.benchmark.mario.engine.level.LevelGeneratorImpl;
 import ch.idsia.benchmark.mario.environments.IEnvironment;
 import ch.idsia.benchmark.mario.environments.MarioEnvironment;
 import ch.idsia.benchmark.mario.options.FastOpts;
@@ -91,7 +92,7 @@ public class MarioSimulator {
 		
 		MarioLog.trace("[MarioSimulator] Initializing the environment and the agent...");
 		
-		IEnvironment environment = MarioEnvironment.getInstance();
+		IEnvironment environment = new MarioEnvironment(new LevelGeneratorImpl());
 		environment.reset(agent);
 				
 		MarioLog.trace("[MarioSimulator] SIMULATION RUNNING!");

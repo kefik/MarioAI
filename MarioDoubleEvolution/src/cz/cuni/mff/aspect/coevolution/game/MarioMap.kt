@@ -1,5 +1,7 @@
 package cz.cuni.mff.aspect.coevolution.game
 
+import kotlin.random.Random
+
 interface MarioMap {
 
     fun getTiles(): Array<ByteArray>
@@ -22,8 +24,10 @@ object MockMap : MarioMap {
         }
 
         flat[13][FLOOR - 1] = Tiles.PEACH
-        flat[10][FLOOR - 5] = Tiles.QUESTION_MARK_BLOCK
-        flat[11][FLOOR - 5] = Tiles.QUESTION_MARK_BLOCK_USED
+        flat[2][FLOOR - 5] = Tiles.QUESTION_MARK_BLOCK
+        flat[3][FLOOR - 5] = Tiles.QUESTION_MARK_BLOCK_USED
+
+        this.createHoles(flat)
 
         return flat;
     }
@@ -39,6 +43,23 @@ object MockMap : MarioMap {
         enemies[11][FLOOR - 3] = Enemies.Spiky.NORMAL
 
         return enemies
+    }
+
+    private fun createHoles(tiles: Array<ByteArray>) {
+        val random = Random(2627)
+        val holeLength = 3
+        val holesCount = 5
+        val holesAt = WIDTH / (holesCount + 1)
+
+        for (i in 0 until holesCount) {
+            val holeOffset = random.nextInt(5)
+            val currentHoleAt = holesAt * (1 + i)
+            for (x in 0 until holeLength) {
+                for (y in FLOOR until HEIGHT) {
+                    tiles[currentHoleAt + holeOffset + x][y] = Tiles.NOTHING
+                }
+            }
+        }
     }
 
 }

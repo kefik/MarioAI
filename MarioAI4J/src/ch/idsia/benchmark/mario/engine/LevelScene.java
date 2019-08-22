@@ -60,6 +60,7 @@ import ch.idsia.benchmark.mario.options.SimulationOptions;
 import ch.idsia.benchmark.mario.options.SystemOptions;
 import ch.idsia.benchmark.mario.options.VisualizationOptions;
 import ch.idsia.utils.MarioLog;
+import com.sun.org.apache.xpath.internal.objects.XObject;
 
 public final class LevelScene implements SpriteContext {
 
@@ -69,7 +70,7 @@ public final class LevelScene implements SpriteContext {
 	final private List<Sprite> spritesToAdd = new ArrayList<Sprite>();
 	final private List<Sprite> spritesToRemove = new ArrayList<Sprite>();
 
-	public LevelGenerator levelGenerator = new LevelGeneratorImpl();
+	private final LevelGenerator levelGenerator;
 	public Level level;
 	public Mario mario;
 	public float xCam, yCam, xCamO, yCamO;
@@ -116,7 +117,7 @@ public final class LevelScene implements SpriteContext {
 
 	private Replayer replayer;
 
-	public LevelScene() {
+	public LevelScene(LevelGenerator levelGenerator) {
 		try {
 			Level.loadBehaviors(new DataInputStream(LevelScene.class.getResourceAsStream("resources/tiles.dat")));
 		} catch (IOException e) {
@@ -124,6 +125,8 @@ public final class LevelScene implements SpriteContext {
 			e.printStackTrace();
 			System.exit(0);
 		}
+
+		this.levelGenerator = levelGenerator;
 	}
 
 	// TODO: !H!: Move to MarioEnvironment !!
@@ -174,7 +177,9 @@ public final class LevelScene implements SpriteContext {
 	List<Fireball> fireballsToCheck = new ArrayList<Fireball>();
 
 	public void checkFireballCollide(Fireball fireball) {
-		fireballsToCheck.add(fireball);
+		synchronized (lock) {
+			fireballsToCheck.add(fireball);
+		}
 	}
 
 	public void tick() {
@@ -297,35 +302,41 @@ public final class LevelScene implements SpriteContext {
 		for (Sprite sprite : sprites)
 			sprite.collideCheck();
 
-		for (Shell shell : shellsToCheck) {
-			for (Sprite sprite : sprites) {
-				if (sprite != shell && !shell.dead) {
-					if (sprite.shellCollideCheck(shell)) {
-						if (mario.carried == shell && !shell.dead) {
-							mario.carried = null;
-							mario.setRacoon(false);
-							// System.out.println("sprite = " + sprite);
-							shell.die();
-							++this.killedCreaturesTotal;
+		synchronized (lock) {
+			for (Shell shell : shellsToCheck) {
+				for (Sprite sprite : sprites) {
+					if (sprite != shell && !shell.dead) {
+						if (sprite.shellCollideCheck(shell)) {
+							if (mario.carried == shell && !shell.dead) {
+								mario.carried = null;
+								mario.setRacoon(false);
+								// System.out.println("sprite = " + sprite);
+								shell.die();
+								++this.killedCreaturesTotal;
+							}
 						}
 					}
 				}
 			}
+			shellsToCheck.clear();
 		}
-		shellsToCheck.clear();
 
-		for (Fireball fireball : fireballsToCheck)
-			for (Sprite sprite : sprites)
-				if (sprite != fireball && !fireball.dead)
-					if (sprite.fireballCollideCheck(fireball))
-						fireball.die();
-		fireballsToCheck.clear();
+		synchronized (lock) {
+			for (Fireball fireball : fireballsToCheck)
+				for (Sprite sprite : sprites)
+					if (sprite != null && sprite != fireball && fireball != null && !fireball.dead)
+						if (sprite.fireballCollideCheck(fireball))
+							fireball.die();
+			fireballsToCheck.clear();
+		}
 
 		sprites.addAll(0, spritesToAdd);
 		sprites.removeAll(spritesToRemove);
 		spritesToAdd.clear();
 		spritesToRemove.clear();
 	}
+
+	private final Object lock = new Object();
 
 	public void addSprite(Sprite sprite) {
 		spritesToAdd.add(sprite);
@@ -397,8 +408,10 @@ public final class LevelScene implements SpriteContext {
 			addSprite(new CoinAnim(x, y + 1));
 		}
 
-		for (Sprite sprite : sprites) {
-			sprite.bumpCheck(x, y);
+		synchronized (lock) {
+			for (Sprite sprite : sprites) {
+				sprite.bumpCheck(x, y);
+			}
 		}
 	}
 

@@ -103,6 +103,9 @@ public class Sprite {
 
 	public SpriteTemplate spriteTemplate;
 
+	public Sprite() {
+	}
+
 	public static void setCreaturesGravity(final float creaturesGravity) {
 		Sprite.creaturesGravity = creaturesGravity;
 	}
