@@ -48,6 +48,7 @@ import ch.idsia.benchmark.mario.engine.generalization.Tile;
 import ch.idsia.benchmark.mario.engine.generalization.TileGeneralizer;
 import ch.idsia.benchmark.mario.engine.input.MarioInput;
 import ch.idsia.benchmark.mario.engine.level.Level;
+import ch.idsia.benchmark.mario.engine.level.LevelGenerator;
 import ch.idsia.benchmark.mario.engine.sprites.Mario;
 import ch.idsia.benchmark.mario.engine.sprites.Sprite;
 import ch.idsia.benchmark.mario.options.AIOptions;
@@ -101,7 +102,6 @@ public final class MarioEnvironment implements IEnvironment {
 	private VisualizationComponent marioVisualComponent;
 	private IAgent agent;
 
-	private static final MarioEnvironment ourInstance = new MarioEnvironment();
 	private static final EvaluationInfo evaluationInfo = new EvaluationInfo();
 
 	private static String marioTraceFile;
@@ -112,13 +112,9 @@ public final class MarioEnvironment implements IEnvironment {
 
 	DecimalFormat df = new DecimalFormat("######.#");
 
-	public static MarioEnvironment getInstance() {
-		return ourInstance;
-	}
-
-	private MarioEnvironment() {
+	public MarioEnvironment(LevelGenerator levelGenerator) {
 		MarioLog.fine(SimulatorOptions.getBenchmarkName());
-		levelScene = new LevelScene();
+		levelScene = new LevelScene(levelGenerator);
 	}
 
 	public void reset(IAgent agent) {
@@ -272,7 +268,7 @@ public final class MarioEnvironment implements IEnvironment {
 				entityField[w][h].clear();
 		entities.clear();
 		for (Sprite sprite : levelScene.sprites) {
-			if (sprite.isDead() || sprite.kind == levelScene.mario.kind)
+			if (sprite == null || sprite.isDead() || sprite.kind == levelScene.mario.kind)
 				continue;
 			// IS SPRITE WITHIN RECEPTIVE FIELD?
 			if (sprite.mapX >= 0
