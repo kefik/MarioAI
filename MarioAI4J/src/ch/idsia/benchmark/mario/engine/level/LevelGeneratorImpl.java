@@ -70,6 +70,11 @@ public class LevelGeneratorImpl implements LevelGenerator {
     static Level.objCounters counters = new Level.objCounters();
 
     public LevelGeneratorImpl() {
+        levelDifficulty = -1;
+    }
+
+    public LevelGeneratorImpl(int levelDifficulty) {
+        LevelGeneratorImpl.levelDifficulty = levelDifficulty;
     }
 
     private static void loadLevel(String filePath) {
@@ -115,7 +120,9 @@ public class LevelGeneratorImpl implements LevelGenerator {
         isFlatLevel = LevelOptions.isFlat();
 
         counters.reset();
-        levelDifficulty = LevelOptions.getDifficulty();
+        if (levelDifficulty <= 0) {
+            levelDifficulty = LevelOptions.getDifficulty();
+        }
         odds[ODDS_STRAIGHT] = 20;
         odds[ODDS_PLATFORMS] = 1;
         odds[ODDS_TUBES] = 2 + 1 * levelDifficulty;
