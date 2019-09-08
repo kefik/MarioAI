@@ -3,10 +3,8 @@ package cz.cuni.mff.aspect.mario
 import ch.idsia.benchmark.mario.engine.level.Level
 import ch.idsia.benchmark.mario.engine.level.SpriteTemplate
 import ch.idsia.benchmark.mario.engine.sprites.Sprite
-import cz.cuni.mff.aspect.coevolution.game.Enemies
-import cz.cuni.mff.aspect.coevolution.game.LevelTypes
-import cz.cuni.mff.aspect.coevolution.game.Tiles
-import cz.cuni.mff.aspect.coevolution.generator.EvolutionaryGenerator
+import cz.cuni.mff.aspect.evolution.generator.EvolutionaryGenerator
+
 
 class LevelGenerator(private val evoGenerator: EvolutionaryGenerator) : ch.idsia.benchmark.mario.engine.level.LevelGenerator {
 
@@ -23,8 +21,8 @@ class LevelGenerator(private val evoGenerator: EvolutionaryGenerator) : ch.idsia
         level.randomSeed = 123
         level.difficulty = 1
 
-        for (x in 0 until tiles.size) {
-            for (y in 0 until tiles[x].size) {
+        for (x in tiles.indices) {
+            for (y in tiles[x].indices) {
                 val tile = tiles[x][y]
                 level.setBlock(x, y, tile)
 
@@ -33,8 +31,8 @@ class LevelGenerator(private val evoGenerator: EvolutionaryGenerator) : ch.idsia
             }
         }
 
-        for (x in 0 until enemies.size) {
-            for (y in 0 until enemies[x].size) {
+        for (x in enemies.indices) {
+            for (y in enemies[x].indices) {
                 val enemy = enemies[x][y]
                 if (enemy != Enemies.NOTHING) {
                     level.setSpriteTemplate(x, y, SpriteTemplate(enemy))

@@ -4,18 +4,17 @@ import ch.idsia.agents.AgentOptions
 import ch.idsia.agents.IAgent
 import ch.idsia.agents.controllers.MarioHijackAIBase
 import ch.idsia.benchmark.mario.engine.input.MarioInput
-import cz.cuni.mff.aspect.coevolution.agent.EvolutionaryAgent
-import cz.cuni.mff.aspect.coevolution.agent.MarioAction
-import java.util.*
+import cz.cuni.mff.aspect.mario.controllers.MarioAction
+import cz.cuni.mff.aspect.mario.controllers.MarioController
 
-class MarioAgent(private val _evolvedAgent: EvolutionaryAgent) : MarioHijackAIBase(), IAgent {
+class MarioAgent(private val _controller: MarioController) : MarioHijackAIBase(), IAgent {
 
     override fun reset(options: AgentOptions) {
         super.reset(options)
     }
 
     override fun actionSelectionAI(): MarioInput {
-        val actions = this._evolvedAgent.playAction(t, e)
+        val actions = this._controller.playAction(t, e)
         for (action in actions) {
             when (action) {
                 MarioAction.RUN_RIGHT -> control.runRight()

@@ -1,12 +1,14 @@
-package cz.cuni.mff.aspect.coevolution.agent
+package cz.cuni.mff.aspect.mario.controllers
 
 import ch.idsia.agents.controllers.modules.Entities
 import ch.idsia.agents.controllers.modules.Tiles
-import cz.cuni.mff.aspect.coevolution.generator.EvolutionaryGenerator
 
-interface EvolutionaryAgent {
 
-    fun evolve(levelGenerator: EvolutionaryGenerator)
+/**
+ * Representation of [cz.cuni.mff.aspect.mario.MarioAgent]'s controller. The controller tells the agent which actions
+ * to do each tick.
+ */
+interface MarioController {
 
     fun playAction(tiles: Tiles, entities: Entities): List<MarioAction>
 

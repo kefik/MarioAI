@@ -1,4 +1,4 @@
-package cz.cuni.mff.aspect.coevolution.game
+package cz.cuni.mff.aspect.mario
 
 import ch.idsia.benchmark.mario.engine.sprites.Sprite
 
@@ -22,6 +22,9 @@ object Tiles {
 
 }
 
+/**
+ * Wrapper constants representing all types of enemies in Mario.
+ */
 object Enemies {
 
     const val NOTHING = 0
@@ -46,6 +49,9 @@ object Enemies {
 
 }
 
+/**
+ * Constants representing all Mario level types.
+ */
 object LevelTypes {
 
     const val DEFAULT: Int = 0

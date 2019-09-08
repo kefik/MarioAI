@@ -1,9 +1,9 @@
-package cz.cuni.mff.aspect.coevolution.generator
+package cz.cuni.mff.aspect.evolution.generator
 
-import cz.cuni.mff.aspect.coevolution.agent.EvolutionaryAgent
-import cz.cuni.mff.aspect.coevolution.game.MarioMap
-import cz.cuni.mff.aspect.coevolution.game.Tiles
-import cz.cuni.mff.aspect.mario.MarioSimulator
+import cz.cuni.mff.aspect.evolution.controller.ControllerEvolution
+import cz.cuni.mff.aspect.mario.MarioMap
+import cz.cuni.mff.aspect.mario.Tiles
+import cz.cuni.mff.aspect.mario.GameSimulator
 import io.jenetics.*
 import io.jenetics.engine.Engine
 import io.jenetics.engine.EvolutionResult
@@ -13,14 +13,14 @@ import java.util.function.Function
 class DirectEncodedEvolutionaryGenerator : EvolutionaryGenerator {
 
     private lateinit var bestChromosome: EvolutionResult<IntegerGene, Float>
-    private lateinit var currentAgent: EvolutionaryAgent
+    private lateinit var currentAgent: ControllerEvolution
     private lateinit var map: MarioMap
 
     override fun generateMap(): MarioMap {
         return this.map
     }
 
-    override fun evolve(agent: EvolutionaryAgent) {
+    override fun evolve(agent: ControllerEvolution) {
         this.currentAgent = agent
         val genotype = Genotype.of(IntegerChromosome.of(0, 1, MAP_WIDTH * MAP_HEIGHT))
 
@@ -46,11 +46,12 @@ class DirectEncodedEvolutionaryGenerator : EvolutionaryGenerator {
 
     private val fitness = Function<Genotype<IntegerGene>, Float> { genotype -> fitness(genotype) }
     private fun fitness(gt: Genotype<IntegerGene>): Float {
-        val marioSimulator = MarioSimulator()
+        val marioSimulator = GameSimulator()
         val generator = DirectEncodedEvolutionaryGenerator()
         generator.map = DirectEncodedMap.createFromGeneratorRepresentation(gt)
 
-        marioSimulator.playMario(this.currentAgent, MockEvolutionaryGenerator(), false)
+        // TODO: uncomment me
+        // marioSimulator.playMario(this.currentAgent, MockEvolutionaryGenerator(), false)
 
         return marioSimulator.finalDistance
     }
