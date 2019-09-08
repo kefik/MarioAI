@@ -6,11 +6,9 @@ import ch.idsia.benchmark.mario.options.MarioOptions
 import cz.cuni.mff.aspect.evolution.generator.EvolutionaryGenerator
 import cz.cuni.mff.aspect.mario.controllers.MarioController
 
-open class GameSimulator {
+open class GameSimulator(private val maxTicks: Int = DEFAULT_MAX_TICKS) {
 
     private var currentTick: Int = 0
-    // TODO: make this configurable
-    private val maxTicks: Int = 2000
     var finalDistance: Float = 0.0f
 
     fun playMario(marioController: MarioController, evoGenerator: EvolutionaryGenerator, visualize: Boolean = true) {
@@ -42,6 +40,10 @@ open class GameSimulator {
         }
 
         this.finalDistance = environment.marioSprite.x
+    }
+
+    companion object {
+        private const val DEFAULT_MAX_TICKS = 2000
     }
 
 }
