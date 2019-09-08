@@ -1,7 +1,7 @@
 package cz.cuni.mff.aspect.mario
 
 
-interface MarioMap {
+interface Map {
 
     fun getTiles(): Array<ByteArray>
 

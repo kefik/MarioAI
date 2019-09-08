@@ -2,7 +2,7 @@ package cz.cuni.mff.aspect.evolution.generator
 
 import cz.cuni.mff.aspect.evolution.controller.ControllerEvolution
 import cz.cuni.mff.aspect.mario.Enemies
-import cz.cuni.mff.aspect.mario.MarioMap
+import cz.cuni.mff.aspect.mario.Map
 import cz.cuni.mff.aspect.mario.Tiles
 import kotlin.random.Random
 
@@ -12,11 +12,11 @@ class MockEvolutionaryGenerator : EvolutionaryGenerator {
 
     }
 
-    override fun generateMap(): MarioMap {
+    override fun generateMap(): Map {
         return MockMap
     }
 
-    object MockMap : MarioMap {
+    object MockMap : Map {
         private const val WIDTH = 64
         private const val HEIGHT = 15
 

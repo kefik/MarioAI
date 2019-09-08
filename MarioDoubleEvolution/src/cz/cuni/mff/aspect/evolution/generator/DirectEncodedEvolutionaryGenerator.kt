@@ -1,7 +1,7 @@
 package cz.cuni.mff.aspect.evolution.generator
 
 import cz.cuni.mff.aspect.evolution.controller.ControllerEvolution
-import cz.cuni.mff.aspect.mario.MarioMap
+import cz.cuni.mff.aspect.mario.Map
 import cz.cuni.mff.aspect.mario.Tiles
 import cz.cuni.mff.aspect.mario.GameSimulator
 import io.jenetics.*
@@ -14,9 +14,9 @@ class DirectEncodedEvolutionaryGenerator : EvolutionaryGenerator {
 
     private lateinit var bestChromosome: EvolutionResult<IntegerGene, Float>
     private lateinit var currentAgent: ControllerEvolution
-    private lateinit var map: MarioMap
+    private lateinit var map: Map
 
-    override fun generateMap(): MarioMap {
+    override fun generateMap(): Map {
         return this.map
     }
 
@@ -66,7 +66,7 @@ class DirectEncodedEvolutionaryGenerator : EvolutionaryGenerator {
 }
 
 // TODO: this may be also called something like StaticMap
-class DirectEncodedMap(private val tiles: Array<ByteArray>, private val enemies: Array<Array<Int>>) : MarioMap {
+class DirectEncodedMap(private val tiles: Array<ByteArray>, private val enemies: Array<Array<Int>>) : Map {
 
     override fun getTiles(): Array<ByteArray> {
         return this.tiles
