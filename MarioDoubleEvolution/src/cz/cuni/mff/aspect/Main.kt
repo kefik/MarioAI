@@ -3,8 +3,8 @@ package cz.cuni.mff.aspect
 import cz.cuni.mff.aspect.coevolution.MarioCoEvolver
 import cz.cuni.mff.aspect.evolution.controller.ControllerEvolution
 import cz.cuni.mff.aspect.evolution.controller.NeuroControllerEvolution
-import cz.cuni.mff.aspect.evolution.generator.EvolutionaryGenerator
-import cz.cuni.mff.aspect.evolution.generator.MockEvolutionaryGenerator
+import cz.cuni.mff.aspect.evolution.levels.LevelEvolution
+import cz.cuni.mff.aspect.evolution.levels.MockLevelEvolution
 import cz.cuni.mff.aspect.mario.GameSimulator
 import kotlin.system.exitProcess
 
@@ -18,13 +18,13 @@ fun main() {
 
 fun coevolution() {
     val controllerEvolution: ControllerEvolution = NeuroControllerEvolution()
-    val evoGenerator: EvolutionaryGenerator = MockEvolutionaryGenerator()
+    val levelEvolution: LevelEvolution = MockLevelEvolution()
 
     val evolution = MarioCoEvolver()
-    val evolutionResult = evolution.evolve(controllerEvolution, evoGenerator)
+    val evolutionResult = evolution.evolve(controllerEvolution, levelEvolution)
 
     val marioSimulator = GameSimulator()
-    marioSimulator.playMario(evolutionResult.controller, evoGenerator, true)
+    marioSimulator.playMario(evolutionResult.controller, evolutionResult.levels.first(), true)
     println(marioSimulator.finalDistance)
 }
 

@@ -1,6 +1,6 @@
 package cz.cuni.mff.aspect.evolution.controller
 
-import cz.cuni.mff.aspect.evolution.generator.EvolutionaryGenerator
+import cz.cuni.mff.aspect.evolution.levels.LevelEvolution
 import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.controllers.MockMarioController
 
@@ -10,7 +10,7 @@ import cz.cuni.mff.aspect.mario.controllers.MockMarioController
  */
 class MockControllerEvolution : ControllerEvolution {
 
-    override fun evolve(levelGenerator: EvolutionaryGenerator): MarioController {
+    override fun evolve(levelGenerator: LevelEvolution): MarioController {
         return MockMarioController()
     }
 

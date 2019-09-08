@@ -1,7 +1,8 @@
 package cz.cuni.mff.aspect.evolution.controller
 
-import cz.cuni.mff.aspect.evolution.generator.EvolutionaryGenerator
-import cz.cuni.mff.aspect.evolution.generator.MockEvolutionaryGenerator
+import cz.cuni.mff.aspect.evolution.levels.LevelEvolution
+import cz.cuni.mff.aspect.evolution.levels.MockLevelEvolution
+import cz.cuni.mff.aspect.extensions.getDoubleValues
 import cz.cuni.mff.aspect.mario.GameSimulator
 import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.controllers.SimpleANNController
@@ -17,12 +18,12 @@ import java.util.function.Function
  */
 class NeuroControllerEvolution : ControllerEvolution {
 
-    override fun evolve(levelGenerator: EvolutionaryGenerator): MarioController {
+    override fun evolve(levelGenerator: LevelEvolution): MarioController {
         val genotype = this.createInitialGenotype()
         val engine = this.createEvolutionEngine(genotype)
         val result = this.doEvolution(engine)
 
-        val resultGenes = this.genotypeToList(result.bestPhenotype.genotype)
+        val resultGenes = result.bestPhenotype.genotype.getDoubleValues()
         val controllerNetwork = SimpleAgentNetwork()
         controllerNetwork.setNetworkWeights(resultGenes)
 
@@ -55,7 +56,7 @@ class NeuroControllerEvolution : ControllerEvolution {
 
     private val fitness = Function<Genotype<DoubleGene>, Float> { genotype -> fitness(genotype) }
     private fun fitness(genotype: Genotype<DoubleGene>): Float {
-        val networkWeights: List<Double> = this.genotypeToList(genotype)
+        val networkWeights: List<Double> = genotype.getDoubleValues()
 
         val network = SimpleAgentNetwork()
         network.setNetworkWeights(networkWeights)
@@ -63,13 +64,9 @@ class NeuroControllerEvolution : ControllerEvolution {
         val controller = SimpleANNController(network)
 
         val marioSimulator = GameSimulator()
-        marioSimulator.playMario(controller, MockEvolutionaryGenerator(), false)
+        marioSimulator.playMario(controller, MockLevelEvolution.MockLevel, false)
 
         return marioSimulator.finalDistance
-    }
-
-    private fun genotypeToList(genotype: Genotype<DoubleGene>): List<Double> {
-        return genotype.chromosome.toSeq().toList<DoubleGene>().map { it.allele }
     }
 
     companion object {

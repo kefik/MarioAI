@@ -1,7 +1,7 @@
-package cz.cuni.mff.aspect.mario
+package cz.cuni.mff.aspect.mario.level
 
 
-interface Map {
+interface MarioLevel {
 
     fun getTiles(): Array<ByteArray>
 

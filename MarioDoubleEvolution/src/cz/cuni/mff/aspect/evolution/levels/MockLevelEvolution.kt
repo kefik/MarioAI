@@ -1,22 +1,19 @@
-package cz.cuni.mff.aspect.evolution.generator
+package cz.cuni.mff.aspect.evolution.levels
 
-import cz.cuni.mff.aspect.evolution.controller.ControllerEvolution
 import cz.cuni.mff.aspect.mario.Enemies
-import cz.cuni.mff.aspect.mario.Map
+import cz.cuni.mff.aspect.mario.MarioAgent
+import cz.cuni.mff.aspect.mario.level.MarioLevel
 import cz.cuni.mff.aspect.mario.Tiles
 import kotlin.random.Random
 
-class MockEvolutionaryGenerator : EvolutionaryGenerator {
 
-    override fun evolve(agent: ControllerEvolution) {
+class MockLevelEvolution : LevelEvolution {
 
+    override fun evolve(agent: MarioAgent): Array<MarioLevel> {
+        return arrayOf(MockLevel)
     }
 
-    override fun generateMap(): Map {
-        return MockMap
-    }
-
-    object MockMap : Map {
+    object MockLevel : MarioLevel {
         private const val WIDTH = 64
         private const val HEIGHT = 15
 

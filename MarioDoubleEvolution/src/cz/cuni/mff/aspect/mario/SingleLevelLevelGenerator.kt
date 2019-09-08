@@ -3,15 +3,14 @@ package cz.cuni.mff.aspect.mario
 import ch.idsia.benchmark.mario.engine.level.Level
 import ch.idsia.benchmark.mario.engine.level.SpriteTemplate
 import ch.idsia.benchmark.mario.engine.sprites.Sprite
-import cz.cuni.mff.aspect.evolution.generator.EvolutionaryGenerator
+import cz.cuni.mff.aspect.mario.level.MarioLevel
 
 
-class LevelGenerator(private val evoGenerator: EvolutionaryGenerator) : ch.idsia.benchmark.mario.engine.level.LevelGenerator {
+class SingleLevelLevelGenerator(private val level: MarioLevel) : ch.idsia.benchmark.mario.engine.level.LevelGenerator {
 
     override fun createLevel(): Level {
-        val map = evoGenerator.generateMap()
-        val tiles = map.getTiles()
-        val enemies = map.getEnemies()
+        val tiles = level.getTiles()
+        val enemies = level.getEnemies()
 
         val level = Level(tiles.size, tiles[0].size)
         level.type = LevelTypes.DEFAULT
