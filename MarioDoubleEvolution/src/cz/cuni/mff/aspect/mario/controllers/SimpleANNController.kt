@@ -49,8 +49,7 @@ class SimpleAgentNetwork : Comparable<SimpleAgentNetwork> {
 
     fun chooseAction(tiles: Tiles, entities: Entities): List<MarioAction> {
         val input = this.createInput(tiles, entities)
-        // TODO: check if we can use `arrayOf` here
-        val output = this.network.output(NDArray(Array(1){input}))
+        val output = this.network.output(NDArray(arrayOf(input)))
         val actions: ArrayList<MarioAction> = ArrayList()
 
         this.addActionIfOutputActivated(actions, output, 0, MarioAction.RUN_LEFT)
