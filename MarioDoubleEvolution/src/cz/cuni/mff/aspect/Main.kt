@@ -6,12 +6,13 @@ import cz.cuni.mff.aspect.evolution.controller.NeuroControllerEvolution
 import cz.cuni.mff.aspect.evolution.levels.LevelEvolution
 import cz.cuni.mff.aspect.evolution.levels.MockLevelEvolution
 import cz.cuni.mff.aspect.mario.GameSimulator
+import cz.cuni.mff.aspect.mario.controllers.EvolvedControllers
 import kotlin.system.exitProcess
 
 
 fun main() {
-    coevolution()
-    // playground()
+    // coevolution()
+    playground()
     exitProcess(0)
 }
 
@@ -25,9 +26,8 @@ fun coevolution() {
 
     val marioSimulator = GameSimulator()
     marioSimulator.playMario(evolutionResult.controller, evolutionResult.levels.first(), true)
-    println(marioSimulator.finalDistance)
 }
 
 fun playground() {
-
+    GameSimulator().playMario(EvolvedControllers.jumpingSimpleANNController(), MockLevelEvolution.MockLevel, true)
 }
