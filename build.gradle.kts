@@ -6,3 +6,4 @@ dependencies {
     implementation(project(":MarioAI4J"))
     implementation(project(":MarioDoubleEvolution"))
 }
+

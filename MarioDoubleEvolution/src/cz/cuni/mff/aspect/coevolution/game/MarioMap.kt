@@ -17,7 +17,7 @@ object MockMap : MarioMap {
     private const val FLOOR = 13
 
     override fun getTiles(): Array<ByteArray> {
-        val flat = Array(WIDTH) { x ->
+        val flat = Array(WIDTH) { _ ->
             ByteArray(HEIGHT) { y ->
                 if (y >= FLOOR) Tiles.DIRT else Tiles.NOTHING
             }

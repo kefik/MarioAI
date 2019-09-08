@@ -64,7 +64,6 @@ class SimpleNeuroEvolutionaryAgent : EvolutionaryAgent {
 
     private val fitness = Function<Genotype<DoubleGene>, Float> { genotype -> fitness(genotype) }
     private fun fitness(gt: Genotype<DoubleGene>): Float {
-        // println("COMPUTING FITNESS: ")
         val networkWeights: List<Double> = List<Double>(gt.chromosome.length()) { gt.chromosome.getGene(it).allele }
         val network = SimpleAgentNetwork.createFromWeights(networkWeights)
         val agent = SimpleNeuroEvolutionaryAgent()
@@ -73,7 +72,6 @@ class SimpleNeuroEvolutionaryAgent : EvolutionaryAgent {
         val marioSimulator = MarioSimulator()
         marioSimulator.playMario(agent, MockEvolutionaryGenerator(), false)
 
-        println("Fitness: ${marioSimulator.finalDistance}")
         return marioSimulator.finalDistance
     }
 
