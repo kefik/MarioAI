@@ -12,7 +12,7 @@ class NoRuleForGivenSymbol(symbol: Symbol) :
         Exception("The grammar does not contain a rule for given symbol '${symbol.value}'")
 
 
-class Grammar(private val productionRules: Array<ProductionRule>, private val startingSymbol: NonTerminal) {
+class Grammar(private val productionRules: Array<ProductionRule>, val startingSymbol: NonTerminal) {
 
     private val productionMap: Map<NonTerminal, MutableList<ProductionRule>>
 
