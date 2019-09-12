@@ -13,7 +13,7 @@ class DirectMarioLevel(private val tiles: Array<ByteArray>, private val enemies:
     }
 
     companion object {
-        fun createFromTilesArray(width: Int, height: Int, tilesArray: List<Int>): DirectMarioLevel {
+        fun createFromTilesArray(width: Int, height: Int, tilesArray: IntArray): DirectMarioLevel {
             val tiles = Array(height) { y ->
                 ByteArray(width) { x ->
                     val index = x * height + y

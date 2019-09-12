@@ -56,7 +56,7 @@ class NeuroControllerEvolution : ControllerEvolution {
 
     private val fitness = Function<Genotype<DoubleGene>, Float> { genotype -> fitness(genotype) }
     private fun fitness(genotype: Genotype<DoubleGene>): Float {
-        val networkWeights: List<Double> = genotype.getDoubleValues()
+        val networkWeights: DoubleArray = genotype.getDoubleValues()
 
         val network = SimpleAgentNetwork()
         network.setNetworkWeights(networkWeights)

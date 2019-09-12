@@ -60,7 +60,7 @@ class SimpleAgentNetwork : Comparable<SimpleAgentNetwork> {
         return actions
     }
 
-    fun setNetworkWeights(weights: List<Double>) {
+    fun setNetworkWeights(weights: DoubleArray) {
         val weightsTable = this.network.paramTable()
         val weightsKeysIterator = weightsTable.keys.iterator()
         var currentWeight = 0
