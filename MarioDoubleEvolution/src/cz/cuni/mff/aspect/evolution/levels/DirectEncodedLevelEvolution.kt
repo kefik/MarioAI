@@ -14,7 +14,7 @@ import java.util.function.Function
 /**
  * Evolution of mario level, using GA and direct level encoding. Evolves only tiles, not enemies.
  */
-class DirectEncodedEvolutionaryGenerator : LevelEvolution {
+class DirectEncodedLevelEvolution : LevelEvolution {
 
     private lateinit var agent: MarioAgent
 
@@ -24,12 +24,12 @@ class DirectEncodedEvolutionaryGenerator : LevelEvolution {
         val evolutionEngine = this.createEvolutionEngine(genotype)
         val result = this.doEvolution(evolutionEngine)
 
-        val level = DirectMarioLevel.createFromTilesArray(result.bestPhenotype.genotype.getIntValues())
+        val level = DirectMarioLevel.createFromTilesArray(LEVEL_WIDTH, LEVEL_HEIGHT, result.bestPhenotype.genotype.getIntValues())
         return arrayOf(level)
     }
 
     private fun createInitialGenotype(): Genotype<IntegerGene> {
-        return Genotype.of(IntegerChromosome.of(0, 1, MAP_WIDTH * MAP_HEIGHT))
+        return Genotype.of(IntegerChromosome.of(0, 1, LEVEL_WIDTH * LEVEL_HEIGHT))
     }
 
     private fun createEvolutionEngine(initialGenotype: Genotype<IntegerGene>): Engine<IntegerGene, Float> {
@@ -55,18 +55,23 @@ class DirectEncodedEvolutionaryGenerator : LevelEvolution {
     private val fitness = Function<Genotype<IntegerGene>, Float> { genotype -> fitness(genotype) }
     private fun fitness(genotype: Genotype<IntegerGene>): Float {
         val marioSimulator = GameSimulator()
-        val level = DirectMarioLevel.createFromTilesArray(genotype.getIntValues())
+        val level = DirectMarioLevel.createFromTilesArray(LEVEL_WIDTH, LEVEL_HEIGHT, genotype.getIntValues())
 
-        marioSimulator.playMario(this.agent, level, false)
+        // TODO: solve this 'lock issue' -> the evolution is crashing when multiple simulators are playing at a time :(
+        synchronized(Lock) {
+            marioSimulator.playMario(this.agent, level, false)
+        }
 
         return marioSimulator.finalDistance
     }
 
     companion object {
-        const val MAP_WIDTH = 64
-        const val MAP_HEIGHT = 15
+        const val LEVEL_WIDTH = 64
+        const val LEVEL_HEIGHT = 15
 
-        const val POPULATION_SIZE = 20
-        const val GENERATIONS_COUNT = 20L
+        const val POPULATION_SIZE = 30
+        const val GENERATIONS_COUNT = 80L
     }
 }
+
+object Lock
