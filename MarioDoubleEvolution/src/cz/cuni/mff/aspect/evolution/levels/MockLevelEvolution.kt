@@ -14,39 +14,42 @@ class MockLevelEvolution : LevelEvolution {
     }
 
     object MockLevel : MarioLevel {
+
         private const val WIDTH = 64
         private const val HEIGHT = 15
 
         private const val FLOOR = 13
 
-        override fun getTiles(): Array<ByteArray> {
-            val flat = Array(WIDTH) {
-                ByteArray(HEIGHT) { y ->
-                    if (y >= FLOOR) Tiles.DIRT else Tiles.NOTHING
+        override val tiles: Array<ByteArray>
+            get() {
+                val flat = Array(WIDTH) {
+                    ByteArray(HEIGHT) { y ->
+                        if (y >= FLOOR) Tiles.DIRT else Tiles.NOTHING
+                    }
                 }
+
+                flat[13][FLOOR - 1] = Tiles.PEACH
+                flat[2][FLOOR - 5] = Tiles.QUESTION_MARK_BLOCK
+                flat[3][FLOOR - 5] = Tiles.QUESTION_MARK_BLOCK_USED
+
+                createHoles(flat)
+
+                return flat
             }
 
-            flat[13][FLOOR - 1] = Tiles.PEACH
-            flat[2][FLOOR - 5] = Tiles.QUESTION_MARK_BLOCK
-            flat[3][FLOOR - 5] = Tiles.QUESTION_MARK_BLOCK_USED
+        override val enemies: Array<Array<Int>>
+            get() {
+                val enemies = Array(WIDTH) { Array(HEIGHT) { Enemies.NOTHING } }
 
-            createHoles(flat)
+                enemies[6][FLOOR - 6] = Enemies.Goomba.NORMAL
+                enemies[7][FLOOR - 6] = Enemies.Goomba.WINGED
+                enemies[7][FLOOR - 3] = Enemies.Goomba.WAVE
+                enemies[15][FLOOR - 3] = Enemies.Goomba.WAVE
+                enemies[10][FLOOR - 3] = Enemies.Koopa.GREEN_WINGED
+                enemies[11][FLOOR - 3] = Enemies.Spiky.NORMAL
 
-            return flat
-        }
-
-        override fun getEnemies(): Array<Array<Int>> {
-            val enemies = Array(WIDTH) { Array(HEIGHT) { Enemies.NOTHING } }
-
-            enemies[6][FLOOR - 6] = Enemies.Goomba.NORMAL
-            enemies[7][FLOOR - 6] = Enemies.Goomba.WINGED
-            enemies[7][FLOOR - 3] = Enemies.Goomba.WAVE
-            enemies[15][FLOOR - 3] = Enemies.Goomba.WAVE
-            enemies[10][FLOOR - 3] = Enemies.Koopa.GREEN_WINGED
-            enemies[11][FLOOR - 3] = Enemies.Spiky.NORMAL
-
-            return enemies
-        }
+                return enemies
+            }
 
         private fun createHoles(tiles: Array<ByteArray>) {
             val random = Random(2627)

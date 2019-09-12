@@ -4,6 +4,7 @@ import cz.cuni.mff.aspect.coevolution.MarioCoEvolver
 import cz.cuni.mff.aspect.evolution.controller.ControllerEvolution
 import cz.cuni.mff.aspect.evolution.controller.NeuroControllerEvolution
 import cz.cuni.mff.aspect.evolution.levels.DirectEncodedLevelEvolution
+import cz.cuni.mff.aspect.evolution.levels.GrammarLevelEvolution
 import cz.cuni.mff.aspect.evolution.levels.LevelEvolution
 import cz.cuni.mff.aspect.evolution.levels.MockLevelEvolution
 import cz.cuni.mff.aspect.mario.GameSimulator
@@ -32,7 +33,7 @@ fun coevolution() {
 
 fun playground() {
     val controller = EvolvedControllers.jumpingSimpleANNController()
-    val levelEvolution = DirectEncodedLevelEvolution()
+    val levelEvolution = GrammarLevelEvolution()
     val levels = levelEvolution.evolve(MarioAgent(controller))
 
     GameSimulator().playMario(controller, levels.first(), true)

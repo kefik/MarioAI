@@ -57,7 +57,7 @@ class DirectEncodedLevelEvolution : LevelEvolution {
         val marioSimulator = GameSimulator()
         val level = DirectMarioLevel.createFromTilesArray(LEVEL_WIDTH, LEVEL_HEIGHT, genotype.getIntValues())
 
-        // TODO: solve this 'lock issue' -> the evolution is crashing when multiple simulators are playing at a time :(
+        // TODO: solve this 'lock issue' -> the evolution is crashing when multiple simulators are playing at a time :( Because we are using the same agent object for each evaluation!!
         synchronized(Lock) {
             marioSimulator.playMario(this.agent, level, false)
         }

@@ -9,8 +9,8 @@ import cz.cuni.mff.aspect.mario.level.MarioLevel
 class SingleLevelLevelGenerator(private val level: MarioLevel) : ch.idsia.benchmark.mario.engine.level.LevelGenerator {
 
     override fun createLevel(): Level {
-        val tiles = level.getTiles()
-        val enemies = level.getEnemies()
+        val tiles = level.tiles
+        val enemies = level.enemies
 
         val level = Level(tiles.size, tiles[0].size)
         level.type = LevelTypes.DEFAULT

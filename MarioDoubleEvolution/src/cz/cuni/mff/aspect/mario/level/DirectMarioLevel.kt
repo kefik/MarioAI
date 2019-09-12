@@ -2,15 +2,7 @@ package cz.cuni.mff.aspect.mario.level
 
 import cz.cuni.mff.aspect.mario.Tiles
 
-class DirectMarioLevel(private val tiles: Array<ByteArray>, private val enemies: Array<Array<Int>>) : MarioLevel {
-
-    override fun getTiles(): Array<ByteArray> {
-        return this.tiles
-    }
-
-    override fun getEnemies(): Array<Array<Int>> {
-        return this.enemies
-    }
+class DirectMarioLevel(override val tiles: Array<ByteArray>, override val enemies: Array<Array<Int>>) : MarioLevel {
 
     companion object {
         fun createFromTilesArray(width: Int, height: Int, tilesArray: IntArray): DirectMarioLevel {
