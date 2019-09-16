@@ -13,6 +13,7 @@ dependencies {
     implementation(kotlin("stdlib"))
 
     implementation(group = "org.deeplearning4j", name = "deeplearning4j-core", version = "0.9.1")
+    implementation(group = "org.slf4j", name = "slf4j-nop", version = "1.7.28")
     implementation(group = "org.nd4j", name = "nd4j-native-platform", version = "0.9.1")
     implementation(group = "org.datavec", name = "datavec-api", version = "0.9.1")
     implementation(group = "io.jenetics", name = "jenetics", version = "5.0.1")
