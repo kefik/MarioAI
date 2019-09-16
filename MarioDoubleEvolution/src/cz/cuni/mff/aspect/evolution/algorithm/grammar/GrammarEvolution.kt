@@ -2,7 +2,6 @@ package cz.cuni.mff.aspect.evolution.algorithm.grammar
 
 import cz.cuni.mff.aspect.evolution.algorithm.grammar.jenetics.ByteChromosome
 import cz.cuni.mff.aspect.evolution.algorithm.grammar.jenetics.ByteGene
-import cz.cuni.mff.aspect.evolution.levels.Lock
 import cz.cuni.mff.aspect.extensions.getByteValues
 import io.jenetics.*
 import io.jenetics.engine.Engine
@@ -46,12 +45,10 @@ class GrammarEvolution(private val grammar: Grammar, private val fitnessComputat
 
     private val fitness = Function<Genotype<ByteGene>, Float> { genotype -> fitness(genotype) }
     private fun fitness(genotype: Genotype<ByteGene>): Float {
-        synchronized(Lock) {
-            val genes = genotype.getByteValues()
-            val sentence = this.getGrammarSentence(genes)
+        val genes = genotype.getByteValues()
+        val sentence = this.getGrammarSentence(genes)
 
-            return this.fitnessComputation(sentence)
-        }
+        return this.fitnessComputation(sentence)
     }
 
     private fun getGrammarSentence(genes: ByteArray): GrammarSentence {
