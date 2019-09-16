@@ -3,14 +3,15 @@ package cz.cuni.mff.aspect.evolution.levels
 import cz.cuni.mff.aspect.evolution.algorithm.grammar.*
 import cz.cuni.mff.aspect.mario.GameSimulator
 import cz.cuni.mff.aspect.mario.MarioAgent
+import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.level.*
 
 class GrammarLevelEvolution : LevelEvolution {
 
-    private lateinit var agent: MarioAgent
+    private lateinit var controller: MarioController
 
-    override fun evolve(agent: MarioAgent): Array<MarioLevel> {
-        this.agent = agent
+    override fun evolve(controller: MarioController): Array<MarioLevel> {
+        this.controller = controller
         val grammarEvolution = GrammarEvolution(LevelGrammar.get(), this::fitness)
         val resultSentence = grammarEvolution.evolve(POPULATION_SIZE, GENERATIONS_COUNT)
         val resultLevel = this.createLevelFromSentence(resultSentence)
@@ -27,10 +28,9 @@ class GrammarLevelEvolution : LevelEvolution {
 
         val level = this.createLevelFromSentence(sentence)
         val marioSimulator = GameSimulator()
+        val agent = MarioAgent(this.controller)
 
-        synchronized(Lock) {
-            marioSimulator.playMario(this.agent, level, false)
-        }
+        marioSimulator.playMario(agent, level, false)
 
         return marioSimulator.finalDistance
     }

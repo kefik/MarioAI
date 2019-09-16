@@ -2,7 +2,6 @@ package cz.cuni.mff.aspect.coevolution
 
 import cz.cuni.mff.aspect.evolution.controller.ControllerEvolution
 import cz.cuni.mff.aspect.evolution.levels.LevelEvolution
-import cz.cuni.mff.aspect.mario.MarioAgent
 import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.level.MarioLevel
 
@@ -15,7 +14,7 @@ class MarioCoEvolver {
         for (generation in (0 until generations)) {
             println("COEVOLUTION GENERATION ${generation + 1}")
             resultController = controllerEvolution.evolve(generator)
-            resultLevels = generator.evolve(MarioAgent(resultController))
+            resultLevels = generator.evolve(resultController)
         }
 
         return CoevolutionResult(resultController, resultLevels)

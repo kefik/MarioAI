@@ -3,6 +3,7 @@ package cz.cuni.mff.aspect.evolution.levels
 import cz.cuni.mff.aspect.extensions.getIntValues
 import cz.cuni.mff.aspect.mario.GameSimulator
 import cz.cuni.mff.aspect.mario.MarioAgent
+import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.level.DirectMarioLevel
 import cz.cuni.mff.aspect.mario.level.MarioLevel
 import io.jenetics.*
@@ -16,10 +17,10 @@ import java.util.function.Function
  */
 class DirectEncodedLevelEvolution : LevelEvolution {
 
-    private lateinit var agent: MarioAgent
+    private lateinit var controller: MarioController
 
-    override fun evolve(agent: MarioAgent): Array<MarioLevel> {
-        this.agent = agent
+    override fun evolve(controller: MarioController): Array<MarioLevel> {
+        this.controller = controller
         val genotype = this.createInitialGenotype()
         val evolutionEngine = this.createEvolutionEngine(genotype)
         val result = this.doEvolution(evolutionEngine)
@@ -34,33 +35,31 @@ class DirectEncodedLevelEvolution : LevelEvolution {
 
     private fun createEvolutionEngine(initialGenotype: Genotype<IntegerGene>): Engine<IntegerGene, Float> {
         return Engine.builder(fitness, initialGenotype)
-                .optimize(Optimize.MAXIMUM)
-                .populationSize(POPULATION_SIZE)
-                .alterers(SinglePointCrossover(0.2), Mutator(0.30))
-                .survivorsSelector(EliteSelector(2))
-                .offspringSelector(TournamentSelector(3))
-                .mapping { evolutionResult ->
-                    println("new gen: ${evolutionResult.generation} (best fitness: ${evolutionResult.bestFitness})")
-                    evolutionResult
-                }
-                .build()
+            .optimize(Optimize.MAXIMUM)
+            .populationSize(POPULATION_SIZE)
+            .alterers(SinglePointCrossover(0.2), Mutator(0.30))
+            .survivorsSelector(EliteSelector(2))
+            .offspringSelector(TournamentSelector(3))
+            .mapping { evolutionResult ->
+                println("new gen: ${evolutionResult.generation} (best fitness: ${evolutionResult.bestFitness})")
+                evolutionResult
+            }
+            .build()
     }
 
     private fun doEvolution(evolutionEngine: Engine<IntegerGene, Float>): EvolutionResult<IntegerGene, Float> {
         return evolutionEngine.stream()
-                .limit(GENERATIONS_COUNT)
-                .collect(EvolutionResult.toBestEvolutionResult<IntegerGene, Float>())
+            .limit(GENERATIONS_COUNT)
+            .collect(EvolutionResult.toBestEvolutionResult<IntegerGene, Float>())
     }
 
     private val fitness = Function<Genotype<IntegerGene>, Float> { genotype -> fitness(genotype) }
     private fun fitness(genotype: Genotype<IntegerGene>): Float {
         val marioSimulator = GameSimulator()
         val level = DirectMarioLevel.createFromTilesArray(LEVEL_WIDTH, LEVEL_HEIGHT, genotype.getIntValues())
+        val agent = MarioAgent(this.controller)
 
-        // TODO: solve this 'lock issue' -> the evolution is crashing when multiple simulators are playing at a time :( Because we are using the same agent object for each evaluation!!
-        synchronized(Lock) {
-            marioSimulator.playMario(this.agent, level, false)
-        }
+        marioSimulator.playMario(agent, level, false)
 
         return marioSimulator.finalDistance
     }
@@ -69,8 +68,8 @@ class DirectEncodedLevelEvolution : LevelEvolution {
         const val LEVEL_WIDTH = 64
         const val LEVEL_HEIGHT = 15
 
-        const val POPULATION_SIZE = 30
-        const val GENERATIONS_COUNT = 80L
+        const val POPULATION_SIZE = 40
+        const val GENERATIONS_COUNT = 150L
     }
 }
 

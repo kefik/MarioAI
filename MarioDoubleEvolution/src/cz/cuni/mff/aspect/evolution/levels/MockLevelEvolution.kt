@@ -1,15 +1,15 @@
 package cz.cuni.mff.aspect.evolution.levels
 
 import cz.cuni.mff.aspect.mario.Enemies
-import cz.cuni.mff.aspect.mario.MarioAgent
-import cz.cuni.mff.aspect.mario.level.MarioLevel
 import cz.cuni.mff.aspect.mario.Tiles
+import cz.cuni.mff.aspect.mario.controllers.MarioController
+import cz.cuni.mff.aspect.mario.level.MarioLevel
 import kotlin.random.Random
 
 
 class MockLevelEvolution : LevelEvolution {
 
-    override fun evolve(agent: MarioAgent): Array<MarioLevel> {
+    override fun evolve(controller: MarioController): Array<MarioLevel> {
         return arrayOf(MockLevel)
     }
 
