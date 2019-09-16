@@ -19,14 +19,6 @@ dependencies {
     implementation(group = "io.jenetics", name = "jenetics", version = "5.0.1")
 }
 
-sourceSets {
-    main {
-        java {
-            srcDir("./src")
-        }
-    }
-}
-
 val jar by tasks.getting(Jar::class) {
     manifest {
         attributes["Main-Class"] = "cz.cuni.mff.aspect.MainKt"
