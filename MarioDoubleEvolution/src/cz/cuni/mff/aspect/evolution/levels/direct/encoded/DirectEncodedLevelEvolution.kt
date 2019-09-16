@@ -1,5 +1,6 @@
-package cz.cuni.mff.aspect.evolution.levels
+package cz.cuni.mff.aspect.evolution.levels.direct.encoded
 
+import cz.cuni.mff.aspect.evolution.levels.LevelEvolution
 import cz.cuni.mff.aspect.extensions.getIntValues
 import cz.cuni.mff.aspect.mario.GameSimulator
 import cz.cuni.mff.aspect.mario.MarioAgent
@@ -72,5 +73,3 @@ class DirectEncodedLevelEvolution : LevelEvolution {
         const val GENERATIONS_COUNT = 150L
     }
 }
-
-object Lock

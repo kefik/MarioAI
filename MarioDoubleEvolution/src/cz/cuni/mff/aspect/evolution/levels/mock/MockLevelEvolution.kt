@@ -1,5 +1,6 @@
-package cz.cuni.mff.aspect.evolution.levels
+package cz.cuni.mff.aspect.evolution.levels.mock
 
+import cz.cuni.mff.aspect.evolution.levels.LevelEvolution
 import cz.cuni.mff.aspect.mario.Enemies
 import cz.cuni.mff.aspect.mario.Tiles
 import cz.cuni.mff.aspect.mario.controllers.MarioController

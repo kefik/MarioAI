@@ -36,5 +36,3 @@ class Grammar(private val productionRules: Array<ProductionRule>, val startingSy
 
 }
 
-
-typealias GrammarSentence = Array<Symbol>

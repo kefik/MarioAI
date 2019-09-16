@@ -1,7 +1,7 @@
 package cz.cuni.mff.aspect.evolution.controller
 
 import cz.cuni.mff.aspect.evolution.levels.LevelEvolution
-import cz.cuni.mff.aspect.evolution.levels.MockLevelEvolution
+import cz.cuni.mff.aspect.evolution.levels.mock.MockLevelEvolution
 import cz.cuni.mff.aspect.extensions.getDoubleValues
 import cz.cuni.mff.aspect.mario.GameSimulator
 import cz.cuni.mff.aspect.mario.controllers.MarioController

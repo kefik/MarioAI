@@ -8,10 +8,11 @@ import io.jenetics.engine.Engine
 import io.jenetics.engine.EvolutionResult
 import io.jenetics.util.IntRange
 import java.util.function.Function
-import kotlin.math.abs
 
 
 class GrammarEvolution(private val grammar: Grammar, private val fitnessComputation: (sentence: GrammarSentence) -> Float) {
+
+    private val genesToSentenceConverter: GenesToSentenceConverter = GenesToSentenceConverter(this.grammar)
 
     fun evolve(populationSize: Int, generationsCount: Long): GrammarSentence {
         val genotype = this.createInitialGenotype()
@@ -22,8 +23,8 @@ class GrammarEvolution(private val grammar: Grammar, private val fitnessComputat
         return this.getGrammarSentence(genes)
     }
 
-    // TODO: is 5,9 correct?
-    private fun createInitialGenotype(): Genotype<ByteGene> = Genotype.of(ByteChromosome.of(IntRange.of(5,9)))
+    // TODO: the size of the chromosome should definitely be customizable
+    private fun createInitialGenotype(): Genotype<ByteGene> = Genotype.of(ByteChromosome.of(IntRange.of(10,30)))
 
     private fun createEvolutionEngine(initialGenotype: Genotype<ByteGene>, populationSize: Int): Engine<ByteGene, Float> =
         Engine.builder(fitness, initialGenotype)
@@ -52,37 +53,11 @@ class GrammarEvolution(private val grammar: Grammar, private val fitnessComputat
     }
 
     private fun getGrammarSentence(genes: ByteArray): GrammarSentence {
-        val currentSentence = mutableListOf<Symbol>(this.grammar.startingSymbol)
-
-        var currentIndex = 0
-        var wrapsCount = 0
-        var firstNonTerminal = currentSentence.find { it.expandable }
-        while (firstNonTerminal != null && wrapsCount < MAX_WRAPS_COUNT) {
-            val ruleIndex: Int = genes[currentIndex++].toInt() + abs(Byte.MIN_VALUE.toInt())
-            val ruleCandidates = this.grammar.getRules(firstNonTerminal)
-            val ruleToUse = ruleCandidates[ruleIndex % ruleCandidates.size]
-
-            val firstNonTerminalIndex = currentSentence.indexOf(firstNonTerminal)
-            currentSentence.removeAt(firstNonTerminalIndex)
-            currentSentence.addAll(firstNonTerminalIndex, ruleToUse.to.toList())
-
-            if (currentIndex >= genes.size) {
-                currentIndex = 0
-                wrapsCount++
-            }
-
-            firstNonTerminal = currentSentence.find { it.expandable }
-        }
-
-        if (wrapsCount == MAX_WRAPS_COUNT) {
-            return emptyArray()
-        }
-
-        return currentSentence.toTypedArray()
+        return this.genesToSentenceConverter.convert(genes, MAX_WRAPS_COUNT)
     }
 
     companion object {
-        private const val MAX_WRAPS_COUNT = 20
+        private const val MAX_WRAPS_COUNT = 100
     }
 
 }
