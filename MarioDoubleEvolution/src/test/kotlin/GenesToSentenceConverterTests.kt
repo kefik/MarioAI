@@ -26,6 +26,11 @@ class GenesToSentenceConverterTests {
     }
 
     @Test
+    fun `should expand to block type 3 with big numbers`() {
+        this.assertExpansionTo(arrayOf(250, 250, 2), arrayOf(TestGrammar.blockType3))
+    }
+
+    @Test
     fun `should expand to block type 3 using multiple mods`() {
         this.assertExpansionTo(arrayOf(20, 6, 2), arrayOf(TestGrammar.blockType3))
     }

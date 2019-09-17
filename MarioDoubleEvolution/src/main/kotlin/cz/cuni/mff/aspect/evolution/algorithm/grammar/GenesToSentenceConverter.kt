@@ -35,6 +35,7 @@ class GenesToSentenceConverter(private val grammar: Grammar) {
             firstNonTerminal = currentSentence.find { it.expandable }
         }
 
+        if (wrapsCount > 0) println("Wraps count: $wrapsCount")
         if (wrapsCount == maxWrapsCount) {
             return emptyArray()
         }
