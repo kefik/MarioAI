@@ -19,7 +19,7 @@ class ByteGene(private val value: Byte) : NumericGene<Byte, ByteGene> {
     }
 
     override fun newInstance(): ByteGene {
-        return ByteGene(0)
+        return ByteGene(randomByte())
     }
 
     override fun getMax(): Byte {
@@ -32,6 +32,8 @@ class ByteGene(private val value: Byte) : NumericGene<Byte, ByteGene> {
 
     companion object {
         private val random = Random()
+        private val randomBytes: ByteArray = ByteArray(256)
+        private var randomBytesIndex: Int = randomBytes.size
 
         fun seq(lengthRange: IntRange): ISeq<ByteGene> {
             val length = lengthRange.min + random.nextInt(lengthRange.size())
@@ -41,6 +43,15 @@ class ByteGene(private val value: Byte) : NumericGene<Byte, ByteGene> {
             return MSeq.ofLength<ByteGene>(length)
                     .fill { ByteGene(values[current++]) }
                     .toISeq()
+        }
+
+        fun randomByte(): Byte {
+            if (this.randomBytesIndex == this.randomBytes.size) {
+                this.randomBytesIndex = 0
+                this.random.nextBytes(this.randomBytes)
+            }
+
+            return this.randomBytes[this.randomBytesIndex++]
         }
     }
 
