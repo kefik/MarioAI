@@ -10,29 +10,33 @@ import io.jenetics.util.IntRange
 import java.util.function.Function
 
 
-class GrammarEvolution(private val grammar: Grammar, private val fitnessComputation: (sentence: GrammarSentence) -> Float) {
+class GrammarEvolution private constructor(private val grammar: Grammar,
+                                           private val fitnessComputation: (sentence: GrammarSentence) -> Float,
+                                           private val chromosomeLengthRange: IntRange,
+                                           private val alterers: Array<Alterer<ByteGene, Float>>,
+                                           private val populationSize: Int,
+                                           private val generationsCount: Long) {
 
     private val genesToSentenceConverter: GenesToSentenceConverter = GenesToSentenceConverter(this.grammar)
 
-    fun evolve(populationSize: Int, generationsCount: Long): GrammarSentence {
+    fun evolve(): GrammarSentence {
         val genotype = this.createInitialGenotype()
-        val evolutionEngine = this.createEvolutionEngine(genotype, populationSize)
-        val result = this.doEvolution(evolutionEngine, generationsCount)
+        val evolutionEngine = this.createEvolutionEngine(genotype, this.populationSize)
+        val result = this.doEvolution(evolutionEngine, this.generationsCount)
 
         val genes = result.bestPhenotype.genotype.getByteValues()
         return this.getGrammarSentence(genes)
     }
 
-    // TODO: the size of the chromosome should definitely be customizable
-    private fun createInitialGenotype(): Genotype<ByteGene> = Genotype.of(ByteChromosome.of(IntRange.of(10,30)))
+    private fun createInitialGenotype(): Genotype<ByteGene> = Genotype.of(ByteChromosome.of(this.chromosomeLengthRange))
 
     private fun createEvolutionEngine(initialGenotype: Genotype<ByteGene>, populationSize: Int): Engine<ByteGene, Float> =
         Engine.builder(fitness, initialGenotype)
             .optimize(Optimize.MAXIMUM)
             .populationSize(populationSize)
-            .alterers(SinglePointCrossover(0.2), Mutator(0.30))
-            .survivorsSelector(EliteSelector(2))
-            .offspringSelector(TournamentSelector(3))
+            .alterers(this.alterers[0], *this.alterers.slice(1 until this.alterers.size).toTypedArray())
+            .survivorsSelector(EliteSelector(5))
+            .offspringSelector(RouletteWheelSelector())
             .mapping { evolutionResult ->
                 println("[GE] new gen: ${evolutionResult.generation} (best fitness: ${evolutionResult.bestFitness})")
                 evolutionResult
@@ -58,6 +62,26 @@ class GrammarEvolution(private val grammar: Grammar, private val fitnessComputat
 
     companion object {
         private const val MAX_WRAPS_COUNT = 100
+    }
+
+    @Suppress("ArrayInDataClass")
+    data class Builder(private var grammar: Grammar,
+                       private var fitnessComputation: (sentence: GrammarSentence) -> Float = { _ -> 0.0f },
+                       private var chromosomeLengthRange: IntRange = IntRange.of(10, 30),
+                       private var alterers: Array<Alterer<ByteGene, Float>> = arrayOf(SinglePointCrossover(0.4), Mutator(0.3)),
+                       private var populationSize: Int = 20,
+                       private var generationsCount: Long = 50) {
+
+        fun grammar(grammar: Grammar): Builder = apply { this.grammar = grammar }
+        fun fitness(fitnessComputation: (sentence: GrammarSentence) -> Float): Builder = apply { this.fitnessComputation = fitnessComputation }
+        fun chromosomeLength(length: IntRange): Builder = apply { this.chromosomeLengthRange = length }
+        fun alterers(vararg alterers: Alterer<ByteGene, Float>): Builder = apply { this.alterers = arrayOf(*alterers) }
+        fun populationSize(populationSize: Int): Builder = apply { this.populationSize = populationSize }
+        fun generationsCount(generationsCount: Long): Builder = apply { this.generationsCount = generationsCount }
+
+        fun build(): GrammarEvolution = GrammarEvolution(this.grammar, this.fitnessComputation, this.chromosomeLengthRange,
+            this.alterers, this.populationSize, this.generationsCount)
+
     }
 
 }
