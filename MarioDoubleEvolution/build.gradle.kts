@@ -17,7 +17,22 @@ dependencies {
     implementation(group = "org.nd4j", name = "nd4j-native-platform", version = "0.9.1")
     implementation(group = "org.datavec", name = "datavec-api", version = "0.9.1")
     implementation(group = "io.jenetics", name = "jenetics", version = "5.0.1")
+
+    testImplementation(group = "junit", name = "junit", version = "4.12")
 }
+
+
+
+tasks.withType<Test> {
+    testLogging {
+        events("PASSED", "FAILED", "SKIPPED")
+    }
+
+    this.testLogging {
+        this.showStandardStreams = true
+    }
+}
+
 
 val jar by tasks.getting(Jar::class) {
     manifest {

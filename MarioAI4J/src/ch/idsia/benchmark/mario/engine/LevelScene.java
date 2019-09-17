@@ -60,7 +60,6 @@ import ch.idsia.benchmark.mario.options.SimulationOptions;
 import ch.idsia.benchmark.mario.options.SystemOptions;
 import ch.idsia.benchmark.mario.options.VisualizationOptions;
 import ch.idsia.utils.MarioLog;
-import com.sun.org.apache.xpath.internal.objects.XObject;
 
 public final class LevelScene implements SpriteContext {
 

@@ -11,4 +11,6 @@ class NonTerminal(value: String) : Symbol(value, true)
 class Terminal(value: String) : Symbol(value, false)
 
 
-open class Symbol(val value: String, val expandable: Boolean)
+open class Symbol(val value: String, val expandable: Boolean) {
+    override fun toString(): String = value
+}
