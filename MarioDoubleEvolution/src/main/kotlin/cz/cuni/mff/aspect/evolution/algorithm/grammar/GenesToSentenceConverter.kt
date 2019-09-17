@@ -14,12 +14,11 @@ class GenesToSentenceConverter(private val grammar: Grammar) {
     fun convertUnsigned(unsignedGenes: Array<Int>, maxWrapsCount: Int = 100): GrammarSentence {
         val currentSentence = mutableListOf<Symbol>(this.grammar.startingSymbol)
 
-        var currentIndex = 0
-        var wrapsCount = 0
         var firstNonTerminal = currentSentence.find { it.expandable }
+        val genesIterator = CircularIterator(unsignedGenes)
 
-        while (firstNonTerminal != null && wrapsCount < maxWrapsCount) {
-            val ruleIndex: Int = unsignedGenes[currentIndex++]
+        while (firstNonTerminal != null && genesIterator.wrapsCount < maxWrapsCount) {
+            val ruleIndex: Int = genesIterator.next()
             val ruleCandidates = this.grammar.getRules(firstNonTerminal)
             val ruleToUse = ruleCandidates[ruleIndex % ruleCandidates.size]
 
@@ -27,16 +26,11 @@ class GenesToSentenceConverter(private val grammar: Grammar) {
             currentSentence.removeAt(firstNonTerminalIndex)
             currentSentence.addAll(firstNonTerminalIndex, ruleToUse.to.toList())
 
-            if (currentIndex >= unsignedGenes.size) {
-                currentIndex = 0
-                wrapsCount++
-            }
-
             firstNonTerminal = currentSentence.find { it.expandable }
         }
 
-        if (wrapsCount > 0) println("Wraps count: $wrapsCount")
-        if (wrapsCount == maxWrapsCount) {
+        if (genesIterator.wrapsCount > 0) println("Wraps count: ${genesIterator.wrapsCount}")
+        if (genesIterator.wrapsCount == maxWrapsCount) {
             return emptyArray()
         }
 
