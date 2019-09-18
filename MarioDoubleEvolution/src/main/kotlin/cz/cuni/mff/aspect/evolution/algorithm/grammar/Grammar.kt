@@ -14,25 +14,25 @@ class NoRuleForGivenSymbol(symbol: Symbol) :
 
 class Grammar(private val productionRules: Array<ProductionRule>, val startingSymbol: NonTerminal) {
 
-    private val productionMap: Map<NonTerminal, MutableList<ProductionRule>>
+    private val productionMap: Map<String, MutableList<ProductionRule>>
 
     init {
         productionMap = mutableMapOf()
 
         for (productionRule in this.productionRules) {
-            if (!productionMap.containsKey(productionRule.from)) {
-                productionMap[productionRule.from] = mutableListOf()
+            if (!productionMap.containsKey(productionRule.from.value)) {
+                productionMap[productionRule.from.value] = mutableListOf()
             }
-            productionMap[productionRule.from]?.add(productionRule)
+            productionMap[productionRule.from.value]?.add(productionRule)
         }
 
-        if (productionMap[this.startingSymbol].isNullOrEmpty()) {
+        if (productionMap[this.startingSymbol.value].isNullOrEmpty()) {
             throw MissingStartingSymbolRule(this.startingSymbol, this.productionRules)
         }
     }
 
     fun getRules(nonTerminal: Symbol): List<ProductionRule> =
-        this.productionMap[nonTerminal] ?: throw NoRuleForGivenSymbol(nonTerminal)
+        this.productionMap[nonTerminal.value] ?: throw NoRuleForGivenSymbol(nonTerminal)
 
 }
 

@@ -24,7 +24,10 @@ class GenesToSentenceConverter(private val grammar: Grammar) {
 
             val firstNonTerminalIndex = currentSentence.indexOf(firstNonTerminal)
             currentSentence.removeAt(firstNonTerminalIndex)
-            currentSentence.addAll(firstNonTerminalIndex, ruleToUse.to.toList())
+
+            val rightSideOfRuleToUse = ruleToUse.to.map { s -> s.copy() }
+            rightSideOfRuleToUse.forEach { it.takeParameters(genesIterator) }
+            currentSentence.addAll(firstNonTerminalIndex, rightSideOfRuleToUse)
 
             firstNonTerminal = currentSentence.find { it.expandable }
         }

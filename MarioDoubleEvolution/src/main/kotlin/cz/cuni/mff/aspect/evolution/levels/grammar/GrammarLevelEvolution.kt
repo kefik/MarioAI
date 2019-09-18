@@ -13,7 +13,6 @@ import io.jenetics.Alterer
 import io.jenetics.Mutator
 import io.jenetics.SinglePointCrossover
 import io.jenetics.util.IntRange
-import kotlin.math.pow
 
 
 class GrammarLevelEvolution : LevelEvolution {
@@ -48,28 +47,35 @@ class GrammarLevelEvolution : LevelEvolution {
 
         marioSimulator.playMario(agent, level, false)
 
-        return marioSimulator.finalDistance
+        val marioDistance = marioSimulator.finalDistance
+
+        var penalty = 0
+        for (i in 1 until sentence.size) {
+            if (sentence[i] == sentence[i - 1])
+                penalty += 20
+            else if (sentence[i].value == sentence[i - 1].value)
+                penalty += 10
+        }
+
+        return marioDistance - penalty
     }
 
-    private fun createLevelFromSentence(sentence: GrammarSentence): MarioLevel {
+    // TODO: this may be its own class
+    fun createLevelFromSentence(sentence: GrammarSentence): MarioLevel {
         val levelChunks = mutableListOf<MarioLevelChunk>()
-        for (symbol in sentence) {
-            when (symbol) {
-                LevelGrammar.path -> levelChunks.add(PathMarioLevelChunk())
-                LevelGrammar.nothing -> levelChunks.add(EmptyMarioLevelChunk())
-                // TODO: better exception
-                else -> throw Exception("Unknown terminal in sentence! ${symbol.value}")
-            }
+        sentence.forEach {
+            val chunkTerminal = (it as LevelChunkTerminal)
+            levelChunks.add(chunkTerminal.generateChunk())
         }
 
         return ChunkedMarioLevel(levelChunks.toTypedArray())
     }
 
     companion object {
-        private const val POPULATION_SIZE: Int = 50
-        private const val GENERATIONS_COUNT: Long = 1000L
-        private val CHROMOSOME_LENGTH: IntRange = IntRange.of(50, 70)
-        private val ALTERERS: Array<Alterer<ByteGene, Float>> = arrayOf(SinglePointCrossover(0.3), Mutator(0.2))
+        private const val POPULATION_SIZE: Int = 30
+        private const val GENERATIONS_COUNT: Long = 200L
+        private val CHROMOSOME_LENGTH: IntRange = IntRange.of(80, 100)
+        private val ALTERERS: Array<Alterer<ByteGene, Float>> = arrayOf(SinglePointCrossover(0.3), Mutator(0.1))
     }
 
 }

@@ -12,11 +12,14 @@ object Tiles {
 
     const val DIRT: Byte = (1 + 9 * 16).toByte()
 
-    const val GROUND_LEFT: Byte = (0 + 9 * 16).toByte()
-    const val GROUND_RIGHT: Byte = (2 + 9 * 16).toByte()
+    const val GRASS_TOP: Byte = (1 + 8 * 16).toByte()
+    const val GRASS_LEFT: Byte = (0 + 9 * 16).toByte()
+    const val GRASS_RIGHT: Byte = (2 + 9 * 16).toByte()
 
     const val QUESTION_MARK_BLOCK: Byte = (4 + 1 * 16).toByte()
     const val QUESTION_MARK_BLOCK_USED: Byte = (4 + 0 * 16).toByte()
+
+    const val BLOCK: Byte = (0 + 1 * 16).toByte()
 
     const val PEACH: Byte = (15 + 15 * 16).toByte()
 

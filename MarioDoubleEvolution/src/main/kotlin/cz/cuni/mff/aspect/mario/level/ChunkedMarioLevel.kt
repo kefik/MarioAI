@@ -1,6 +1,5 @@
 package cz.cuni.mff.aspect.mario.level
 
-import cz.cuni.mff.aspect.mario.Tiles
 
 class ChunkedMarioLevel(private val chunks: Array<MarioLevelChunk>) : MarioLevel {
 
@@ -34,20 +33,9 @@ abstract class MarioLevelChunk {
 
 }
 
-abstract class ArrayMarioLevelChunk(private val columns: Array<ByteArray>) : MarioLevelChunk() {
+class ArrayMarioLevelChunk(private val columns: Array<ByteArray>) : MarioLevelChunk() {
 
     override val width: Int = columns.size
     override fun getColumn(index: Int): ByteArray = columns[index]
 
 }
-
-val pathColumn = ByteArray(15) { if (it != 8) Tiles.NOTHING else Tiles.DIRT }
-val emptyColumn = ByteArray(15) { Tiles.NOTHING }
-
-class PathMarioLevelChunk : ArrayMarioLevelChunk(
-    arrayOf(pathColumn, pathColumn, pathColumn)
-)
-
-class EmptyMarioLevelChunk : ArrayMarioLevelChunk(
-    arrayOf(emptyColumn, emptyColumn, emptyColumn)
-)
