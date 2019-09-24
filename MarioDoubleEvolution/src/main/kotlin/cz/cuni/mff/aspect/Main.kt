@@ -1,11 +1,15 @@
 package cz.cuni.mff.aspect
 
 import cz.cuni.mff.aspect.coevolution.MarioCoEvolver
+import cz.cuni.mff.aspect.evolution.algorithm.grammar.GenesToSentenceConverter
+import cz.cuni.mff.aspect.evolution.algorithm.grammar.getString
 import cz.cuni.mff.aspect.evolution.controller.ControllerEvolution
 import cz.cuni.mff.aspect.evolution.controller.NeuroControllerEvolution
 import cz.cuni.mff.aspect.evolution.levels.grammar.GrammarLevelEvolution
 import cz.cuni.mff.aspect.evolution.levels.LevelEvolution
+import cz.cuni.mff.aspect.evolution.levels.grammar.LevelGrammar
 import cz.cuni.mff.aspect.evolution.levels.mock.MockLevelEvolution
+import cz.cuni.mff.aspect.grammar.RandomGrammarSentenceGenerator
 import cz.cuni.mff.aspect.mario.GameSimulator
 import cz.cuni.mff.aspect.mario.controllers.EvolvedControllers
 import cz.cuni.mff.aspect.storage.LevelStorage
@@ -31,8 +35,10 @@ fun coevolution() {
 }
 
 fun playground() {
-    // doGrammarEvolution()
-    loadGrammarEvolution()
+    doGrammarEvolution()
+    //loadGrammarEvolution()
+    //generateSentences()
+    //playSentence()
 }
 
 fun doGrammarEvolution() {
@@ -41,14 +47,37 @@ fun doGrammarEvolution() {
     val levels = levelEvolution.evolve(controller)
     val firstLevel = levels.first()
 
-    LevelStorage.storeLevel("asd.lvl", firstLevel)
+    LevelStorage.storeLevel("asdef.lvl", firstLevel)
 
     GameSimulator().playMario(controller, firstLevel, true)
 }
 
 fun loadGrammarEvolution() {
     val controller = EvolvedControllers.jumpingSimpleANNController()
-    val level = LevelStorage.loadLevel(LevelStorage.FIRST_GRAMMAR_LEVEL)
+    val level = LevelStorage.loadLevel("asde.lvl")
 
     GameSimulator().playMario(controller, level, true)
+}
+
+fun generateSentences() {
+    val controller = EvolvedControllers.jumpingSimpleANNController()
+    val levelSentence = RandomGrammarSentenceGenerator(LevelGrammar.get()).generate()
+    val level = GrammarLevelEvolution().createLevelFromSentence(levelSentence)
+
+    LevelStorage.storeLevel("randomsentence3.lvl", level)
+
+    GameSimulator().playMario(controller, level, true)
+}
+
+fun playSentence() {
+    val controller = EvolvedControllers.jumpingSimpleANNController()
+    val genes = arrayOf<Byte>(0, 0, 0, 0, 0, 0, 0, 0).toByteArray()
+    val levelSentence = GenesToSentenceConverter(LevelGrammar.get()).convert(genes)
+    println(levelSentence.getString())
+    val level = GrammarLevelEvolution().createLevelFromSentence(levelSentence)
+    println(level.pixelWidth)
+
+    val simulator = GameSimulator()
+    simulator.playMario(controller, level, true)
+    println(simulator.finalDistance)
 }

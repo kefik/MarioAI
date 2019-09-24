@@ -13,6 +13,8 @@ import io.jenetics.Alterer
 import io.jenetics.Mutator
 import io.jenetics.SinglePointCrossover
 import io.jenetics.util.IntRange
+import kotlin.math.abs
+import kotlin.math.pow
 
 
 class GrammarLevelEvolution : LevelEvolution {
@@ -57,7 +59,18 @@ class GrammarLevelEvolution : LevelEvolution {
                 penalty += 10
         }
 
-        return marioDistance - penalty
+        // return marioDistance - penalty
+
+        // return sentence.size.toFloat()
+        return marioDistance
+        //val targetLength = 5000
+        //return (level.pixelWidth.toFloat() - targetLength).pow(2) + (marioDistance - targetLength).pow(2)
+
+        return level.pixelWidth.toFloat()
+        if (marioDistance.toInt() < level.pixelWidth) {
+            return 0f
+        }
+        return level.pixelWidth + marioDistance
     }
 
     // TODO: this may be its own class
@@ -72,10 +85,10 @@ class GrammarLevelEvolution : LevelEvolution {
     }
 
     companion object {
-        private const val POPULATION_SIZE: Int = 30
-        private const val GENERATIONS_COUNT: Long = 200L
-        private val CHROMOSOME_LENGTH: IntRange = IntRange.of(80, 100)
-        private val ALTERERS: Array<Alterer<ByteGene, Float>> = arrayOf(SinglePointCrossover(0.3), Mutator(0.1))
+        private const val POPULATION_SIZE: Int = 70
+        private const val GENERATIONS_COUNT: Long = 300
+        private val CHROMOSOME_LENGTH: IntRange = IntRange.of(200, 250)
+        private val ALTERERS: Array<Alterer<ByteGene, Float>> = arrayOf(SinglePointCrossover(0.3), Mutator(0.05))
     }
 
 }

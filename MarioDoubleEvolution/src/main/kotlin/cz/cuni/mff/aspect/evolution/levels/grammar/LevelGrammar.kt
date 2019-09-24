@@ -10,7 +10,7 @@ object LevelGrammar {
     val level = NonTerminal("LEVEL")
 
     private val blockSequence = NonTerminal("BLOCK SEQUENCE")
-    private  val block = NonTerminal("LEVEL BLOCK")
+    private val block = NonTerminal("LEVEL BLOCK")
 
     private val nothing = NothingChunkTerminal()
     private val start = StartChunkTerminal()
@@ -20,6 +20,7 @@ object LevelGrammar {
 
     private val grammar = Grammar(arrayOf(
         ProductionRule(level, arrayOf(start, blockSequence)),
+
         ProductionRule(blockSequence, arrayOf(block)),
         ProductionRule(blockSequence, arrayOf(block, blockSequence)),
         ProductionRule(block, arrayOf(nothing)),

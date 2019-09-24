@@ -22,6 +22,12 @@ class GenesToSentenceConverter(private val grammar: Grammar) {
             val ruleCandidates = this.grammar.getRules(firstNonTerminal)
             val ruleToUse = ruleCandidates[ruleIndex % ruleCandidates.size]
 
+            /******** */
+            if (firstNonTerminal.value == "BLOCK SEQUENCE") {
+                // println("BS: $ruleIndex")
+            }
+            /******* */
+
             val firstNonTerminalIndex = currentSentence.indexOf(firstNonTerminal)
             currentSentence.removeAt(firstNonTerminalIndex)
 

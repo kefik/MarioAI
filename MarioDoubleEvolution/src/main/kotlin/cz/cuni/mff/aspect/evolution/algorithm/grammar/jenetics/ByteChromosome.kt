@@ -42,6 +42,7 @@ class ByteChromosome(@Transient private val genes: ISeq<ByteGene>, private val l
 
         fun of(lengthRange: IntRange): ByteChromosome {
             val values = ByteGene.seq(lengthRange)
+            // println("new chromosome: " + values.toList().map{it.allele}.joinToString(","))
             return ByteChromosome(values, lengthRange)
         }
 
