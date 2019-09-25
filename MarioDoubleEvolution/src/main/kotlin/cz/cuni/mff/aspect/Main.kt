@@ -86,7 +86,7 @@ fun playSentence() {
 fun evolveAI() {
     val controllerEvolution: ControllerEvolution = NeuroControllerEvolution()
     val level = LevelStorage.loadLevel("ge_first_enemies.lvl")
-    val resultController = controllerEvolution.evolve(arrayOf(level)
+    val resultController = controllerEvolution.evolve(arrayOf(level))
 
     val marioSimulator = GameSimulator()
     marioSimulator.playMario(resultController, level, true)
