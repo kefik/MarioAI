@@ -49,7 +49,7 @@ open class GameSimulator(private val maxTicks: Int = DEFAULT_MAX_TICKS) {
     }
 
     companion object {
-        private const val DEFAULT_MAX_TICKS = 2000
+        private const val DEFAULT_MAX_TICKS = 1000
     }
 
 }

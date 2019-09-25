@@ -1,7 +1,7 @@
 package cz.cuni.mff.aspect.evolution.controller
 
-import cz.cuni.mff.aspect.evolution.levels.LevelEvolution
 import cz.cuni.mff.aspect.mario.controllers.MarioController
+import cz.cuni.mff.aspect.mario.level.MarioLevel
 
 
 /**
@@ -14,7 +14,6 @@ interface ControllerEvolution {
      *
      * @return the evolved agent controller
      */
-    // TODO: this should be some generic Generator, not EvolutionaryGenerator
-    fun evolve(levelGenerator: LevelEvolution): MarioController
+    fun evolve(levels: Array<MarioLevel>): MarioController
 
 }
