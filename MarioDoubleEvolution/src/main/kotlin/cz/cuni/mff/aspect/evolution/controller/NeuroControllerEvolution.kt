@@ -1,12 +1,11 @@
 package cz.cuni.mff.aspect.evolution.controller
 
-import cz.cuni.mff.aspect.evolution.levels.LevelEvolution
-import cz.cuni.mff.aspect.evolution.levels.mock.MockLevelEvolution
 import cz.cuni.mff.aspect.extensions.getDoubleValues
 import cz.cuni.mff.aspect.mario.GameSimulator
 import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.controllers.SimpleANNController
 import cz.cuni.mff.aspect.mario.controllers.SimpleAgentNetwork
+import cz.cuni.mff.aspect.mario.level.MarioLevel
 import io.jenetics.*
 import io.jenetics.engine.Engine
 import io.jenetics.engine.EvolutionResult
@@ -18,7 +17,10 @@ import java.util.function.Function
  */
 class NeuroControllerEvolution : ControllerEvolution {
 
-    override fun evolve(levelGenerator: LevelEvolution): MarioController {
+    private lateinit var levels: Array<MarioLevel>
+
+    override fun evolve(levels: Array<MarioLevel>): MarioController {
+        this.levels = levels
         val genotype = this.createInitialGenotype()
         val engine = this.createEvolutionEngine(genotype)
         val result = this.doEvolution(engine)
@@ -64,7 +66,7 @@ class NeuroControllerEvolution : ControllerEvolution {
         val controller = SimpleANNController(network)
 
         val marioSimulator = GameSimulator()
-        marioSimulator.playMario(controller, MockLevelEvolution.MockLevel, false)
+        marioSimulator.playMario(controller, this.levels.first(), false)
 
         return marioSimulator.finalDistance
     }

@@ -35,10 +35,11 @@ fun coevolution() {
 }
 
 fun playground() {
-    doGrammarEvolution()
-    //loadGrammarEvolution()
+    //doGrammarEvolution()
+    //loadLevel()
     //generateSentences()
     //playSentence()
+    evolveAI()
 }
 
 fun doGrammarEvolution() {
@@ -47,14 +48,14 @@ fun doGrammarEvolution() {
     val levels = levelEvolution.evolve(controller)
     val firstLevel = levels.first()
 
-    LevelStorage.storeLevel("asdef.lvl", firstLevel)
+    LevelStorage.storeLevel("current.lvl", firstLevel)
 
     GameSimulator().playMario(controller, firstLevel, true)
 }
 
-fun loadGrammarEvolution() {
+fun loadLevel() {
     val controller = EvolvedControllers.jumpingSimpleANNController()
-    val level = LevelStorage.loadLevel("asde.lvl")
+    val level = LevelStorage.loadLevel("ge_first_enemies.lvl")
 
     GameSimulator().playMario(controller, level, true)
 }
@@ -80,4 +81,13 @@ fun playSentence() {
     val simulator = GameSimulator()
     simulator.playMario(controller, level, true)
     println(simulator.finalDistance)
+}
+
+fun evolveAI() {
+    val controllerEvolution: ControllerEvolution = NeuroControllerEvolution()
+    val level = LevelStorage.loadLevel("ge_first_enemies.lvl")
+    val resultController = controllerEvolution.evolve(arrayOf(level)
+
+    val marioSimulator = GameSimulator()
+    marioSimulator.playMario(resultController, level, true)
 }

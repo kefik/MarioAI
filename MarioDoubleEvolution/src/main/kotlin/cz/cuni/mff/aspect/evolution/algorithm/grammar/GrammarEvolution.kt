@@ -38,8 +38,7 @@ class GrammarEvolution private constructor(private val grammar: Grammar,
             .survivorsSelector(EliteSelector(10))
             .offspringSelector(RouletteWheelSelector())
             .mapping { evolutionResult ->
-                // println("[GE] new gen: ${evolutionResult.generation} (best fitness: ${evolutionResult.bestFitness})")
-                println("  ${evolutionResult.generation}   ${evolutionResult.bestFitness}")
+                println("[GE] new gen: ${evolutionResult.generation} (best fitness: ${evolutionResult.bestFitness})")
                 evolutionResult
             }
             .build()
