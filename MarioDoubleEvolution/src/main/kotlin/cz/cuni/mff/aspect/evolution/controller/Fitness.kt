@@ -12,9 +12,9 @@ fun fitnessOnlyDistance(controller: MarioController, levels: Array<MarioLevel>):
 }
 
 
-fun fitnessDistanceJumpsSpecialsHurts(controller: MarioController, levels: Array<MarioLevel>): Float {
+fun fitnessDistanceJumpsSpecialsHurtsKills(controller: MarioController, levels: Array<MarioLevel>): Float {
     val statistics = playRandomLevel(controller, levels)
-    return statistics.finalMarioDistance - statistics.jumps * 5 - statistics.specials * 5 - statistics.marioHurts * 20
+    return statistics.finalMarioDistance + statistics.kills * 50 - statistics.jumps * 5 - statistics.specials * 5 - statistics.marioHurts * 20
 }
 
 

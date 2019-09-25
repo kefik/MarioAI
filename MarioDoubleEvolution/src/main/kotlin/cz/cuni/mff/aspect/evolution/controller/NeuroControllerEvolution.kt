@@ -28,6 +28,8 @@ class NeuroControllerEvolution : ControllerEvolution {
         val controllerNetwork = SimpleAgentNetwork()
         controllerNetwork.setNetworkWeights(resultGenes)
 
+        println(resultGenes.contentToString())
+
         return SimpleANNController(controllerNetwork)
     }
 
@@ -39,8 +41,8 @@ class NeuroControllerEvolution : ControllerEvolution {
         return Engine.builder(fitness, genotype)
                 .optimize(Optimize.MAXIMUM)
                 .populationSize(POPULATION_SIZE)
-                .alterers(SinglePointCrossover(0.2), Mutator(0.30))
-                .survivorsSelector(EliteSelector(2))
+                .alterers(SinglePointCrossover(0.2), Mutator(0.02))
+                .survivorsSelector(EliteSelector(5))
                 .offspringSelector(TournamentSelector(3))
                 .mapping { evolutionResult ->
                     println("new gen: ${evolutionResult.generation} (best fitness: ${evolutionResult.bestFitness})")
@@ -63,12 +65,12 @@ class NeuroControllerEvolution : ControllerEvolution {
 
         val controller = SimpleANNController(network)
 
-        return fitnessDistanceJumpsSpecialsHurts(controller, this.levels)
+        return fitnessDistanceJumpsSpecialsHurtsKills(controller, this.levels)
     }
 
     companion object {
         private const val POPULATION_SIZE = 50
-        private const val GENERATIONS_COUNT: Long = 20
+        private const val GENERATIONS_COUNT: Long = 500
     }
 
 }
