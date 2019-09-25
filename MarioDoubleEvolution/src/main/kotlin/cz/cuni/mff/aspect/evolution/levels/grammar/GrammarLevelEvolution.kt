@@ -49,7 +49,7 @@ class GrammarLevelEvolution : LevelEvolution {
 
         marioSimulator.playMario(agent, level, false)
 
-        val marioDistance = marioSimulator.finalDistance
+        val marioDistance = marioSimulator.statistics.finalMarioDistance
 
         var penalty = 0
         for (i in 1 until sentence.size) {

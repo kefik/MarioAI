@@ -1,7 +1,6 @@
 package cz.cuni.mff.aspect.evolution.controller
 
 import cz.cuni.mff.aspect.extensions.getDoubleValues
-import cz.cuni.mff.aspect.mario.GameSimulator
 import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.controllers.SimpleANNController
 import cz.cuni.mff.aspect.mario.controllers.SimpleAgentNetwork
@@ -59,16 +58,12 @@ class NeuroControllerEvolution : ControllerEvolution {
     private val fitness = Function<Genotype<DoubleGene>, Float> { genotype -> fitness(genotype) }
     private fun fitness(genotype: Genotype<DoubleGene>): Float {
         val networkWeights: DoubleArray = genotype.getDoubleValues()
-
         val network = SimpleAgentNetwork()
         network.setNetworkWeights(networkWeights)
 
         val controller = SimpleANNController(network)
 
-        val marioSimulator = GameSimulator()
-        marioSimulator.playMario(controller, this.levels.first(), false)
-
-        return marioSimulator.finalDistance
+        return fitnessDistanceJumpsSpecialsHurts(controller, this.levels)
     }
 
     companion object {

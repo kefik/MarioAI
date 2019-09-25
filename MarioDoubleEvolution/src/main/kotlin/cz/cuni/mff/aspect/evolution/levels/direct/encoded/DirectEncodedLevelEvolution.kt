@@ -62,7 +62,7 @@ class DirectEncodedLevelEvolution : LevelEvolution {
 
         marioSimulator.playMario(agent, level, false)
 
-        return marioSimulator.finalDistance
+        return marioSimulator.statistics.finalMarioDistance
     }
 
     companion object {

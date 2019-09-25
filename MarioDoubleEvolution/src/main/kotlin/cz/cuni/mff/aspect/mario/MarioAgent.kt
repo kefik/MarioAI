@@ -7,14 +7,17 @@ import ch.idsia.benchmark.mario.engine.input.MarioInput
 import cz.cuni.mff.aspect.mario.controllers.MarioAction
 import cz.cuni.mff.aspect.mario.controllers.MarioController
 
-class MarioAgent(private val _controller: MarioController) : MarioHijackAIBase(), IAgent {
+class MarioAgent(private val controller: MarioController) : MarioHijackAIBase(), IAgent {
+
+    var lastActions: List<MarioAction> = emptyList()
 
     override fun reset(options: AgentOptions) {
         super.reset(options)
     }
 
     override fun actionSelectionAI(): MarioInput {
-        val actions = this._controller.playAction(t, e)
+        val actions = this.controller.playAction(t, e)
+        this.lastActions = actions
         for (action in actions) {
             when (action) {
                 MarioAction.RUN_RIGHT -> control.runRight()

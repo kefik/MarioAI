@@ -80,7 +80,7 @@ fun playSentence() {
 
     val simulator = GameSimulator()
     simulator.playMario(controller, level, true)
-    println(simulator.finalDistance)
+    println(simulator.statistics.finalMarioDistance)
 }
 
 fun evolveAI() {
