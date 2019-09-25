@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <option name="BUILD_PROCESS_HEAP_SIZE" value="2048" />
+    <bytecodeTargetLevel>
+      <module name="mario-coevolution.main" target="1.8" />
+      <module name="mario-coevolution.test" target="1.8" />
+      <module name="mario.main" target="1.8" />
+      <module name="mario.mario-coevolution.main" target="1.8" />
+      <module name="mario.mario-coevolution.test" target="1.8" />
+      <module name="mario.mario-simulator.main" target="1.8" />
+      <module name="mario.mario-simulator.test" target="1.8" />
+      <module name="mario.MarioAI4J.main" target="1.8" />
+      <module name="mario.MarioAI4J.test" target="1.8" />
+      <module name="mario.MarioDoubleEvolution.main" target="1.8" />
+      <module name="mario.MarioDoubleEvolution.test" target="1.8" />
+      <module name="mario.test" target="1.8" />
+      <module name="MarioAI.integrationTest" target="1.8" />
+      <module name="MarioAI.main" target="1.8" />
+      <module name="MarioAI.test" target="1.8" />
+      <module name="org.gradle.sample.mario.mario-simulator.main" target="1.8" />
+      <module name="org.gradle.sample.mario.mario-simulator.test" target="1.8" />
+      <module name="org.gradle.sample.mario.MarioDoubleEvolution.main" target="1.8" />
+      <module name="org.gradle.sample.mario.MarioDoubleEvolution.test" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

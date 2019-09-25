@@ -1,4 +1,4 @@
-package cz.cuni.mff.aspect.evolution.controller
+package cz.cuni.mff.aspect.evolution
 
 import cz.cuni.mff.aspect.mario.GameSimulator
 import cz.cuni.mff.aspect.mario.GameStatistics
@@ -12,9 +12,15 @@ fun fitnessOnlyDistance(controller: MarioController, levels: Array<MarioLevel>):
 }
 
 
+fun fitnessOnlyVictory(controller: MarioController, levels: Array<MarioLevel>): Float {
+    val statistics = playRandomLevel(controller, levels)
+    return if (statistics.levelFinished) 1.0f else 0.0f
+}
+
+
 fun fitnessDistanceJumpsSpecialsHurtsKills(controller: MarioController, levels: Array<MarioLevel>): Float {
     val statistics = playRandomLevel(controller, levels)
-    return statistics.finalMarioDistance + statistics.kills * 50 - statistics.jumps * 5 - statistics.specials * 5 - statistics.marioHurts * 20
+    return statistics.finalMarioDistance + statistics.kills * 50 - statistics.jumps * 5 - statistics.specials - statistics.marioHurts * 20
 }
 
 

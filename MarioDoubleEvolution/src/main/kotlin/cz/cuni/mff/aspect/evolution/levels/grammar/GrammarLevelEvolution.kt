@@ -4,6 +4,8 @@ import cz.cuni.mff.aspect.evolution.algorithm.grammar.GrammarEvolution
 import cz.cuni.mff.aspect.evolution.algorithm.grammar.GrammarSentence
 import cz.cuni.mff.aspect.evolution.algorithm.grammar.getString
 import cz.cuni.mff.aspect.evolution.algorithm.grammar.jenetics.ByteGene
+import cz.cuni.mff.aspect.evolution.fitnessOnlyDistance
+import cz.cuni.mff.aspect.evolution.fitnessOnlyVictory
 import cz.cuni.mff.aspect.evolution.levels.LevelEvolution
 import cz.cuni.mff.aspect.mario.GameSimulator
 import cz.cuni.mff.aspect.mario.MarioAgent
@@ -44,33 +46,7 @@ class GrammarLevelEvolution : LevelEvolution {
             return 0f
 
         val level = this.createLevelFromSentence(sentence)
-        val marioSimulator = GameSimulator()
-        val agent = MarioAgent(this.controller)
-
-        marioSimulator.playMario(agent, level, false)
-
-        val marioDistance = marioSimulator.statistics.finalMarioDistance
-
-        var penalty = 0
-        for (i in 1 until sentence.size) {
-            if (sentence[i] == sentence[i - 1])
-                penalty += 20
-            else if (sentence[i].value == sentence[i - 1].value)
-                penalty += 10
-        }
-
-        // return marioDistance - penalty
-
-        // return sentence.size.toFloat()
-        return marioDistance
-        //val targetLength = 5000
-        //return (level.pixelWidth.toFloat() - targetLength).pow(2) + (marioDistance - targetLength).pow(2)
-
-        return level.pixelWidth.toFloat()
-        if (marioDistance.toInt() < level.pixelWidth) {
-            return 0f
-        }
-        return level.pixelWidth + marioDistance
+        return sentence.size.toFloat() + (fitnessOnlyVictory(this.controller, arrayOf(level)) * 10f)
     }
 
     // TODO: this may be its own class
@@ -87,7 +63,7 @@ class GrammarLevelEvolution : LevelEvolution {
     companion object {
         private const val POPULATION_SIZE: Int = 70
         private const val GENERATIONS_COUNT: Long = 300
-        private val CHROMOSOME_LENGTH: IntRange = IntRange.of(200, 250)
+        private val CHROMOSOME_LENGTH: IntRange = IntRange.of(400, 500)
         private val ALTERERS: Array<Alterer<ByteGene, Float>> = arrayOf(SinglePointCrossover(0.3), Mutator(0.05))
     }
 

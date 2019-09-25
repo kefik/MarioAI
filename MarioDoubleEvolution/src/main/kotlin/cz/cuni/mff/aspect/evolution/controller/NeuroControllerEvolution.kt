@@ -1,5 +1,6 @@
 package cz.cuni.mff.aspect.evolution.controller
 
+import cz.cuni.mff.aspect.evolution.fitnessDistanceJumpsSpecialsHurtsKills
 import cz.cuni.mff.aspect.extensions.getDoubleValues
 import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.controllers.SimpleANNController
@@ -43,7 +44,7 @@ class NeuroControllerEvolution : ControllerEvolution {
                 .populationSize(POPULATION_SIZE)
                 .alterers(SinglePointCrossover(0.2), Mutator(0.02))
                 .survivorsSelector(EliteSelector(5))
-                .offspringSelector(TournamentSelector(3))
+                .offspringSelector(RouletteWheelSelector())
                 .mapping { evolutionResult ->
                     println("new gen: ${evolutionResult.generation} (best fitness: ${evolutionResult.bestFitness})")
                     evolutionResult
@@ -70,7 +71,7 @@ class NeuroControllerEvolution : ControllerEvolution {
 
     companion object {
         private const val POPULATION_SIZE = 50
-        private const val GENERATIONS_COUNT: Long = 500
+        private const val GENERATIONS_COUNT: Long = 300
     }
 
 }
