@@ -16,6 +16,6 @@ fun keyboardPlay() {
     val level = Stage1Level1.getLevel()
     val agent = CheaterKeyboardAgent()
 
-    val marioSimulator = GameSimulator()
+    val marioSimulator = GameSimulator(5000)
     marioSimulator.playMario(agent, level, true)
 }

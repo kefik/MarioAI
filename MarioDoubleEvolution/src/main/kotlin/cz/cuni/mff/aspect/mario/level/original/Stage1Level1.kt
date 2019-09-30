@@ -23,7 +23,7 @@ object Stage1Level1 {
                 17 -> ChunkHelpers.getSecretBoxesColumn(FLOOR_LEVEL, SECOND_LEVEL)
 
                 21 -> ChunkHelpers.getBoxesColumn(FLOOR_LEVEL, SECOND_LEVEL)
-                22 -> ChunkHelpers.getSecretBoxesColumn(FLOOR_LEVEL, SECOND_LEVEL)  // Should be red mushroom
+                22 -> ChunkHelpers.getColumnWithBlock(FLOOR_LEVEL, SECOND_LEVEL, Tiles.QM_WITH_POWERUP)
                 23 -> ChunkHelpers.getBoxesAndSecretsColumn(FLOOR_LEVEL, SECOND_LEVEL, THIRD_LEVEL)
                 24 -> ChunkHelpers.getSecretBoxesColumn(FLOOR_LEVEL, SECOND_LEVEL)
                 25 -> ChunkHelpers.getBoxesColumn(FLOOR_LEVEL, SECOND_LEVEL)
@@ -37,15 +37,15 @@ object Stage1Level1 {
                 47 -> ChunkHelpers.getPipeStartColumn(FLOOR_LEVEL, 4)
                 48 -> ChunkHelpers.getPipeEndColumn(FLOOR_LEVEL, 4)
 
-                58 -> ChunkHelpers.getPipeStartColumn(FLOOR_LEVEL, 4) // should be pipe down
+                58 -> ChunkHelpers.getPipeStartColumn(FLOOR_LEVEL, 4) // TODO: should be pipe down
                 59 -> ChunkHelpers.getPipeEndColumn(FLOOR_LEVEL, 4)
 
-                65 -> ChunkHelpers.getSecretBoxesColumn(FLOOR_LEVEL, SECOND_LEVEL - 1)  // Should be green mroom
+                65 -> ChunkHelpers.getSecretBoxesColumn(FLOOR_LEVEL, SECOND_LEVEL - 1)  // TODO: Should be green mroom and invisible
 
                 70, 71 -> ChunkHelpers.getSpaceColumn()
 
                 78 -> ChunkHelpers.getBoxesColumn(FLOOR_LEVEL, SECOND_LEVEL)
-                79 -> ChunkHelpers.getSecretBoxesColumn(FLOOR_LEVEL, SECOND_LEVEL)  // should be red mushroom
+                79 -> ChunkHelpers.getColumnWithBlock(FLOOR_LEVEL, SECOND_LEVEL, Tiles.QM_WITH_POWERUP)
                 80 -> ChunkHelpers.getBoxesColumn(FLOOR_LEVEL, SECOND_LEVEL)
                 81 -> ChunkHelpers.getBoxesColumn(FLOOR_LEVEL, THIRD_LEVEL)
                 82 -> ChunkHelpers.getBoxesColumn(FLOOR_LEVEL, THIRD_LEVEL)
@@ -58,13 +58,13 @@ object Stage1Level1 {
                 89 -> ChunkHelpers.getSpaceColumn()
 
                 92, 93, 94 -> ChunkHelpers.getBoxesColumn(FLOOR_LEVEL, THIRD_LEVEL)
-                95 -> ChunkHelpers.getBoxesAndSecretsColumn(FLOOR_LEVEL, SECOND_LEVEL, THIRD_LEVEL) // here should be some weird flag or what on second level
+                95 -> ChunkHelpers.getBoxesAndSecretsColumn(FLOOR_LEVEL, SECOND_LEVEL, THIRD_LEVEL) // TODO: on second level is multiple coins qm
 
                 101 -> ChunkHelpers.getBoxesColumn(FLOOR_LEVEL, SECOND_LEVEL)
-                102 -> ChunkHelpers.getBoxesColumn(FLOOR_LEVEL, SECOND_LEVEL)  // should be powerup
+                    102 -> ChunkHelpers.getBoxesColumn(FLOOR_LEVEL, SECOND_LEVEL)  // TODO: should be star powerup
 
                 107 -> ChunkHelpers.getSecretBoxesColumn(FLOOR_LEVEL, SECOND_LEVEL)
-                110 -> ChunkHelpers.getDoubleSecretsColumn(FLOOR_LEVEL, SECOND_LEVEL, THIRD_LEVEL)  // should be red mushroom on third level
+                110 -> ChunkHelpers.getColumnWithTwoBlocks(FLOOR_LEVEL, SECOND_LEVEL, Tiles.QM_WITH_COIN, THIRD_LEVEL, Tiles.QM_WITH_POWERUP)
                 113 -> ChunkHelpers.getSecretBoxesColumn(FLOOR_LEVEL, SECOND_LEVEL)
 
                 119 -> ChunkHelpers.getBoxesColumn(FLOOR_LEVEL, SECOND_LEVEL)
@@ -96,7 +96,7 @@ object Stage1Level1 {
                 158 -> ChunkHelpers.getStonesColumn(FLOOR_LEVEL, 2)
                 159 -> ChunkHelpers.getStonesColumn(FLOOR_LEVEL, 1)
 
-                164 -> ChunkHelpers.getPipeStartColumn(FLOOR_LEVEL, 2)  // should be pipe up
+                164 -> ChunkHelpers.getPipeStartColumn(FLOOR_LEVEL, 2)  // TODO: should be pipe up
                 165 -> ChunkHelpers.getPipeEndColumn(FLOOR_LEVEL, 2)
 
                 169, 170 -> ChunkHelpers.getBoxesColumn(FLOOR_LEVEL, SECOND_LEVEL)
@@ -118,14 +118,9 @@ object Stage1Level1 {
 
                 199 -> ChunkHelpers.getPrincessPeachColumn(FLOOR_LEVEL)
 
-                // 203..207 castle
-
                 else -> ChunkHelpers.getPathColumn(FLOOR_LEVEL)
             }
         }
-
-        tiles[3][SECOND_LEVEL] = Tiles.QM_WITH_POWERUP
-
 
         val enemies: Array<Array<Int>> = Array(LEVEL_WIDTH) { Array(15) { 0 } }
         enemies[22][FLOOR_LEVEL - 1] = Enemies.Goomba.NORMAL

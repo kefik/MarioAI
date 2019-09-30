@@ -55,6 +55,25 @@ object ChunkHelpers {
         }
     }
 
+    fun getColumnWithBlock(floor: Int, blockLevel: Int, blockType: Byte): ByteArray = ByteArray(15) {
+        when {
+            it == blockLevel -> blockType
+            it == floor -> Tiles.GRASS_TOP
+            it > floor -> Tiles.DIRT
+            else -> Tiles.NOTHING
+        }
+    }
+
+    fun getColumnWithTwoBlocks(floor: Int, firstBlockLevel: Int, firstBlockType: Byte, secondBlockLevel: Int, secondBlockType: Byte): ByteArray = ByteArray(15) {
+        when {
+            it == secondBlockLevel -> secondBlockType
+            it == firstBlockLevel -> firstBlockType
+            it == floor -> Tiles.GRASS_TOP
+            it > floor -> Tiles.DIRT
+            else -> Tiles.NOTHING
+        }
+    }
+
 
     fun getPipeStartColumn(level: Int, height: Int): ByteArray = ByteArray(15) {
         when {
