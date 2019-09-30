@@ -30,8 +30,8 @@ class MockLevelEvolution : LevelEvolution {
                 }
 
                 flat[13][FLOOR - 1] = Tiles.PEACH
-                flat[2][FLOOR - 5] = Tiles.QUESTION_MARK_BLOCK
-                flat[3][FLOOR - 5] = Tiles.QUESTION_MARK_BLOCK_USED
+                flat[2][FLOOR - 5] = Tiles.QM_WITH_COIN
+                flat[3][FLOOR - 5] = Tiles.EXPIRED_QM
 
                 createHoles(flat)
 
