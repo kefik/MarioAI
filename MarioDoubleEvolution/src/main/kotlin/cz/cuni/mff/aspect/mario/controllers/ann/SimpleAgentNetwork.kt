@@ -1,8 +1,9 @@
-package cz.cuni.mff.aspect.mario.controllers
+package cz.cuni.mff.aspect.mario.controllers.ann
 
 import ch.idsia.agents.controllers.modules.Entities
 import ch.idsia.agents.controllers.modules.Tiles
 import ch.idsia.benchmark.mario.engine.generalization.Entity
+import cz.cuni.mff.aspect.mario.controllers.MarioAction
 import org.deeplearning4j.nn.api.OptimizationAlgorithm
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration
@@ -17,25 +18,13 @@ import org.nd4j.linalg.learning.config.Nesterovs
 
 
 /**
- * A very simple controller which uses simple ANN to control mario agent.
- */
-class SimpleANNController(private var network: SimpleAgentNetwork) : MarioController {
-
-    override fun playAction(tiles: Tiles, entities: Entities): List<MarioAction> {
-        return this.network.chooseAction(tiles, entities)
-    }
-
-}
-
-
-/**
  * Neural network controlling [SimpleANNController].
  *
- * The network currently contains 18 input nodes (3x3 matrix for tiles, and another 3x3 matrix for enemies). It contains
+ * The network contains 18 input nodes (3x3 matrix for tiles, and another 3x3 matrix for enemies). It contains
  * one hidden layer with 5 neurons. The output layer has 4 neurons, corresponding to 4 mario actions (run left / right,
  * jump and special).
  */
-class SimpleAgentNetwork : Comparable<SimpleAgentNetwork> {
+class SimpleAgentNetwork : ControllerArtificialNetwork {
 
     private val network: MultiLayerNetwork
 
@@ -43,11 +32,11 @@ class SimpleAgentNetwork : Comparable<SimpleAgentNetwork> {
         this.network = this.createNetwork()
     }
 
-    override fun compareTo(other: SimpleAgentNetwork): Int {
+    override fun compareTo(other: ControllerArtificialNetwork): Int {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    fun chooseAction(tiles: Tiles, entities: Entities): List<MarioAction> {
+    override fun chooseAction(tiles: Tiles, entities: Entities): List<MarioAction> {
         val input = this.createInput(tiles, entities)
         val output = this.network.output(NDArray(arrayOf(input)))
         val actions: ArrayList<MarioAction> = ArrayList()
@@ -86,12 +75,12 @@ class SimpleAgentNetwork : Comparable<SimpleAgentNetwork> {
 
     private fun createNetwork(): MultiLayerNetwork {
         val multiLayerConf: MultiLayerConfiguration = NeuralNetConfiguration.Builder()
-                .seed(123).learningRate(0.1).iterations(1).optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT).updater(Nesterovs(0.9)).biasInit(1.0)
-                .list()
-                .layer(0, DenseLayer.Builder().nIn(INPUT_SIZE).nOut(HIDDEN_LAYER_SIZE).weightInit(WeightInit.XAVIER).activation(Activation.RELU).build())
-                .layer(1, OutputLayer.Builder().nIn(HIDDEN_LAYER_SIZE).nOut(OUTPUT_SIZE).weightInit(WeightInit.XAVIER).activation(Activation.SIGMOID).build())
-                .pretrain(false).backprop(false)
-                .build()
+            .seed(123).learningRate(0.1).iterations(1).optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT).updater(Nesterovs(0.9)).biasInit(1.0)
+            .list()
+            .layer(0, DenseLayer.Builder().nIn(INPUT_SIZE).nOut(HIDDEN_LAYER_SIZE).weightInit(WeightInit.XAVIER).activation(Activation.RELU).build())
+            .layer(1, OutputLayer.Builder().nIn(HIDDEN_LAYER_SIZE).nOut(OUTPUT_SIZE).weightInit(WeightInit.XAVIER).activation(Activation.SIGMOID).build())
+            .pretrain(false).backprop(false)
+            .build()
 
         val multiLayerNetwork = MultiLayerNetwork(multiLayerConf)
         multiLayerNetwork.init()

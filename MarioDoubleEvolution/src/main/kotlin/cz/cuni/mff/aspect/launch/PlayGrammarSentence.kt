@@ -14,7 +14,7 @@ fun main() {
 
 
 fun playSentence() {
-    val controller = EvolvedControllers.jumpingSimpleANNController()
+    val controller = EvolvedControllers.SimpleNetwork.jumpingSimpleANNController()
     val genes = arrayOf<Byte>(0, 0, 0, 0, 0, 0, 0, 0).toByteArray()
     val levelSentence = GenesToSentenceConverter(LevelGrammar.get()).convert(genes)
     println(levelSentence.getString())

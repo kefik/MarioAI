@@ -11,7 +11,7 @@ fun main() {
 }
 
 fun grammarEvolution() {
-    val controller = EvolvedControllers.currentBestANNController()
+    val controller = EvolvedControllers.SimpleNetwork.currentBestANNController()
     val levelEvolution = GrammarLevelEvolution()
     val levels = levelEvolution.evolve(controller)
     val firstLevel = levels.first()

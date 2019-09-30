@@ -14,7 +14,7 @@ fun main() {
 
 
 fun generateSentence() {
-    val controller = EvolvedControllers.jumpingSimpleANNController()
+    val controller = EvolvedControllers.SimpleNetwork.jumpingSimpleANNController()
     val levelSentence = RandomGrammarSentenceGenerator(LevelGrammar.get()).generate()
     val level = GrammarLevelEvolution().createLevelFromSentence(levelSentence)
 
