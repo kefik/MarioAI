@@ -16,10 +16,23 @@ object Tiles {
     const val GRASS_LEFT: Byte = (0 + 9 * 16).toByte()
     const val GRASS_RIGHT: Byte = (2 + 9 * 16).toByte()
 
-    const val QUESTION_MARK_BLOCK: Byte = (4 + 1 * 16).toByte()
-    const val QUESTION_MARK_BLOCK_USED: Byte = (4 + 0 * 16).toByte()
+    const val QM_WITH_COIN: Byte = (4 + 1 * 16).toByte()
+    const val QM_WITH_POWERUP: Byte = (6 + 1 * 16).toByte()
 
-    const val BLOCK: Byte = (0 + 1 * 16).toByte()
+    const val EXPIRED_QM: Byte = (4 + 0 * 16).toByte()
+
+    const val BRICK: Byte = (0 + 1 * 16).toByte()
+    const val BRICK_WITH_COIN: Byte = (1 + 1 * 16).toByte()
+    const val BRICK_WITH_POWERUP: Byte = (2 + 1 * 16).toByte()
+
+    const val TEST_BLOCK = (7 + 1 * 16).toByte()
+
+    const val PIPE_TOP_LEFT: Byte = (10 + 0 * 16).toByte()
+    const val PIPE_TOP_RIGHT: Byte = (11 + 0 * 16).toByte()
+    const val PIPE_MIDDLE_LEFT: Byte = (10 + 1 * 16).toByte()
+    const val PIPE_MIDDLE_RIGHT: Byte = (11 + 1 * 16).toByte()
+
+    const val STONE: Byte = (9 + 0 * 16).toByte()
 
     const val PEACH: Byte = (15 + 15 * 16).toByte()
 

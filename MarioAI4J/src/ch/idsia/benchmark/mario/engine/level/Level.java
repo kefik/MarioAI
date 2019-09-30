@@ -116,7 +116,7 @@ public class Level implements Serializable {
 	public static final int BIT_PICKUPABLE = 1 << 6;
 	public static final int BIT_ANIMATED = 1 << 7;
 
-	public static objCounters counters;
+	public objCounters counters = new objCounters();
 
 	// private final int FILE_HEADER = 0x271c4178;
 	public int length;
