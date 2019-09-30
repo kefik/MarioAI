@@ -1,5 +1,6 @@
 package cz.cuni.mff.aspect.mario
 
+import ch.idsia.agents.IAgent
 import ch.idsia.benchmark.mario.engine.sprites.Mario.STATUS_DEAD
 import ch.idsia.benchmark.mario.engine.sprites.Mario.STATUS_WIN
 import ch.idsia.benchmark.mario.environments.MarioEnvironment
@@ -21,13 +22,13 @@ class GameSimulator(private val maxTicks: Int = DEFAULT_MAX_TICKS) {
         this.playMario(marioAgent, marioLevelGenerator, visualize)
     }
 
-    fun playMario(marioAgent: MarioAgent, level: MarioLevel, visualize: Boolean = true) {
+    fun playMario(marioAgent: IAgent, level: MarioLevel, visualize: Boolean = true) {
         val marioLevelGenerator = SingleLevelLevelGenerator(level)
 
         this.playMario(marioAgent, marioLevelGenerator, visualize)
     }
 
-    fun playMario(marioAgent: MarioAgent, levelGenerator: SingleLevelLevelGenerator, visualize: Boolean = true) {
+    fun playMario(marioAgent: IAgent, levelGenerator: SingleLevelLevelGenerator, visualize: Boolean = true) {
         this.currentTick = 0
 
         if (visualize) {
@@ -47,10 +48,10 @@ class GameSimulator(private val maxTicks: Int = DEFAULT_MAX_TICKS) {
             environment.tick()
             marioAgent.observe(environment)
             val actions = marioAgent.actionSelection()
-            if (marioAgent.lastActions.contains(MarioAction.JUMP))
+            if (marioAgent is MarioAgent && marioAgent.lastActions.contains(MarioAction.JUMP))
                 marioJumps++
 
-            if (marioAgent.lastActions.contains(MarioAction.SPECIAL))
+            if (marioAgent is MarioAgent && marioAgent.lastActions.contains(MarioAction.SPECIAL))
                 marioSpecials++
 
             environment.mario.mode

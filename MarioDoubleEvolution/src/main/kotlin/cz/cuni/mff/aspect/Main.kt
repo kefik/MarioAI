@@ -1,5 +1,6 @@
 package cz.cuni.mff.aspect
 
+import ch.idsia.agents.controllers.keyboard.CheaterKeyboardAgent
 import cz.cuni.mff.aspect.coevolution.MarioCoEvolver
 import cz.cuni.mff.aspect.evolution.algorithm.grammar.GenesToSentenceConverter
 import cz.cuni.mff.aspect.evolution.algorithm.grammar.getString
@@ -35,11 +36,12 @@ fun coevolution() {
 }
 
 fun playground() {
-    doGrammarEvolution()
+    //doGrammarEvolution()
     //playLevel()
     //generateSentences()
     //playSentence()
     //evolveAI()
+    keyboardPlay()
 }
 
 fun doGrammarEvolution() {
@@ -90,4 +92,12 @@ fun evolveAI() {
 
     val marioSimulator = GameSimulator()
     marioSimulator.playMario(resultController, level, true)
+}
+
+fun keyboardPlay() {
+    val level = LevelStorage.loadLevel("current.lvl")
+    val agent = CheaterKeyboardAgent()
+
+    val marioSimulator = GameSimulator()
+    marioSimulator.playMario(agent, level, true)
 }
