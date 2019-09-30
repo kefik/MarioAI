@@ -5,6 +5,7 @@ import cz.cuni.mff.aspect.extensions.getDoubleValues
 import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.controllers.ann.SimpleANNController
 import cz.cuni.mff.aspect.mario.controllers.ann.SimpleAgentNetwork
+import cz.cuni.mff.aspect.mario.controllers.ann.UpdatedAgentNetwork
 import cz.cuni.mff.aspect.mario.level.MarioLevel
 import io.jenetics.*
 import io.jenetics.engine.Engine
@@ -26,7 +27,7 @@ class NeuroControllerEvolution : ControllerEvolution {
         val result = this.doEvolution(engine)
 
         val resultGenes = result.bestPhenotype.genotype.getDoubleValues()
-        val controllerNetwork = SimpleAgentNetwork()
+        val controllerNetwork = UpdatedAgentNetwork()
         controllerNetwork.setNetworkWeights(resultGenes)
 
         println(resultGenes.contentToString())
@@ -61,7 +62,7 @@ class NeuroControllerEvolution : ControllerEvolution {
     private val fitness = Function<Genotype<DoubleGene>, Float> { genotype -> fitness(genotype) }
     private fun fitness(genotype: Genotype<DoubleGene>): Float {
         val networkWeights: DoubleArray = genotype.getDoubleValues()
-        val network = SimpleAgentNetwork()
+        val network = UpdatedAgentNetwork()
         network.setNetworkWeights(networkWeights)
 
         val controller = SimpleANNController(network)
@@ -71,8 +72,7 @@ class NeuroControllerEvolution : ControllerEvolution {
 
     companion object {
         private const val POPULATION_SIZE = 50
-        private const val GENERATIONS_COUNT: Long = 300
+        private const val GENERATIONS_COUNT: Long = 100
     }
 
 }
-
