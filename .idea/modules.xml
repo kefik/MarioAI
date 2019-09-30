@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MarioAI4J/MarioAI4J.iml" filepath="$PROJECT_DIR$/MarioAI4J/MarioAI4J.iml" />
-      <module fileurl="file://$PROJECT_DIR$/MarioDoubleEvolution/MarioDoubleEvolution.iml" filepath="$PROJECT_DIR$/MarioDoubleEvolution/MarioDoubleEvolution.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/mario.iml" filepath="$PROJECT_DIR$/.idea/modules/mario.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/MarioAI4J/mario.MarioAI4J.iml" filepath="$PROJECT_DIR$/.idea/modules/MarioAI4J/mario.MarioAI4J.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/MarioAI4J/mario.MarioAI4J.main.iml" filepath="$PROJECT_DIR$/.idea/modules/MarioAI4J/mario.MarioAI4J.main.iml" />
