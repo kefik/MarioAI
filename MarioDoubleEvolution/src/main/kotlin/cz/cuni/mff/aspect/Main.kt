@@ -43,7 +43,7 @@ fun playground() {
 }
 
 fun doGrammarEvolution() {
-    val controller = EvolvedControllers.actionsConstrainedANNController()
+    val controller = EvolvedControllers.currentBestANNController()
     val levelEvolution = GrammarLevelEvolution()
     val levels = levelEvolution.evolve(controller)
     val firstLevel = levels.first()
@@ -55,7 +55,7 @@ fun doGrammarEvolution() {
 
 fun playLevel() {
     val controller = EvolvedControllers.currentBestANNController()
-    val level = LevelStorage.loadLevel("ge_first_enemies.lvl")
+    val level = LevelStorage.loadLevel("ge_long.lvl")
 
     GameSimulator().playMario(controller, level, true)
 }
@@ -85,7 +85,7 @@ fun playSentence() {
 
 fun evolveAI() {
     val controllerEvolution: ControllerEvolution = NeuroControllerEvolution()
-    val level = LevelStorage.loadLevel("ge_first_enemies_2.lvl")
+    val level = LevelStorage.loadLevel("current.lvl")
     val resultController = controllerEvolution.evolve(arrayOf(level))
 
     val marioSimulator = GameSimulator()

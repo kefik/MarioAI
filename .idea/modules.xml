@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/MarioAI4J/MarioAI4J.iml" filepath="$PROJECT_DIR$/MarioAI4J/MarioAI4J.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MarioDoubleEvolution/MarioDoubleEvolution.iml" filepath="$PROJECT_DIR$/MarioDoubleEvolution/MarioDoubleEvolution.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mario.iml" filepath="$PROJECT_DIR$/.idea/modules/mario.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MarioAI4J/mario.MarioAI4J.iml" filepath="$PROJECT_DIR$/.idea/modules/MarioAI4J/mario.MarioAI4J.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MarioAI4J/mario.MarioAI4J.main.iml" filepath="$PROJECT_DIR$/.idea/modules/MarioAI4J/mario.MarioAI4J.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MarioAI4J/mario.MarioAI4J.test.iml" filepath="$PROJECT_DIR$/.idea/modules/MarioAI4J/mario.MarioAI4J.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MarioDoubleEvolution/mario.MarioDoubleEvolution.iml" filepath="$PROJECT_DIR$/.idea/modules/MarioDoubleEvolution/mario.MarioDoubleEvolution.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MarioDoubleEvolution/mario.MarioDoubleEvolution.main.iml" filepath="$PROJECT_DIR$/.idea/modules/MarioDoubleEvolution/mario.MarioDoubleEvolution.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MarioDoubleEvolution/mario.MarioDoubleEvolution.test.iml" filepath="$PROJECT_DIR$/.idea/modules/MarioDoubleEvolution/mario.MarioDoubleEvolution.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mario.main.iml" filepath="$PROJECT_DIR$/.idea/modules/mario.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mario.test.iml" filepath="$PROJECT_DIR$/.idea/modules/mario.test.iml" />
+    </modules>
+  </component>
+</project>
