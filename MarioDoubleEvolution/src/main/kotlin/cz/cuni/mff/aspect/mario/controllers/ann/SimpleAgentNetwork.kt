@@ -3,6 +3,7 @@ package cz.cuni.mff.aspect.mario.controllers.ann
 import ch.idsia.agents.controllers.modules.Entities
 import ch.idsia.agents.controllers.modules.Tiles
 import ch.idsia.benchmark.mario.engine.generalization.Entity
+import ch.idsia.benchmark.mario.engine.generalization.MarioEntity
 import cz.cuni.mff.aspect.mario.controllers.MarioAction
 import org.deeplearning4j.nn.api.OptimizationAlgorithm
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration
@@ -36,7 +37,12 @@ class SimpleAgentNetwork : ControllerArtificialNetwork {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun chooseAction(tiles: Tiles, entities: Entities): List<MarioAction> {
+    override val weightsCount: Int
+        get() = TOTAL_WEIGHTS_COUNT
+
+    override fun newInstance(): ControllerArtificialNetwork = SimpleAgentNetwork()
+
+    override fun chooseAction(tiles: Tiles, entities: Entities, mario: MarioEntity): List<MarioAction> {
         val input = this.createInput(tiles, entities)
         val output = this.network.output(NDArray(arrayOf(input)))
         val actions: ArrayList<MarioAction> = ArrayList()
@@ -49,7 +55,7 @@ class SimpleAgentNetwork : ControllerArtificialNetwork {
         return actions
     }
 
-    fun setNetworkWeights(weights: DoubleArray) {
+    override fun setNetworkWeights(weights: DoubleArray) {
         val weightsTable = this.network.paramTable()
         val weightsKeysIterator = weightsTable.keys.iterator()
         var currentWeight = 0
@@ -119,8 +125,8 @@ class SimpleAgentNetwork : ControllerArtificialNetwork {
         private const val INPUT_SIZE = RECEPTIVE_FIELD_SIZE * RECEPTIVE_FIELD_SIZE + RECEPTIVE_FIELD_SIZE * RECEPTIVE_FIELD_SIZE
         private const val HIDDEN_LAYER_SIZE = 5
         private const val OUTPUT_SIZE = 4
-        const val TOTAL_WEIGHTS_COUNT = INPUT_SIZE * HIDDEN_LAYER_SIZE + HIDDEN_LAYER_SIZE * OUTPUT_SIZE
+        private const val TOTAL_WEIGHTS_COUNT = INPUT_SIZE * HIDDEN_LAYER_SIZE + HIDDEN_LAYER_SIZE * OUTPUT_SIZE
 
-        const val CHOOSE_ACTION_THRESHOLD = 0.95
+        private const val CHOOSE_ACTION_THRESHOLD = 0.95
     }
 }

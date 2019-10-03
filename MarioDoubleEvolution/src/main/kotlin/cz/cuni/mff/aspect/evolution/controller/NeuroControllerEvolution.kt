@@ -3,9 +3,8 @@ package cz.cuni.mff.aspect.evolution.controller
 import cz.cuni.mff.aspect.evolution.fitnessDistanceJumpsSpecialsHurtsKills
 import cz.cuni.mff.aspect.extensions.getDoubleValues
 import cz.cuni.mff.aspect.mario.controllers.MarioController
+import cz.cuni.mff.aspect.mario.controllers.ann.ControllerArtificialNetwork
 import cz.cuni.mff.aspect.mario.controllers.ann.SimpleANNController
-import cz.cuni.mff.aspect.mario.controllers.ann.SimpleAgentNetwork
-import cz.cuni.mff.aspect.mario.controllers.ann.UpdatedAgentNetwork
 import cz.cuni.mff.aspect.mario.level.MarioLevel
 import io.jenetics.*
 import io.jenetics.engine.Engine
@@ -16,7 +15,7 @@ import java.util.function.Function
 /**
  * Implementation of a simple evolution of ANN agent.
  */
-class NeuroControllerEvolution : ControllerEvolution {
+class NeuroControllerEvolution(private val controllerNetwork: ControllerArtificialNetwork) : ControllerEvolution {
 
     private lateinit var levels: Array<MarioLevel>
 
@@ -26,8 +25,10 @@ class NeuroControllerEvolution : ControllerEvolution {
         val engine = this.createEvolutionEngine(genotype)
         val result = this.doEvolution(engine)
 
+        println("Best fitness - ${result.bestFitness}")
+
         val resultGenes = result.bestPhenotype.genotype.getDoubleValues()
-        val controllerNetwork = UpdatedAgentNetwork()
+        val controllerNetwork = this.controllerNetwork.newInstance()
         controllerNetwork.setNetworkWeights(resultGenes)
 
         println(resultGenes.contentToString())
@@ -36,14 +37,14 @@ class NeuroControllerEvolution : ControllerEvolution {
     }
 
     private fun createInitialGenotype(): Genotype<DoubleGene> {
-        return Genotype.of(DoubleChromosome.of(-1.0, 1.0, SimpleAgentNetwork.TOTAL_WEIGHTS_COUNT))
+        return Genotype.of(DoubleChromosome.of(-5.0, 5.0, this.controllerNetwork.weightsCount))
     }
 
     private fun createEvolutionEngine(genotype: Genotype<DoubleGene>): Engine<DoubleGene, Float> {
         return Engine.builder(fitness, genotype)
                 .optimize(Optimize.MAXIMUM)
                 .populationSize(POPULATION_SIZE)
-                .alterers(SinglePointCrossover(0.2), Mutator(0.02))
+                .alterers(SinglePointCrossover(0.3), Mutator(0.05))
                 .survivorsSelector(EliteSelector(5))
                 .offspringSelector(RouletteWheelSelector())
                 .mapping { evolutionResult ->
@@ -62,17 +63,17 @@ class NeuroControllerEvolution : ControllerEvolution {
     private val fitness = Function<Genotype<DoubleGene>, Float> { genotype -> fitness(genotype) }
     private fun fitness(genotype: Genotype<DoubleGene>): Float {
         val networkWeights: DoubleArray = genotype.getDoubleValues()
-        val network = UpdatedAgentNetwork()
-        network.setNetworkWeights(networkWeights)
+        val controllerNetwork = this.controllerNetwork.newInstance()
+        controllerNetwork.setNetworkWeights(networkWeights)
 
-        val controller = SimpleANNController(network)
+        val controller = SimpleANNController(controllerNetwork)
 
         return fitnessDistanceJumpsSpecialsHurtsKills(controller, this.levels)
     }
 
     companion object {
         private const val POPULATION_SIZE = 50
-        private const val GENERATIONS_COUNT: Long = 100
+        private const val GENERATIONS_COUNT: Long = 500
     }
 
 }

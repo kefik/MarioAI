@@ -2,7 +2,7 @@ package cz.cuni.mff.aspect.mario.controllers.ann
 
 import ch.idsia.agents.controllers.modules.Entities
 import ch.idsia.agents.controllers.modules.Tiles
-import ch.idsia.benchmark.mario.engine.generalization.Entity
+import ch.idsia.benchmark.mario.engine.generalization.MarioEntity
 import cz.cuni.mff.aspect.mario.controllers.MarioAction
 import org.deeplearning4j.nn.api.OptimizationAlgorithm
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration
@@ -26,18 +26,19 @@ import org.nd4j.linalg.learning.config.Nesterovs
  */
 class UpdatedAgentNetwork : ControllerArtificialNetwork {
 
-    private val network: MultiLayerNetwork
-
-    init {
-        this.network = this.createNetwork()
-    }
+    private val network: MultiLayerNetwork = this.createNetwork()
 
     override fun compareTo(other: ControllerArtificialNetwork): Int {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun chooseAction(tiles: Tiles, entities: Entities): List<MarioAction> {
-        val input = this.createInput(tiles, entities)
+    override val weightsCount: Int
+        get() = TOTAL_WEIGHTS_COUNT
+
+    override fun newInstance(): ControllerArtificialNetwork = UpdatedAgentNetwork()
+
+    override fun chooseAction(tiles: Tiles, entities: Entities, mario: MarioEntity): List<MarioAction> {
+        val input = this.createInput(tiles, entities, mario)
         val output = this.network.output(NDArray(arrayOf(input)))
         val actions: ArrayList<MarioAction> = ArrayList()
 
@@ -49,7 +50,7 @@ class UpdatedAgentNetwork : ControllerArtificialNetwork {
         return actions
     }
 
-    fun setNetworkWeights(weights: DoubleArray) {
+    override fun setNetworkWeights(weights: DoubleArray) {
         val weightsTable = this.network.paramTable()
         val weightsKeysIterator = weightsTable.keys.iterator()
         var currentWeight = 0
@@ -88,24 +89,31 @@ class UpdatedAgentNetwork : ControllerArtificialNetwork {
         return multiLayerNetwork
     }
 
-    private fun createInput(tiles: Tiles, entities: Entities): DoubleArray {
-        // TODO: I suppose this should also get mario position...
-        val fieldHalfSize = tiles.tileField.size / 2
-        val fieldMiddle = tiles.tileField.size / 2
-        val receptiveFieldSquared = RECEPTIVE_FIELD_SIZE * RECEPTIVE_FIELD_SIZE
-        val flatTiles: List<Double> = List(receptiveFieldSquared) {
-            val x = fieldMiddle + (it / RECEPTIVE_FIELD_SIZE)
-            val y = fieldMiddle + (it % RECEPTIVE_FIELD_SIZE)
-            tiles.tileField[x][y].code.toDouble()
-        }
-        val flatEntities: List<Double> = List(receptiveFieldSquared) {
-            val enemiesList = (entities.entityField[fieldHalfSize + (it / RECEPTIVE_FIELD_SIZE - RECEPTIVE_FIELD_SIZE / 2)][fieldHalfSize + (it % RECEPTIVE_FIELD_SIZE - RECEPTIVE_FIELD_SIZE / 2)] as List<Entity<*>>)
-            if (enemiesList.isEmpty()) 0.0 else  enemiesList[0].type.code.toDouble()
-        }
+    // TODO: unit test this
+    private fun createInput(tiles: Tiles, entities: Entities, mario: MarioEntity): DoubleArray {
+        val marioX = mario.egoCol
+        val marioY = mario.egoRow
+
+        val flatTiles = List(RECEPTIVE_FIELD_SIZE_ROW * RECEPTIVE_FIELD_SIZE_COLUMN) {
+            val row = it / RECEPTIVE_FIELD_SIZE_ROW + (-1)
+            val column = it % RECEPTIVE_FIELD_SIZE_COLUMN + 0
+            tiles.tileField[marioY + row][marioX + column]
+        }.map { it.code.toDouble() }
+
+        val flatEntities = List(RECEPTIVE_FIELD_SIZE_ROW * RECEPTIVE_FIELD_SIZE_COLUMN) {
+            val row = it / RECEPTIVE_FIELD_SIZE_ROW + (-1)
+            val column = it % RECEPTIVE_FIELD_SIZE_COLUMN + 0
+            entities.entityField[marioY + row][marioX + column]
+        }.map { if (it.size > 0) it[0].type.code.toDouble() else 0.0 }
+
+//        println("WHAT DO I SEE")
+//        println("${flatTiles[0]} ${flatTiles[1]} ${flatTiles[2]}")
+//        println("${flatTiles[3]} ${flatTiles[4]} ${flatTiles[5]}")
+//        println("${flatTiles[6]} ${flatTiles[7]} ${flatTiles[8]}")
 
         return DoubleArray(INPUT_SIZE) {
-            if (it >= receptiveFieldSquared) {
-                flatTiles[it - receptiveFieldSquared]
+            if (it >= flatEntities.size) {
+                flatTiles[it - flatEntities.size]
             } else {
                 flatEntities[it]
             }
@@ -119,11 +127,12 @@ class UpdatedAgentNetwork : ControllerArtificialNetwork {
     }
 
     companion object {
-        private const val RECEPTIVE_FIELD_SIZE = 3
-        private const val INPUT_SIZE = RECEPTIVE_FIELD_SIZE * RECEPTIVE_FIELD_SIZE + RECEPTIVE_FIELD_SIZE * RECEPTIVE_FIELD_SIZE
-        private const val HIDDEN_LAYER_SIZE = 5
+        private const val RECEPTIVE_FIELD_SIZE_ROW = 3
+        private const val RECEPTIVE_FIELD_SIZE_COLUMN = 3
+        private const val INPUT_SIZE = 2 * RECEPTIVE_FIELD_SIZE_ROW * RECEPTIVE_FIELD_SIZE_COLUMN
+        private const val HIDDEN_LAYER_SIZE = 7
         private const val OUTPUT_SIZE = 4
-        const val TOTAL_WEIGHTS_COUNT = INPUT_SIZE * HIDDEN_LAYER_SIZE + HIDDEN_LAYER_SIZE * OUTPUT_SIZE
+        private const val TOTAL_WEIGHTS_COUNT = INPUT_SIZE * HIDDEN_LAYER_SIZE + HIDDEN_LAYER_SIZE * OUTPUT_SIZE
 
         private const val CHOOSE_ACTION_THRESHOLD = 0.95
     }

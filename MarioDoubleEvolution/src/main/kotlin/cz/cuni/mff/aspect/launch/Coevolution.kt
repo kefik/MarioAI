@@ -6,6 +6,7 @@ import cz.cuni.mff.aspect.evolution.controller.NeuroControllerEvolution
 import cz.cuni.mff.aspect.evolution.levels.LevelEvolution
 import cz.cuni.mff.aspect.evolution.levels.mock.MockLevelEvolution
 import cz.cuni.mff.aspect.mario.GameSimulator
+import cz.cuni.mff.aspect.mario.controllers.ann.UpdatedAgentNetwork
 
 
 fun main() {
@@ -14,7 +15,7 @@ fun main() {
 
 
 fun coevolution() {
-    val controllerEvolution: ControllerEvolution = NeuroControllerEvolution()
+    val controllerEvolution: ControllerEvolution = NeuroControllerEvolution(UpdatedAgentNetwork())
     val levelEvolution: LevelEvolution = MockLevelEvolution()
 
     val evolution = MarioCoEvolver()

@@ -16,7 +16,7 @@ class MarioAgent(private val controller: MarioController) : MarioHijackAIBase(),
     }
 
     override fun actionSelectionAI(): MarioInput {
-        val actions = this.controller.playAction(t, e)
+        val actions = this.controller.playAction(t, e, mario)
         this.lastActions = actions
         for (action in actions) {
             when (action) {
