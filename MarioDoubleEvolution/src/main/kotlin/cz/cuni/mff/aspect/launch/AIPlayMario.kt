@@ -14,9 +14,9 @@ fun main() {
 
 
 fun aiPlayLevel() {
-    val controller = EvolvedControllers.UpdatedNetwork.currentBest()
+    val controller = EvolvedControllers.UpdatedNetwork.firstHigherReceptiveField()
     // val level = LevelStorage.loadLevel("ge_long.lvl")
     val level = Stage1Level1.getLevel()
 
-    GameSimulator().playMario(controller, level, true)
+    GameSimulator(10000).playMario(controller, level, true)
 }

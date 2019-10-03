@@ -15,7 +15,10 @@ import java.util.function.Function
 /**
  * Implementation of a simple evolution of ANN agent.
  */
-class NeuroControllerEvolution(private val controllerNetwork: ControllerArtificialNetwork) : ControllerEvolution {
+class NeuroControllerEvolution(private val controllerNetwork: ControllerArtificialNetwork,
+                               private val generationsCount: Long = DEFAULT_GENERATIONS_COUNT,
+                               private val populationSize: Int = DEFAULT_POPULATION_SIZE) :
+    ControllerEvolution {
 
     private lateinit var levels: Array<MarioLevel>
 
@@ -43,7 +46,7 @@ class NeuroControllerEvolution(private val controllerNetwork: ControllerArtifici
     private fun createEvolutionEngine(genotype: Genotype<DoubleGene>): Engine<DoubleGene, Float> {
         return Engine.builder(fitness, genotype)
                 .optimize(Optimize.MAXIMUM)
-                .populationSize(POPULATION_SIZE)
+                .populationSize(this.populationSize)
                 .alterers(SinglePointCrossover(0.3), Mutator(0.05))
                 .survivorsSelector(EliteSelector(5))
                 .offspringSelector(RouletteWheelSelector())
@@ -56,7 +59,7 @@ class NeuroControllerEvolution(private val controllerNetwork: ControllerArtifici
 
     private fun doEvolution(evolutionEngine: Engine<DoubleGene, Float>): EvolutionResult<DoubleGene, Float> {
         return evolutionEngine.stream()
-                .limit(GENERATIONS_COUNT)
+                .limit(this.generationsCount)
                 .collect(EvolutionResult.toBestEvolutionResult<DoubleGene, Float>())
     }
 
@@ -72,8 +75,8 @@ class NeuroControllerEvolution(private val controllerNetwork: ControllerArtifici
     }
 
     companion object {
-        private const val POPULATION_SIZE = 50
-        private const val GENERATIONS_COUNT: Long = 500
+        private const val DEFAULT_POPULATION_SIZE = 50
+        private const val DEFAULT_GENERATIONS_COUNT: Long = 200
     }
 
 }

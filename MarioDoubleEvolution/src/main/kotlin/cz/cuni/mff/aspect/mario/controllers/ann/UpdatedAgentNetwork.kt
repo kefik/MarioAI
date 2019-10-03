@@ -24,7 +24,12 @@ import org.nd4j.linalg.learning.config.Nesterovs
  * one hidden layer with 5 neurons. The output layer has 4 neurons, corresponding to 4 mario actions (run left / right,
  * jump and special).
  */
-class UpdatedAgentNetwork : ControllerArtificialNetwork {
+class UpdatedAgentNetwork(private val receptiveFieldSizeRow: Int = 3,
+                          private val receptiveFieldSizeColumn: Int = 3,
+                          private val receptiveFieldRowOffset: Int = 0,
+                          private val receptiveFieldColumnOffset: Int = 1,
+                          private val hiddenLayerSize: Int = 7) :
+    ControllerArtificialNetwork {
 
     private val network: MultiLayerNetwork = this.createNetwork()
 
@@ -32,10 +37,11 @@ class UpdatedAgentNetwork : ControllerArtificialNetwork {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override val weightsCount: Int
-        get() = TOTAL_WEIGHTS_COUNT
+    override val weightsCount: Int get() = this.inputLayerSize * this.hiddenLayerSize + this.hiddenLayerSize * OUTPUT_LAYER_SIZE
+    private val inputLayerSize: Int get() = 2 * this.receptiveFieldSizeRow * this.receptiveFieldSizeColumn
 
-    override fun newInstance(): ControllerArtificialNetwork = UpdatedAgentNetwork()
+    override fun newInstance(): ControllerArtificialNetwork = UpdatedAgentNetwork(this.receptiveFieldSizeRow,
+        this.receptiveFieldSizeColumn, this.receptiveFieldRowOffset, this.receptiveFieldColumnOffset, this.hiddenLayerSize)
 
     override fun chooseAction(tiles: Tiles, entities: Entities, mario: MarioEntity): List<MarioAction> {
         val input = this.createInput(tiles, entities, mario)
@@ -78,8 +84,8 @@ class UpdatedAgentNetwork : ControllerArtificialNetwork {
         val multiLayerConf: MultiLayerConfiguration = NeuralNetConfiguration.Builder()
             .seed(123).learningRate(0.1).iterations(1).optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT).updater(Nesterovs(0.9)).biasInit(1.0)
             .list()
-            .layer(0, DenseLayer.Builder().nIn(INPUT_SIZE).nOut(HIDDEN_LAYER_SIZE).weightInit(WeightInit.XAVIER).activation(Activation.RELU).build())
-            .layer(1, OutputLayer.Builder().nIn(HIDDEN_LAYER_SIZE).nOut(OUTPUT_SIZE).weightInit(WeightInit.XAVIER).activation(Activation.SIGMOID).build())
+            .layer(0, DenseLayer.Builder().nIn(this.inputLayerSize).nOut(this.hiddenLayerSize).weightInit(WeightInit.XAVIER).activation(Activation.RELU).build())
+            .layer(1, OutputLayer.Builder().nIn(this.hiddenLayerSize).nOut(OUTPUT_LAYER_SIZE).weightInit(WeightInit.XAVIER).activation(Activation.SIGMOID).build())
             .pretrain(false).backprop(false)
             .build()
 
@@ -94,24 +100,35 @@ class UpdatedAgentNetwork : ControllerArtificialNetwork {
         val marioX = mario.egoCol
         val marioY = mario.egoRow
 
-        val flatTiles = List(RECEPTIVE_FIELD_SIZE_ROW * RECEPTIVE_FIELD_SIZE_COLUMN) {
-            val row = it / RECEPTIVE_FIELD_SIZE_ROW + (-1)
-            val column = it % RECEPTIVE_FIELD_SIZE_COLUMN + 0
-            tiles.tileField[marioY + row][marioX + column]
-        }.map { it.code.toDouble() }
+        val flatTiles = MutableList(this.receptiveFieldSizeRow * this.receptiveFieldSizeColumn) { 0.0 }
+        val flatEntities = MutableList(this.receptiveFieldSizeRow * this.receptiveFieldSizeColumn) { 0.0 }
+        val receptiveFieldRowMiddle: Int = this.receptiveFieldSizeRow / 2
+        val receptiveFieldColumnMiddle: Int = this.receptiveFieldSizeColumn / 2
 
-        val flatEntities = List(RECEPTIVE_FIELD_SIZE_ROW * RECEPTIVE_FIELD_SIZE_COLUMN) {
-            val row = it / RECEPTIVE_FIELD_SIZE_ROW + (-1)
-            val column = it % RECEPTIVE_FIELD_SIZE_COLUMN + 0
-            entities.entityField[marioY + row][marioX + column]
-        }.map { if (it.size > 0) it[0].type.code.toDouble() else 0.0 }
+        for (i in 0 until this.receptiveFieldSizeRow * this.receptiveFieldSizeColumn) {
+            val row = i / this.receptiveFieldSizeRow - receptiveFieldRowMiddle + this.receptiveFieldRowOffset
+            val column = i % this.receptiveFieldSizeColumn - receptiveFieldColumnMiddle + this.receptiveFieldColumnOffset
+
+            val tileAtPosition = tiles.tileField[marioY + row][marioX + column]
+            val tileCode = when (tileAtPosition.code) {
+                -60 -> -1.0
+                else -> tileAtPosition.code.toDouble()
+            }
+            flatTiles[i] = tileCode
+
+            val entitiesAtPosition = entities.entityField[marioY + row][marioX + column]
+            flatEntities[i] = if (entitiesAtPosition.size > 0) entitiesAtPosition[0].type.code.toDouble() else 0.0
+        }
 
 //        println("WHAT DO I SEE")
-//        println("${flatTiles[0]} ${flatTiles[1]} ${flatTiles[2]}")
-//        println("${flatTiles[3]} ${flatTiles[4]} ${flatTiles[5]}")
-//        println("${flatTiles[6]} ${flatTiles[7]} ${flatTiles[8]}")
+//        for (x in 0 until this.receptiveFieldSizeColumn) {
+//            for (y in 0 until this.receptiveFieldSizeRow) {
+//                print("${flatTiles[x * this.receptiveFieldSizeColumn + y] } ")
+//            }
+//            println()
+//        }
 
-        return DoubleArray(INPUT_SIZE) {
+        return DoubleArray(this.inputLayerSize) {
             if (it >= flatEntities.size) {
                 flatTiles[it - flatEntities.size]
             } else {
@@ -127,13 +144,7 @@ class UpdatedAgentNetwork : ControllerArtificialNetwork {
     }
 
     companion object {
-        private const val RECEPTIVE_FIELD_SIZE_ROW = 3
-        private const val RECEPTIVE_FIELD_SIZE_COLUMN = 3
-        private const val INPUT_SIZE = 2 * RECEPTIVE_FIELD_SIZE_ROW * RECEPTIVE_FIELD_SIZE_COLUMN
-        private const val HIDDEN_LAYER_SIZE = 7
-        private const val OUTPUT_SIZE = 4
-        private const val TOTAL_WEIGHTS_COUNT = INPUT_SIZE * HIDDEN_LAYER_SIZE + HIDDEN_LAYER_SIZE * OUTPUT_SIZE
-
+        private const val OUTPUT_LAYER_SIZE = 4
         private const val CHOOSE_ACTION_THRESHOLD = 0.95
     }
 }
