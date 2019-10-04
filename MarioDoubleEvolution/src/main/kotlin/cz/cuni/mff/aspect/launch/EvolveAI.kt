@@ -15,7 +15,7 @@ fun main() {
 
 
 fun evolveAI() {
-    val controllerANN = UpdatedAgentNetwork(3, 3, 0, 1, 5)
+    val controllerANN = UpdatedAgentNetwork(5, 5, 0, 2, 5)
     val controllerEvolution: ControllerEvolution = NeuroControllerEvolution(controllerANN, 200, 50)
     // val level = LevelStorage.loadLevel("ge_first_enemies_2.lvl")
     val level = Stage1Level1.getLevel()

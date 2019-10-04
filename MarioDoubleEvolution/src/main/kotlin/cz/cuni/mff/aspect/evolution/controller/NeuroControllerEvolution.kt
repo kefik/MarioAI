@@ -44,7 +44,7 @@ class NeuroControllerEvolution(private val controllerNetwork: ControllerArtifici
     }
 
     private fun createInitialGenotype(): Genotype<DoubleGene> {
-        return Genotype.of(DoubleChromosome.of(-5.0, 5.0, this.controllerNetwork.weightsCount))
+        return Genotype.of(DoubleChromosome.of(-3.0, 3.0, this.controllerNetwork.weightsCount))
     }
 
     private fun createEvolutionEngine(genotype: Genotype<DoubleGene>): Engine<DoubleGene, Float> {
