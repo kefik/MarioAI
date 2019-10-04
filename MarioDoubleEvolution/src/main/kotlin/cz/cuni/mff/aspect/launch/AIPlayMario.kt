@@ -14,7 +14,7 @@ fun main() {
 
 
 fun aiPlayLevel() {
-    val controller = EvolvedControllers.UpdatedNetwork.firstHigherReceptiveField()
+    val controller = EvolvedControllers.UpdatedNetwork.currentBest()
     // val level = LevelStorage.loadLevel("ge_long.lvl")
     val level = Stage1Level1.getLevel()
 

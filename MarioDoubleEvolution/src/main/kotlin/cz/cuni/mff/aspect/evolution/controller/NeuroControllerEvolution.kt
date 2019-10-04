@@ -1,6 +1,8 @@
 package cz.cuni.mff.aspect.evolution.controller
 
 import cz.cuni.mff.aspect.evolution.fitnessDistanceJumpsSpecialsHurtsKills
+import cz.cuni.mff.aspect.evolution.fitnessDistanceLeastActions
+import cz.cuni.mff.aspect.evolution.fitnessOnlyDistance
 import cz.cuni.mff.aspect.extensions.getDoubleValues
 import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.controllers.ann.ControllerArtificialNetwork
@@ -9,6 +11,8 @@ import cz.cuni.mff.aspect.mario.level.MarioLevel
 import io.jenetics.*
 import io.jenetics.engine.Engine
 import io.jenetics.engine.EvolutionResult
+import io.jenetics.engine.EvolutionStream
+import io.jenetics.engine.Limits
 import java.util.function.Function
 
 
@@ -59,8 +63,8 @@ class NeuroControllerEvolution(private val controllerNetwork: ControllerArtifici
 
     private fun doEvolution(evolutionEngine: Engine<DoubleGene, Float>): EvolutionResult<DoubleGene, Float> {
         return evolutionEngine.stream()
-                .limit(this.generationsCount)
-                .collect(EvolutionResult.toBestEvolutionResult<DoubleGene, Float>())
+            .limit(this.generationsCount)
+            .collect(EvolutionResult.toBestEvolutionResult<DoubleGene, Float>())
     }
 
     private val fitness = Function<Genotype<DoubleGene>, Float> { genotype -> fitness(genotype) }
@@ -71,7 +75,7 @@ class NeuroControllerEvolution(private val controllerNetwork: ControllerArtifici
 
         val controller = SimpleANNController(controllerNetwork)
 
-        return fitnessDistanceJumpsSpecialsHurtsKills(controller, this.levels)
+        return fitnessDistanceLeastActions(controller, this.levels)
     }
 
     companion object {
