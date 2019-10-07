@@ -14,7 +14,7 @@ fun main() {
 
 
 fun aiPlayLevel() {
-    val controller = EvolvedControllers.UpdatedNetwork.startingSmallConstrained()
+    val controller = EvolvedControllers.UpdatedNetwork.avoidingEnemies()
     // val level = LevelStorage.loadLevel("ge_long.lvl")
     val level = Stage1Level1.getLevel()
 

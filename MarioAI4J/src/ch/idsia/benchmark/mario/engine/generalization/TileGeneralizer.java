@@ -67,6 +67,7 @@ public class TileGeneralizer {
 			case 34:
 				return Tile.COIN_ANIM;
 			case 4:
+			case 9:
 			case -109:
 			case -110:
 			case -111:

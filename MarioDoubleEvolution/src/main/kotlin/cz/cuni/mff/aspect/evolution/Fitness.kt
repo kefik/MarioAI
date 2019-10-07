@@ -14,7 +14,7 @@ fun fitnessOnlyDistance(controller: MarioController, levels: Array<MarioLevel>):
 
 fun fitnessDistanceLeastActions(controller: MarioController, levels: Array<MarioLevel>): Float {
     val statistics = playRandomLevel(controller, levels)
-    return statistics.finalMarioDistance - statistics.jumps * 4 - statistics.specials * 3 + if(statistics.levelFinished) 2000.0f else 0.0f
+    return statistics.finalMarioDistance * 2 - statistics.jumps * 7 - statistics.specials * 3 + if(statistics.levelFinished) 2000.0f else 0.0f
 }
 
 
