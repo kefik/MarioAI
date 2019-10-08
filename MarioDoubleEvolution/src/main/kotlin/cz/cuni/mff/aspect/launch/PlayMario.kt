@@ -2,7 +2,7 @@ package cz.cuni.mff.aspect.launch
 
 import ch.idsia.agents.controllers.keyboard.CheaterKeyboardAgent
 import cz.cuni.mff.aspect.mario.GameSimulator
-import cz.cuni.mff.aspect.mario.level.original.Stage1Level1
+import cz.cuni.mff.aspect.mario.level.original.Stage2Level1
 import kotlin.system.exitProcess
 
 
@@ -13,7 +13,7 @@ fun main() {
 
 
 fun keyboardPlay() {
-    val level = Stage1Level1.getLevel()
+    val level = Stage2Level1.getLevel()
     val agent = CheaterKeyboardAgent()
 
     val marioSimulator = GameSimulator(15000)
