@@ -1,4 +1,4 @@
-package cz.cuni.mff.aspect.mario.controllers.ann
+package cz.cuni.mff.aspect.mario.controllers.ann.networks
 
 import ch.idsia.agents.controllers.modules.Entities
 import ch.idsia.agents.controllers.modules.Tiles

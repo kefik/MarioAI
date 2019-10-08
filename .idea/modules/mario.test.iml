@@ -51,9 +51,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="mario.main" />
-    <orderEntry type="module" module-name="mario.MarioAI4J.main" />
-    <orderEntry type="module" module-name="mario.MarioDoubleEvolution.main" />
     <orderEntry type="module-library" scope="RUNTIME">
       <library name="Gradle: io.jenetics:jenetics:5.0.1">
         <CLASSES>
@@ -63,6 +60,9 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="mario.MarioAI4J.main" />
+    <orderEntry type="module" module-name="mario.MarioDoubleEvolution.main" />
+    <orderEntry type="module" module-name="mario.main" />
   </component>
   <component name="TestModuleProperties" production-module="mario.main" />
 </module>

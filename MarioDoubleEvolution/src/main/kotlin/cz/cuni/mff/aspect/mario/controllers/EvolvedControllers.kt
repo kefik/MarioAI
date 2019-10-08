@@ -1,8 +1,8 @@
 package cz.cuni.mff.aspect.mario.controllers
 
 import cz.cuni.mff.aspect.mario.controllers.ann.SimpleANNController
-import cz.cuni.mff.aspect.mario.controllers.ann.SimpleAgentNetwork
-import cz.cuni.mff.aspect.mario.controllers.ann.UpdatedAgentNetwork
+import cz.cuni.mff.aspect.mario.controllers.ann.networks.SimpleAgentNetwork
+import cz.cuni.mff.aspect.mario.controllers.ann.networks.UpdatedAgentNetwork
 
 object EvolvedControllers {
 
@@ -33,7 +33,13 @@ object EvolvedControllers {
         fun test(): MarioController = updatedANNController(this.testANNWeights, 5, 5, 0, 2, 5)
 
         private fun updatedANNController(networkWeights: DoubleArray, receptiveFieldSizeRow: Int, receptiveFieldSizeColumn: Int, receptiveFieldRowOffset: Int, receptiveFieldColumnOffset: Int, hiddenLayerSize: Int): MarioController {
-            val network = UpdatedAgentNetwork(receptiveFieldSizeRow, receptiveFieldSizeColumn, receptiveFieldRowOffset, receptiveFieldColumnOffset, hiddenLayerSize)
+            val network = UpdatedAgentNetwork(
+                receptiveFieldSizeRow,
+                receptiveFieldSizeColumn,
+                receptiveFieldRowOffset,
+                receptiveFieldColumnOffset,
+                hiddenLayerSize
+            )
             network.setNetworkWeights(networkWeights)
             return SimpleANNController(network)
         }

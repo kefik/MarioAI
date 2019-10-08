@@ -5,6 +5,7 @@ import ch.idsia.agents.controllers.modules.Tiles
 import ch.idsia.benchmark.mario.engine.generalization.MarioEntity
 import cz.cuni.mff.aspect.mario.controllers.MarioAction
 import cz.cuni.mff.aspect.mario.controllers.MarioController
+import cz.cuni.mff.aspect.mario.controllers.ann.networks.ControllerArtificialNetwork
 
 
 /**
