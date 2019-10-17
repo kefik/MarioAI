@@ -16,6 +16,8 @@ object Tiles {
     const val GRASS_LEFT: Byte = (0 + 9 * 16).toByte()
     const val GRASS_RIGHT: Byte = (2 + 9 * 16).toByte()
 
+    const val COIN: Byte = (0 + 2 * 16).toByte()
+
     const val QM_WITH_COIN: Byte = (5 + 1 * 16).toByte()
     const val QM_WITH_POWERUP: Byte = (6 + 1 * 16).toByte()
 
