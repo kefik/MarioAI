@@ -85,13 +85,13 @@ object ChunkHelpers {
         }
     }
 
-    fun getPipeStartWithBlockColumn(level: Int, height: Int, blockLevel: Int, blockType: Byte): ByteArray = ByteArray(15) {
+    fun getPipeStartWithBlockColumn(level: Int, height: Int, blockLevel: Int, blockType: Byte, lift: Int = 0): ByteArray = ByteArray(15) {
         when {
             it == blockLevel -> blockType
             it == level -> Tiles.GRASS_TOP
             it > level -> Tiles.DIRT
-            it == level - height -> Tiles.PIPE_TOP_LEFT
-            it < level && it > level - height -> Tiles.PIPE_MIDDLE_LEFT
+            it == level - height - lift -> Tiles.PIPE_TOP_LEFT
+            it < level - lift && it > level - height - lift -> Tiles.PIPE_MIDDLE_LEFT
             else -> Tiles.NOTHING
         }
     }
@@ -106,22 +106,33 @@ object ChunkHelpers {
         }
     }
 
-    fun getPipeEndWithBlockColumn(level: Int, height: Int, blockLevel: Int, blockType: Byte): ByteArray = ByteArray(15) {
+    fun getPipeEndWithBlockColumn(level: Int, height: Int, blockLevel: Int, blockType: Byte, lift: Int = 0): ByteArray = ByteArray(15) {
         when {
             it == blockLevel -> blockType
             it == level -> Tiles.GRASS_TOP
             it > level -> Tiles.DIRT
-            it == level - height -> Tiles.PIPE_TOP_RIGHT
-            it < level && it > level - height -> Tiles.PIPE_MIDDLE_RIGHT
+            it == level - height - lift -> Tiles.PIPE_TOP_RIGHT
+            it < level - lift && it > level - height - lift -> Tiles.PIPE_MIDDLE_RIGHT
             else -> Tiles.NOTHING
         }
     }
 
-    fun getStonesColumn(level: Int, height: Int): ByteArray = ByteArray(15) {
+    fun getStonesColumn(level: Int, height: Int, lift: Int = 0): ByteArray = ByteArray(15) {
         when {
             it == level -> Tiles.GRASS_TOP
             it > level -> Tiles.DIRT
-            it < level && it >= level - height -> Tiles.STONE
+            it < level - lift && it >= level - height - lift -> Tiles.STONE
+            else -> Tiles.NOTHING
+        }
+    }
+
+    fun getBlasterBulletBillColumn(level: Int, height: Int): ByteArray = ByteArray(15) {
+        when {
+            it == level -> Tiles.GRASS_TOP
+            it > level -> Tiles.DIRT
+            it == level - height -> Tiles.BULLET_BLASTER_TOP
+            it == level - height + 1 -> Tiles.BULLET_BLASTER_MIDDLE
+            it >= level - height + 2 && it < level -> Tiles.BULLET_BLASTER_BOTTOM
             else -> Tiles.NOTHING
         }
     }

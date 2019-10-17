@@ -34,6 +34,10 @@ object Tiles {
     const val PIPE_MIDDLE_LEFT: Byte = (10 + 1 * 16).toByte()
     const val PIPE_MIDDLE_RIGHT: Byte = (11 + 1 * 16).toByte()
 
+    const val BULLET_BLASTER_TOP: Byte = (14 + 0 * 16).toByte()
+    const val BULLET_BLASTER_MIDDLE: Byte = (14 + 1 * 16).toByte()
+    const val BULLET_BLASTER_BOTTOM: Byte = (14 + 2 * 16).toByte()
+
     const val STONE: Byte = (9 + 0 * 16).toByte()
 
     const val PEACH: Byte = (15 + 15 * 16).toByte()
