@@ -14,7 +14,7 @@ fun main() {
 }
 
 fun evolveNeatAI() {
-    val level = Stage1Level1.getLevel()
+    val level = Stage1Level1
 
     val controllerEvolution: ControllerEvolution = NeatControllerEvolution(NetworkSettings(5, 5, 0, 2, 5))
     val resultController = controllerEvolution.evolve(arrayOf(level))
