@@ -63,6 +63,10 @@ object Enemies {
         const val WINGED = Sprite.KIND_SPIKY_WINGED
     }
 
+    object Flower {
+        const val NORMAL = Sprite.KIND_ENEMY_FLOWER
+    }
+
 }
 
 /**
