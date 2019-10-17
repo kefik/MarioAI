@@ -3,11 +3,10 @@ package cz.cuni.mff.aspect.mario.level.original
 import cz.cuni.mff.aspect.evolution.levels.grammar.ChunkHelpers
 import cz.cuni.mff.aspect.mario.Enemies
 import cz.cuni.mff.aspect.mario.Tiles
-import cz.cuni.mff.aspect.mario.level.DirectMarioLevel
 import cz.cuni.mff.aspect.mario.level.MarioLevel
 
 
-object Stage1Level1 {
+object Stage1Level1 : MarioLevel {
 
     private const val BOTTOM_LEVEL = 15
     private const val FLOOR_LEVEL =  13
@@ -15,10 +14,11 @@ object Stage1Level1 {
     private const val THIRD_LEVEL = 5
     private const val LEVEL_WIDTH = 212
 
-    private val level: MarioLevel
+    override val tiles: Array<ByteArray>
+    override val enemies: Array<Array<Int>>
 
     init {
-        val tiles: Array<ByteArray> = Array(LEVEL_WIDTH) {
+        this.tiles = Array(LEVEL_WIDTH) {
             when (it) {
                 17 -> ChunkHelpers.getSecretBoxesColumn(FLOOR_LEVEL, SECOND_LEVEL)
 
@@ -122,7 +122,7 @@ object Stage1Level1 {
             }
         }
 
-        val enemies: Array<Array<Int>> = Array(LEVEL_WIDTH) { Array(15) { 0 } }
+        this.enemies = Array(LEVEL_WIDTH) { Array(15) { 0 } }
         enemies[22][FLOOR_LEVEL - 1] = Enemies.Goomba.NORMAL
         enemies[42][FLOOR_LEVEL - 1] = Enemies.Goomba.NORMAL
         enemies[55][FLOOR_LEVEL - 1] = Enemies.Goomba.NORMAL
@@ -138,10 +138,6 @@ object Stage1Level1 {
         enemies[128][FLOOR_LEVEL - 1] = Enemies.Goomba.NORMAL
         enemies[174][FLOOR_LEVEL - 1] = Enemies.Goomba.NORMAL
         enemies[175][FLOOR_LEVEL - 1] = Enemies.Goomba.NORMAL
-
-        this.level = DirectMarioLevel(tiles, enemies)
     }
-
-    fun getLevel(): MarioLevel = this.level
 
 }

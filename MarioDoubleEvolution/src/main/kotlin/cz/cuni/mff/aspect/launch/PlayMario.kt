@@ -13,7 +13,7 @@ fun main() {
 
 
 fun keyboardPlay() {
-    val level = Stage2Level1.getLevel()
+    val level = Stage2Level1
     val agent = CheaterKeyboardAgent()
 
     val marioSimulator = GameSimulator(15000)
