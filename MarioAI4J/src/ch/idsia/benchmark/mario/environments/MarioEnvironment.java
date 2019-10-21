@@ -97,7 +97,7 @@ public final class MarioEnvironment implements IEnvironment {
 	
 	public List<Entity> entities;
 
-	private final LevelScene levelScene;
+	private LevelScene levelScene;
 	// private int frame = 0;
 	private VisualizationComponent marioVisualComponent;
 	private IAgent agent;
@@ -115,6 +115,11 @@ public final class MarioEnvironment implements IEnvironment {
 	public MarioEnvironment(LevelGenerator levelGenerator) {
 		MarioLog.fine(SimulatorOptions.getBenchmarkName());
 		levelScene = new LevelScene(levelGenerator);
+	}
+
+	public void reset(IAgent agent, LevelGenerator levelGenerator) {
+		levelScene = new LevelScene(levelGenerator);
+		this.reset(agent);
 	}
 
 	public void reset(IAgent agent) {

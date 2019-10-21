@@ -12,6 +12,7 @@ import cz.cuni.mff.aspect.mario.level.MarioLevel
 
 class GameSimulator(private val maxTicks: Int = DEFAULT_MAX_TICKS) {
 
+    private val environment = MarioEnvironment(null)
     private var currentTick: Int = 0
     lateinit var statistics: GameStatistics
 
@@ -37,8 +38,7 @@ class GameSimulator(private val maxTicks: Int = DEFAULT_MAX_TICKS) {
             MarioOptions.reset(FastOpts.VIS_OFF)
         }
 
-        val environment = MarioEnvironment(levelGenerator)
-        environment.reset(marioAgent)
+        this.environment.reset(marioAgent, levelGenerator)
         var marioJumps = 0
         var marioSpecials = 0
         var marioHurts = 0
