@@ -5,8 +5,7 @@ import cz.cuni.mff.aspect.mario.controllers.EvolvedControllers
 import cz.cuni.mff.aspect.mario.controllers.ann.NetworkSettings
 import cz.cuni.mff.aspect.mario.controllers.ann.SimpleANNController
 import cz.cuni.mff.aspect.mario.controllers.ann.networks.NeatAgentNetwork
-import cz.cuni.mff.aspect.mario.level.original.Stage1Level1
-import cz.cuni.mff.aspect.mario.level.original.Stage2Level1
+import cz.cuni.mff.aspect.mario.level.original.*
 import cz.cuni.mff.aspect.storage.NeatAIStorage
 import kotlin.system.exitProcess
 
@@ -19,9 +18,10 @@ fun main() {
 
 
 fun aiPlayLevel() {
-    val controller = EvolvedControllers.UpdatedNetwork.currentBest()
+    val controller = EvolvedControllers.UpdatedNetwork.test()
     // val level = LevelStorage.loadLevel("ge_long.lvl")
-    val level = Stage1Level1
+    val level = Stage4Level1
+    // val level = Stage4Level1Split.levels[2]
 
     GameSimulator(10000).playMario(controller, level, true)
 }

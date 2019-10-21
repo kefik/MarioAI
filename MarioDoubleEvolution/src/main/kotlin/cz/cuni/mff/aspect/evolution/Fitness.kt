@@ -1,5 +1,6 @@
 package cz.cuni.mff.aspect.evolution
 
+import cz.cuni.mff.aspect.extensions.sumByFloat
 import cz.cuni.mff.aspect.mario.GameSimulator
 import cz.cuni.mff.aspect.mario.GameStatistics
 import cz.cuni.mff.aspect.mario.controllers.MarioController
@@ -7,32 +8,38 @@ import cz.cuni.mff.aspect.mario.level.MarioLevel
 
 
 fun fitnessOnlyDistance(controller: MarioController, levels: Array<MarioLevel>): Float {
-    val statistics = playRandomLevel(controller, levels)
-    return statistics.finalMarioDistance
+    val statistics = playAllLevels(controller, levels)
+    return statistics.sumByFloat { it.finalMarioDistance }
 }
 
 
 fun fitnessDistanceLeastActions(controller: MarioController, levels: Array<MarioLevel>): Float {
-    val statistics = playRandomLevel(controller, levels)
-    return statistics.finalMarioDistance * 2 - statistics.jumps * 7 - statistics.specials * 3 + if(statistics.levelFinished) 2000.0f else 0.0f
+    val statistics = playAllLevels(controller, levels)
+
+    val sumFinalDistances: Float = statistics.sumByFloat { it.finalMarioDistance }
+    val sumJumps = statistics.sumBy { it.jumps }
+    val sumSpecials = statistics.sumBy { it.specials }
+    val levelsFinished = statistics.sumBy { if (it.levelFinished) 1 else 0 }
+
+    return sumFinalDistances * 2 - sumJumps * 7 - sumSpecials * 7 + levelsFinished * 2000.0f
 }
 
 
-fun fitnessOnlyVictory(controller: MarioController, levels: Array<MarioLevel>): Float {
-    val statistics = playRandomLevel(controller, levels)
-    return if (statistics.levelFinished) 1.0f else 0.0f
+fun fitnessOnlyVictories(controller: MarioController, levels: Array<MarioLevel>): Float {
+    val statistics = playAllLevels(controller, levels)
+
+    return statistics.sumByFloat { if (it.levelFinished) 1.0f else 0.0f }
 }
 
 
-fun fitnessDistanceJumpsSpecialsHurtsKills(controller: MarioController, levels: Array<MarioLevel>): Float {
-    val statistics = playRandomLevel(controller, levels)
-    return statistics.finalMarioDistance + statistics.kills * 50 - statistics.jumps * 5 - statistics.specials - statistics.marioHurts * 20
-}
-
-
-private fun playRandomLevel(controller: MarioController, levels: Array<MarioLevel>): GameStatistics {
+private fun playAllLevels(controller: MarioController, levels: Array<MarioLevel>): List<GameStatistics> {
     val marioSimulator = GameSimulator()
-    marioSimulator.playMario(controller, levels.random(), false)
+    val statistics = mutableListOf<GameStatistics>()
 
-    return marioSimulator.statistics
+    levels.forEachIndexed { index, level ->
+        marioSimulator.playMario(controller, level, false)
+        statistics[index] = marioSimulator.statistics
+    }
+
+    return statistics
 }

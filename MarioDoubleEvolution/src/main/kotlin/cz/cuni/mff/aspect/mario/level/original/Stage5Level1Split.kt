@@ -12,7 +12,7 @@ object Stage5Level1Split {
         val splits = arrayOf(
             LevelSplit(0, 60),
             LevelSplit(55, 50),
-            LevelSplit(96, 50),
+            LevelSplit(95, 50),
             LevelSplit(138, 56)
         )
 

@@ -126,13 +126,6 @@ class UpdatedAgentNetwork(private val receptiveFieldSizeRow: Int = 3,
             flatEntities[i] = if (entitiesAtPosition.size > 0) entitiesAtPosition[0].type.code.toDouble() else 0.0
         }
 
-//        println("WHAT DO I SEE")
-//        for (x in 0 until this.receptiveFieldSizeColumn) {
-//            for (y in 0 until this.receptiveFieldSizeRow) {
-//                print("${flatTiles[x * this.receptiveFieldSizeColumn + y] } ")
-//            }
-//            println()
-//        }
 
         flatTiles.forEach { if (it == 1.0) println("I SEE YOU")}
 
