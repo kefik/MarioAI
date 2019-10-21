@@ -36,9 +36,9 @@ private fun playAllLevels(controller: MarioController, levels: Array<MarioLevel>
     val marioSimulator = GameSimulator()
     val statistics = mutableListOf<GameStatistics>()
 
-    levels.forEachIndexed { index, level ->
+    levels.forEach { level ->
         marioSimulator.playMario(controller, level, false)
-        statistics[index] = marioSimulator.statistics
+        statistics.add(marioSimulator.statistics)
     }
 
     return statistics
