@@ -13,7 +13,10 @@ import cz.cuni.mff.aspect.storage.NeatAIStorage
 import java.util.*
 
 
-class NeatControllerEvolution(private val networkSettings: NetworkSettings) : ControllerEvolution {
+class NeatControllerEvolution(
+    private val networkSettings: NetworkSettings,
+    private var generationsCount: Int = 50
+) : ControllerEvolution {
 
     private lateinit var topGenome: Genome
 
@@ -38,7 +41,7 @@ class NeatControllerEvolution(private val networkSettings: NetworkSettings) : Co
         var topGenome = Genome()
         var generation = 0
 
-        while (generation < 200) {
+        while (generation < this.generationsCount) {
             pool.evaluateFitness(evolution)
 
             topGenome = pool.topGenome
