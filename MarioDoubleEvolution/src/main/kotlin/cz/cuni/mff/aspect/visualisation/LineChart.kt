@@ -6,21 +6,22 @@ import org.knowm.xchart.XYChartBuilder
 import org.knowm.xchart.XYSeries
 import org.knowm.xchart.internal.series.Series
 import org.knowm.xchart.style.Styler
+import org.knowm.xchart.style.markers.SeriesMarkers
 import java.awt.BorderLayout
 import javax.swing.JFrame
 
 
-class LineChart {
+class LineChart(label: String = "Line chart", xLabel: String = "X", yLabel: String = "Y") {
 
     private val chart: XYChart = XYChartBuilder()
         .width(600)
         .height(480)
-        .title("Line chart")
-        .xAxisTitle("X")
-        .yAxisTitle("Y")
+        .title(label)
+        .xAxisTitle(xLabel)
+        .yAxisTitle(yLabel)
         .build()
 
-    private var series: List<Series> = mutableListOf()
+    private var series: MutableList<Series> = mutableListOf()
     private lateinit var chartUIPanel: XChartPanel<XYChart>
 
     init {
@@ -36,8 +37,8 @@ class LineChart {
             frame.layout = BorderLayout()
             frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
 
-            val chartPanel = XChartPanel(chart)
-            frame.add(chartPanel, BorderLayout.CENTER)
+            this.chartUIPanel = XChartPanel(chart)
+            frame.add(this.chartUIPanel, BorderLayout.CENTER)
 
             frame.pack()
             frame.isVisible = true
@@ -49,14 +50,12 @@ class LineChart {
             val currentSeries = this.getOrCreateSeries(seriesLabel)
 
             val xData: DoubleArray = seriesData.map { it.first }.toDoubleArray()
-            val yData: DoubleArray = seriesData.map { it.first }.toDoubleArray()
+            val yData: DoubleArray = seriesData.map { it.second }.toDoubleArray()
 
             this.chart.updateXYSeries(currentSeries.name, xData, yData, null)
+        }
 
-            if (!this::chartUIPanel.isInitialized) {
-                return
-            }
-
+        if (this::chartUIPanel.isInitialized) {
             this.chartUIPanel.revalidate()
             this.chartUIPanel.repaint()
         }
@@ -64,7 +63,16 @@ class LineChart {
 
     private fun getOrCreateSeries(label: String): Series {
         val existingSeries = this.series.find { it.name == label }
-        return existingSeries ?: this.chart.addSeries(label, doubleArrayOf(), doubleArrayOf())
+
+        if (existingSeries != null) {
+            return existingSeries
+        }
+
+        val newSeries = this.chart.addSeries(label, doubleArrayOf(0.0), doubleArrayOf(0.0))
+        newSeries.marker = SeriesMarkers.NONE
+        this.series.add(newSeries)
+
+        return newSeries
     }
 
 }
