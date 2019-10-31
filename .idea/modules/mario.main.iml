@@ -7,6 +7,15 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library" scope="RUNTIME">
+      <library name="Gradle: io.jenetics:jenetics:5.0.1">
+        <CLASSES>
+          <root url="file://$USER_HOME$/Cannot resolve external dependency io.jenetics:jenetics:5.0.1 because no repositories are defined." />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="RUNTIME">
       <library name="Gradle: org.datavec:datavec-api:0.9.1">
         <CLASSES>
           <root url="file://$USER_HOME$/Cannot resolve external dependency org.datavec:datavec-api:0.9.1 because no repositories are defined." />
@@ -54,9 +63,9 @@
     <orderEntry type="module" module-name="mario.MarioAI4J.main" />
     <orderEntry type="module" module-name="mario.MarioDoubleEvolution.main" />
     <orderEntry type="module-library" scope="RUNTIME">
-      <library name="Gradle: io.jenetics:jenetics:5.0.1">
+      <library name="Gradle: org.knowm.xchart:xchart:3.6.0">
         <CLASSES>
-          <root url="file://$USER_HOME$/Cannot resolve external dependency io.jenetics:jenetics:5.0.1 because no repositories are defined." />
+          <root url="file://$USER_HOME$/Cannot resolve external dependency org.knowm.xchart:xchart:3.6.0 because no repositories are defined." />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
