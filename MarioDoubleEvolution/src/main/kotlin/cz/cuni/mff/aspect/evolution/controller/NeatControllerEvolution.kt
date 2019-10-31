@@ -10,7 +10,9 @@ import cz.cuni.mff.aspect.mario.controllers.ann.SimpleANNController
 import cz.cuni.mff.aspect.mario.controllers.ann.networks.NeatAgentNetwork
 import cz.cuni.mff.aspect.mario.level.MarioLevel
 import cz.cuni.mff.aspect.storage.NeatAIStorage
+import cz.cuni.mff.aspect.visualisation.EvolutionLineChart
 import java.util.*
+import kotlin.math.min
 
 
 class NeatControllerEvolution(
@@ -36,17 +38,28 @@ class NeatControllerEvolution(
     override fun evolve(levels: Array<MarioLevel>): MarioController {
         val evolution = ControllerEvolution(levels, this.networkSettings)
         val pool = Pool()
+        val chart = EvolutionLineChart()
+
         pool.initializePool()
+        chart.show()
 
         var topGenome = Genome()
-        var generation = 0
+        var currentGeneration = listOf<Genome>()
+        var generation = 1
 
         while (generation < this.generationsCount) {
             pool.evaluateFitness(evolution)
-
             topGenome = pool.topGenome
-            println("Neat gen: $generation, top genome: ${topGenome.points}")
-            pool.breedNewGeneration()
+
+            val averageFitness = this.getAverageFitness(currentGeneration)
+            val minFitness = this.getMinFitness(currentGeneration)
+            val maxFitness = pool.topGenome.points
+            if (currentGeneration.isNotEmpty()) {
+                chart.update(generation, maxFitness.toDouble(), averageFitness.toDouble(), if (minFitness >= 0.0) minFitness.toDouble() else 0.0)
+            }
+            println("Neat gen: $generation: Fitness - Max: $maxFitness, Avg: $averageFitness, Min: $minFitness}")
+
+            currentGeneration = pool.breedNewGeneration()
             generation++
         }
 
@@ -56,6 +69,14 @@ class NeatControllerEvolution(
         NeatAIStorage.storeAi(NeatAIStorage.FIRST_NEAT_AI, this.topGenome)
 
         return SimpleANNController(network)
+    }
+
+    private fun getAverageFitness(population: List<Genome>): Float {
+        return population.fold(0.0f, { accumulator, genome -> accumulator + genome.points}) / population.size
+    }
+
+    private fun getMinFitness(population: List<Genome>): Float {
+        return population.fold(Float.MAX_VALUE, { accumulator, genome -> min(accumulator, genome.points) })
     }
 
 }
