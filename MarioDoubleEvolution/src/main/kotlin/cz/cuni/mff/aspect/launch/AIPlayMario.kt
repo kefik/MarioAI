@@ -12,7 +12,7 @@ import kotlin.system.exitProcess
 
 fun main() {
     aiPlayLevel()
-    //neatAiPlayLevel()
+    // neatAiPlayLevel()
     exitProcess(0)
 }
 
@@ -20,8 +20,8 @@ fun main() {
 fun aiPlayLevel() {
     val controller = EvolvedControllers.UpdatedNetwork.test()
     // val level = LevelStorage.loadLevel("ge_long.lvl")
-    val level = Stage4Level1
-    // val level = Stage4Level1Split.levels[2]
+    val level = Stage2Level1
+    //val level = Stage4Level1Split.levels[2]
 
     GameSimulator(10000).playMario(controller, level, true)
 }
@@ -29,7 +29,7 @@ fun aiPlayLevel() {
 
 fun neatAiPlayLevel() {
     val genome = NeatAIStorage.loadAi(NeatAIStorage.FIRST_NEAT_AI)
-    val network = NeatAgentNetwork(NetworkSettings(5, 5, 0, 2, 5), genome)
+    val network = NeatAgentNetwork(NetworkSettings(5, 5, 0, 2), genome)
     val controller = SimpleANNController(network)
 
     val level = Stage1Level1

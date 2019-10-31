@@ -45,7 +45,7 @@ class NeatControllerEvolution(
             pool.evaluateFitness(evolution)
 
             topGenome = pool.topGenome
-            println("GEN $generation, top genome: ${topGenome.points}")
+            println("Neat gen: $generation, top genome: ${topGenome.points}")
             pool.breedNewGeneration()
             generation++
         }

@@ -40,16 +40,16 @@ class NeuroControllerEvolution(private val controllerNetwork: ControllerArtifici
     }
 
     private fun createInitialGenotype(): Genotype<DoubleGene> {
-        return Genotype.of(DoubleChromosome.of(-3.0, 3.0, this.controllerNetwork.weightsCount))
+        return Genotype.of(DoubleChromosome.of(-2.0, 2.0, this.controllerNetwork.weightsCount))
     }
 
     private fun createEvolutionEngine(genotype: Genotype<DoubleGene>): Engine<DoubleGene, Float> {
         return Engine.builder(fitness, genotype)
                 .optimize(Optimize.MAXIMUM)
                 .populationSize(this.populationSize)
-                .alterers(SinglePointCrossover(0.3), Mutator(0.05))
-                .survivorsSelector(EliteSelector(5))
-                .offspringSelector(RouletteWheelSelector())
+                .alterers(Mutator(0.05))
+                .survivorsSelector(EliteSelector(2))
+                .offspringSelector(TournamentSelector())
                 .mapping { evolutionResult ->
                     println("new gen: ${evolutionResult.generation} (best fitness: ${evolutionResult.bestFitness})")
                     evolutionResult

@@ -64,11 +64,12 @@ class NeatAgentNetwork(private val networkSettings: NetworkSettings, private val
             flatEntities[i] = if (entitiesAtPosition.size > 0) entitiesAtPosition[0].type.code.toFloat() else 0.0f
         }
 
-        return FloatArray(this.inputLayerSize) {
-            if (it >= flatEntities.size) {
-                flatTiles[it - flatEntities.size]
-            } else {
-                flatEntities[it]
+        return FloatArray(this.inputLayerSize + 2) {
+            when {
+                it == this.inputLayerSize + 1 -> mario.dX
+                it == this.inputLayerSize + 0 -> mario.dY
+                it >= flatEntities.size -> flatTiles[it - flatEntities.size]
+                else -> flatEntities[it]
             }
         }
     }
