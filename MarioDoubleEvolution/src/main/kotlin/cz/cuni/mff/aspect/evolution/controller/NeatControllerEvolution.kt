@@ -12,6 +12,7 @@ import cz.cuni.mff.aspect.mario.level.MarioLevel
 import cz.cuni.mff.aspect.storage.NeatAIStorage
 import cz.cuni.mff.aspect.visualisation.EvolutionLineChart
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.math.min
 
 
@@ -36,6 +37,7 @@ class NeatControllerEvolution(
     }
 
     override fun evolve(levels: Array<MarioLevel>): MarioController {
+        val startTime = System.currentTimeMillis()
         val evolution = ControllerEvolution(levels, this.networkSettings)
         val networkInputSize = NeatAgentNetwork(this.networkSettings, Genome(0,0)).inputLayerSize
         val networkOutputSize = 4
@@ -54,8 +56,14 @@ class NeatControllerEvolution(
             val averageFitness = this.getAverageFitness(currentGeneration)
             val minFitness = this.getMinFitness(currentGeneration)
             val maxFitness = topGenome.points
+
             chart.update(generation, maxFitness.toDouble(), averageFitness.toDouble(), if (minFitness >= 0.0) minFitness.toDouble() else 0.0)
-            println("Neat gen: $generation: Fitness - Max: $maxFitness, Avg: $averageFitness, Min: $minFitness}")
+            val currentTimeMillis = System.currentTimeMillis() - startTime
+            val timeString = String.format("%02d min, %02d sec",
+                TimeUnit.MILLISECONDS.toMinutes(currentTimeMillis),
+                TimeUnit.MILLISECONDS.toSeconds(currentTimeMillis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(currentTimeMillis))
+            );
+            println("($timeString) Neat gen: $generation: Fitness - Max: $maxFitness, Avg: $averageFitness, Min: $minFitness}")
 
             currentGeneration = pool.breedNewGeneration()
             generation++
