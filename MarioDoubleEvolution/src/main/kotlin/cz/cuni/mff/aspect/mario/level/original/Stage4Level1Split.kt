@@ -11,8 +11,11 @@ object Stage4Level1Split {
     init {
         val splits = arrayOf(
             LevelSplit(0, 80),
-            LevelSplit(79, 60),
-            LevelSplit(136, 60)
+            LevelSplit(50, 60),
+            LevelSplit(80, 60),
+            LevelSplit(115, 60),
+            LevelSplit(135, 60),
+            LevelSplit(162, 60)
         )
 
         levels = LevelSplitter.splitLevel(Stage4Level1, splits)

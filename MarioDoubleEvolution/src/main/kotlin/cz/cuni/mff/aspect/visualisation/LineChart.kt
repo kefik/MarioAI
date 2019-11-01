@@ -28,6 +28,7 @@ class LineChart(label: String = "Line chart", xLabel: String = "X", yLabel: Stri
         chart.styler.defaultSeriesRenderStyle = XYSeries.XYSeriesRenderStyle.Line
         chart.styler.isChartTitleVisible = true
         chart.styler.legendPosition = Styler.LegendPosition.InsideSE
+        chart.styler.isLegendVisible = true
         chart.styler.markerSize = 16
     }
 
