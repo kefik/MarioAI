@@ -1,4 +1,4 @@
-package cz.cuni.mff.aspect.mario.controllers.ann.networks;
+package cz.cuni.mff.aspect.mario.controllers.ann.networks
 
 import ch.idsia.agents.controllers.modules.Entities
 import ch.idsia.agents.controllers.modules.Tiles
@@ -35,7 +35,7 @@ class NeatAgentNetwork(private val networkSettings: NetworkSettings, private val
     }
 
     override val weightsCount: Int get() = this.inputLayerSize * this.networkSettings.hiddenLayerSize + this.networkSettings.hiddenLayerSize * OUTPUT_LAYER_SIZE
-    private val inputLayerSize: Int get() = 2 * this.networkSettings.receptiveFieldSizeRow * this.networkSettings.receptiveFieldSizeColumn
+    val inputLayerSize: Int get() = 2 * this.networkSettings.receptiveFieldSizeRow * this.networkSettings.receptiveFieldSizeColumn + 2
 
     // TODO: generalise this pls :(
     private fun createInput(tiles: Tiles, entities: Entities, mario: MarioEntity): FloatArray {
@@ -64,10 +64,10 @@ class NeatAgentNetwork(private val networkSettings: NetworkSettings, private val
             flatEntities[i] = if (entitiesAtPosition.size > 0) entitiesAtPosition[0].type.code.toFloat() else 0.0f
         }
 
-        return FloatArray(this.inputLayerSize + 2) {
+        return FloatArray(this.inputLayerSize) {
             when {
-                it == this.inputLayerSize + 1 -> mario.dX
-                it == this.inputLayerSize + 0 -> mario.dY
+                it == this.inputLayerSize - 1 -> mario.dX
+                it == this.inputLayerSize - 2 -> mario.dY
                 it >= flatEntities.size -> flatTiles[it - flatEntities.size]
                 else -> flatEntities[it]
             }

@@ -11,8 +11,8 @@ import kotlin.system.exitProcess
 
 
 fun main() {
-    aiPlayLevel()
-    // neatAiPlayLevel()
+    // aiPlayLevel()
+    neatAiPlayLevel()
     exitProcess(0)
 }
 
@@ -28,7 +28,7 @@ fun aiPlayLevel() {
 
 
 fun neatAiPlayLevel() {
-    val genome = NeatAIStorage.loadAi(NeatAIStorage.FIRST_NEAT_AI)
+    val genome = NeatAIStorage.loadAi(NeatAIStorage.STAGE4_LEVEL1_SPLIT)
     val network = NeatAgentNetwork(NetworkSettings(5, 5, 0, 2), genome)
     val controller = SimpleANNController(network)
 

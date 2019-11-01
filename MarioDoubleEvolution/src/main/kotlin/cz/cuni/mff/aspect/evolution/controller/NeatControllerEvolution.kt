@@ -37,23 +37,24 @@ class NeatControllerEvolution(
 
     override fun evolve(levels: Array<MarioLevel>): MarioController {
         val evolution = ControllerEvolution(levels, this.networkSettings)
-        val pool = Pool()
+        val networkInputSize = NeatAgentNetwork(this.networkSettings, Genome(0,0)).inputLayerSize
+        val networkOutputSize = 4
+        val pool = Pool(100)
         val chart = EvolutionLineChart(label = "NEAT Evolution Stage 4 Level 1", hideNegative = true)
 
-        pool.initializePool()
+        pool.initializePool(networkInputSize, networkOutputSize)
         chart.show()
 
-        var topGenome = Genome()
         var currentGeneration = listOf<Genome>()
         var generation = 1
 
         while (generation < this.generationsCount) {
             pool.evaluateFitness(evolution)
-            topGenome = pool.topGenome
+            val topGenome = pool.topGenome
 
             val averageFitness = this.getAverageFitness(currentGeneration)
             val minFitness = this.getMinFitness(currentGeneration)
-            val maxFitness = pool.topGenome.points
+            val maxFitness = topGenome.points
             if (currentGeneration.isNotEmpty()) {
                 chart.update(generation, maxFitness.toDouble(), averageFitness.toDouble(), if (minFitness >= 0.0) minFitness.toDouble() else 0.0)
             }
@@ -63,10 +64,10 @@ class NeatControllerEvolution(
             generation++
         }
 
-        this.topGenome = topGenome
+        this.topGenome = pool.topGenome
         val network = NeatAgentNetwork(this.networkSettings, this.topGenome)
 
-        NeatAIStorage.storeAi(NeatAIStorage.FIRST_NEAT_AI, this.topGenome)
+        NeatAIStorage.storeAi(NeatAIStorage.LATEST, this.topGenome)
         chart.save("latest.svg")
 
         return SimpleANNController(network)

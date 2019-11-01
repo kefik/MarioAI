@@ -61,7 +61,7 @@ class LineChart(label: String = "Line chart", xLabel: String = "X", yLabel: Stri
     }
 
     fun save(path: String) {
-        VectorGraphicsEncoder.saveVectorGraphic(this.chart, "data/$path", VectorGraphicsEncoder.VectorGraphicsFormat.SVG);
+        VectorGraphicsEncoder.saveVectorGraphic(this.chart, "data/charts/$path", VectorGraphicsEncoder.VectorGraphicsFormat.SVG);
     }
 
     private fun getOrCreateSeries(label: String, color: Color): Series {
