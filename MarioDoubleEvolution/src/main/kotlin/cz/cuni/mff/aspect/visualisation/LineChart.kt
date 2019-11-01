@@ -1,13 +1,11 @@
 package cz.cuni.mff.aspect.visualisation
 
-import org.knowm.xchart.XChartPanel
-import org.knowm.xchart.XYChart
-import org.knowm.xchart.XYChartBuilder
-import org.knowm.xchart.XYSeries
+import org.knowm.xchart.*
 import org.knowm.xchart.internal.series.Series
 import org.knowm.xchart.style.Styler
 import org.knowm.xchart.style.markers.SeriesMarkers
 import java.awt.BorderLayout
+import java.awt.Color
 import javax.swing.JFrame
 
 
@@ -27,7 +25,7 @@ class LineChart(label: String = "Line chart", xLabel: String = "X", yLabel: Stri
     init {
         chart.styler.defaultSeriesRenderStyle = XYSeries.XYSeriesRenderStyle.Line
         chart.styler.isChartTitleVisible = true
-        chart.styler.legendPosition = Styler.LegendPosition.InsideSE
+        chart.styler.legendPosition = Styler.LegendPosition.InsideNW
         chart.styler.isLegendVisible = true
         chart.styler.markerSize = 16
     }
@@ -46,9 +44,9 @@ class LineChart(label: String = "Line chart", xLabel: String = "X", yLabel: Stri
         }
     }
 
-    fun updateChart(values: List<Pair<String, List<Pair<Double, Double>>>>) {
-        for ((seriesLabel, seriesData) in values) {
-            val currentSeries = this.getOrCreateSeries(seriesLabel)
+    fun updateChart(values: List<Triple<String, Color, List<Pair<Double, Double>>>>) {
+        for ((seriesLabel, seriesColor, seriesData) in values) {
+            val currentSeries = this.getOrCreateSeries(seriesLabel, seriesColor)
 
             val xData: DoubleArray = seriesData.map { it.first }.toDoubleArray()
             val yData: DoubleArray = seriesData.map { it.second }.toDoubleArray()
@@ -62,7 +60,11 @@ class LineChart(label: String = "Line chart", xLabel: String = "X", yLabel: Stri
         }
     }
 
-    private fun getOrCreateSeries(label: String): Series {
+    fun save(path: String) {
+        VectorGraphicsEncoder.saveVectorGraphic(this.chart, "data/$path", VectorGraphicsEncoder.VectorGraphicsFormat.SVG);
+    }
+
+    private fun getOrCreateSeries(label: String, color: Color): Series {
         val existingSeries = this.series.find { it.name == label }
 
         if (existingSeries != null) {
@@ -71,6 +73,7 @@ class LineChart(label: String = "Line chart", xLabel: String = "X", yLabel: Stri
 
         val newSeries = this.chart.addSeries(label, doubleArrayOf(0.0), doubleArrayOf(0.0))
         newSeries.marker = SeriesMarkers.NONE
+        newSeries.lineColor = color
         this.series.add(newSeries)
 
         return newSeries

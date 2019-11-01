@@ -38,7 +38,7 @@ class NeatControllerEvolution(
     override fun evolve(levels: Array<MarioLevel>): MarioController {
         val evolution = ControllerEvolution(levels, this.networkSettings)
         val pool = Pool()
-        val chart = EvolutionLineChart()
+        val chart = EvolutionLineChart(label = "NEAT Evolution Stage 4 Level 1", hideNegative = true)
 
         pool.initializePool()
         chart.show()
@@ -67,6 +67,7 @@ class NeatControllerEvolution(
         val network = NeatAgentNetwork(this.networkSettings, this.topGenome)
 
         NeatAIStorage.storeAi(NeatAIStorage.FIRST_NEAT_AI, this.topGenome)
+        chart.save("latest.svg")
 
         return SimpleANNController(network)
     }
