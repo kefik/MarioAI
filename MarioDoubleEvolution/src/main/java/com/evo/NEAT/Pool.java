@@ -27,12 +27,16 @@ public class Pool {
         return species;
     }
 
-    public void initializePool(int inputsCount, int outputsCount) {
+    public ArrayList<Genome> initializePool(int inputsCount, int outputsCount) {
 
+        ArrayList<Genome> genomes = new ArrayList<>();
         for (int i = 0; i < this.populationSize; i++) {
-            addToSpecies(new Genome(inputsCount, outputsCount));
+            Genome newGenome = new Genome(inputsCount, outputsCount);
+            addToSpecies(newGenome);
+            genomes.add(newGenome);
         }
 
+        return genomes;
     }
 
     public void addToSpecies(Genome g) {
