@@ -18,8 +18,9 @@ fun main() {
 
 fun evolveNeatAI() {
     val controllerEvolution: ControllerEvolution = NeatControllerEvolution(NetworkSettings(5, 5, 0, 2),
-        400)
+        1000)
     val levels = emptyArray<MarioLevel>() + Stage4Level1
+
     val resultController = controllerEvolution.evolve(levels)
 
     val marioSimulator = GameSimulator()
