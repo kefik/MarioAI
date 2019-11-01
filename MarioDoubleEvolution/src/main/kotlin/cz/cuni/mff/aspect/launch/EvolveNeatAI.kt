@@ -18,12 +18,13 @@ fun main() {
 
 fun evolveNeatAI() {
     val controllerEvolution: ControllerEvolution = NeatControllerEvolution(NetworkSettings(5, 5, 0, 2),
-        1000)
-    val levels = emptyArray<MarioLevel>() + Stage4Level1Split.levels + PathWithHolesLevel + OnlyPathLevel + Stage4Level1
+        400)
+    val levels = emptyArray<MarioLevel>() + Stage5Level1
     val resultController = controllerEvolution.evolve(levels)
 
     val marioSimulator = GameSimulator()
 
+    /*
     marioSimulator.playMario(resultController, OnlyPathLevel, true)
     marioSimulator.playMario(resultController, PathWithHolesLevel, true)
 
@@ -33,7 +34,8 @@ fun evolveNeatAI() {
     marioSimulator.playMario(resultController, Stage4Level1Split.levels[3], true)
     marioSimulator.playMario(resultController, Stage4Level1Split.levels[4], true)
     marioSimulator.playMario(resultController, Stage4Level1Split.levels[5], true)
+     */
 
-    marioSimulator.playMario(resultController, Stage4Level1, true)
+    marioSimulator.playMario(resultController, Stage5Level1, true)
 
 }

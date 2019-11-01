@@ -10,12 +10,18 @@ import java.util.*;
  * Created by vishnughosh on 28/02/17.
  */
 public class Genome implements Comparable, Serializable {
+
+    static final long serialVersionUID = 8631720222261848946L;
+
     private static Random rand = new Random();
     private float fitness;                                          // Global Percentile Rank (higher the better)
     private float points;
     private ArrayList<ConnectionGene> connectionGeneList = new ArrayList<>();           // DNA- MAin archive of gene information
     private TreeMap<Integer, NodeGene> nodes = new TreeMap<>();                          // Generated while performing network operation
     private float adjustedFitness;                                      // For number of child to breed in species
+
+    private final int inputsCount;
+    private final int outputsCount;
 
     private HashMap<MutationKeys, Float> mutationRates = new HashMap<>();
 
@@ -53,7 +59,9 @@ public class Genome implements Comparable, Serializable {
                 this.ENABLE_MUTATION_CHANCE = NEAT_Config.ENABLE_MUTATION_CHANCE;
             }
         }*/
-    public Genome(){
+    public Genome(int inputsCount, int outputsCount) {
+        this.inputsCount = inputsCount;
+        this.outputsCount = outputsCount;
 
         this.mutationRates.put(MutationKeys.STEPS, NEAT_Config.STEPS);
         this.mutationRates.put(MutationKeys.PERTURB_CHANCE, NEAT_Config.PERTURB_CHANCE);
@@ -72,6 +80,8 @@ public class Genome implements Comparable, Serializable {
             this.connectionGeneList.add(new ConnectionGene(c));
         }
 
+        this.inputsCount = child.inputsCount;
+        this.outputsCount = child.outputsCount;
         this.fitness = child.fitness;
         this.adjustedFitness = child.adjustedFitness;
 
@@ -104,7 +114,7 @@ public class Genome implements Comparable, Serializable {
             parent2 = temp;
         }
 
-        Genome child = new Genome();
+        Genome child = new Genome(parent1.inputsCount, parent1.outputsCount);
         TreeMap<Integer, ConnectionGene> geneMap1 = new TreeMap<>();
         TreeMap<Integer, ConnectionGene> geneMap2 = new TreeMap<>();
 
@@ -225,13 +235,13 @@ public class Genome implements Comparable, Serializable {
 
         nodes.clear();
         //  Input layer
-        for (int i = 0; i < NEAT_Config.INPUTS; i++) {
+        for (int i = 0; i < this.inputsCount; i++) {
             nodes.put(i, new NodeGene(0));                    //Inputs
         }
-        nodes.put(NEAT_Config.INPUTS, new NodeGene(1));        // Bias
+        nodes.put(this.inputsCount, new NodeGene(1));        // Bias
 
         //output layer
-        for (int i = NEAT_Config.INPUTS + NEAT_Config.HIDDEN_NODES; i < NEAT_Config.INPUTS + NEAT_Config.HIDDEN_NODES + NEAT_Config.OUTPUTS; i++) {
+        for (int i = this.inputsCount + NEAT_Config.HIDDEN_NODES; i < this.inputsCount + NEAT_Config.HIDDEN_NODES + this.outputsCount; i++) {
             nodes.put(i, new NodeGene(0));
         }
 
@@ -248,10 +258,10 @@ public class Genome implements Comparable, Serializable {
     }
 
     public float[] evaluateNetwork(float[] inputs) {
-        float output[] = new float[NEAT_Config.OUTPUTS];
+        float output[] = new float[this.outputsCount];
         generateNetwork();
 
-        for (int i = 0; i < NEAT_Config.INPUTS; i++) {
+        for (int i = 0; i < this.inputsCount; i++) {
             nodes.get(i).setValue(inputs[i]);
         }
 
@@ -260,7 +270,7 @@ public class Genome implements Comparable, Serializable {
             int key = mapEntry.getKey();
             NodeGene node = mapEntry.getValue();
 
-            if (key > NEAT_Config.INPUTS) {
+            if (key > this.inputsCount) {
                 for (ConnectionGene conn : node.getIncomingCon()) {
                     if (conn.isEnabled()) {
                         sum += nodes.get(conn.getInto()).getValue() * conn.getWeight();
@@ -270,8 +280,8 @@ public class Genome implements Comparable, Serializable {
             }
         }
 
-        for (int i = 0; i < NEAT_Config.OUTPUTS; i++) {
-            output[i] = nodes.get(NEAT_Config.INPUTS + NEAT_Config.HIDDEN_NODES + i).getValue();
+        for (int i = 0; i < this.outputsCount; i++) {
+            output[i] = nodes.get(this.inputsCount + NEAT_Config.HIDDEN_NODES + i).getValue();
         }
         return output;
     }
@@ -322,10 +332,10 @@ public class Genome implements Comparable, Serializable {
         generateNetwork();
         int i = 0;
         int j = 0;
-        int random2 = rand.nextInt(nodes.size() - NEAT_Config.INPUTS - 1) + NEAT_Config.INPUTS + 1;
+        int random2 = rand.nextInt(nodes.size() - this.inputsCount - 1) + this.inputsCount + 1;
         int random1 = rand.nextInt(nodes.size());
         if(forceBais)
-            random1 = NEAT_Config.INPUTS;
+            random1 = this.inputsCount;
         int node1 = -1;
         int node2 = -1;
 
@@ -373,7 +383,7 @@ public class Genome implements Comparable, Serializable {
                 if (timeoutCount > NEAT_Config.HIDDEN_NODES)
                     return;
             }
-            int nextNode = nodes.size() - NEAT_Config.OUTPUTS;
+            int nextNode = nodes.size() - this.outputsCount;
             randomCon.setEnabled(false);
             connectionGeneList.add(new ConnectionGene(randomCon.getInto(), nextNode, InnovationCounter.newInnovation(), 1, true));        // Add innovation and weight
             connectionGeneList.add(new ConnectionGene(nextNode, randomCon.getOut(), InnovationCounter.newInnovation(), randomCon.getWeight(), true));

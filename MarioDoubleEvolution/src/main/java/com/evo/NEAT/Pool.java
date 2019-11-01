@@ -16,18 +16,27 @@ public class Pool {
     private int generations = 0;
     private float topFitness ;
     private int poolStaleness = 0;
+    private final int populationSize;
+
+    public Pool(int populationSize) {
+        this.populationSize = populationSize;
+    }
 
 
     public ArrayList<Species> getSpecies() {
         return species;
     }
 
-    public void initializePool() {
+    public ArrayList<Genome> initializePool(int inputsCount, int outputsCount) {
 
-        for (int i = 0; i < NEAT_Config.POPULATION; i++) {
-            addToSpecies(new Genome());
+        ArrayList<Genome> genomes = new ArrayList<>();
+        for (int i = 0; i < this.populationSize; i++) {
+            Genome newGenome = new Genome(inputsCount, outputsCount);
+            addToSpecies(newGenome);
+            genomes.add(newGenome);
         }
 
+        return genomes;
     }
 
     public void addToSpecies(Genome g) {
@@ -188,7 +197,7 @@ public class Pool {
         ArrayList<Genome> children = new ArrayList<>();
         float carryOver = 0;
         for (Species s : species) {
-            float fchild = NEAT_Config.POPULATION * (s.getTotalAdjustedFitness() / globalAdjustedFitness) ;//- 1;       // reconsider
+            float fchild = this.populationSize * (s.getTotalAdjustedFitness() / globalAdjustedFitness) ;//- 1;       // reconsider
             int nchild = (int) fchild;
             carryOver += fchild - nchild;
             if (carryOver > 1) {

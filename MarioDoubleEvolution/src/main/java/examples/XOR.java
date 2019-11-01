@@ -36,10 +36,10 @@ public class XOR implements Environment {
     public static void main(String arg0[]){
         XOR xor = new XOR();
 
-        Pool pool = new Pool();
-        pool.initializePool();
+        Pool pool = new Pool(300);
+        pool.initializePool(2, 1);
 
-        Genome topGenome = new Genome();
+        Genome topGenome;
         int generation = 0;
         while(true){
             //pool.evaluateFitness();

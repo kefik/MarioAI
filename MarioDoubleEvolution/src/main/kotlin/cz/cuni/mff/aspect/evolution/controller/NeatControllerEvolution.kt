@@ -37,43 +37,41 @@ class NeatControllerEvolution(
 
     override fun evolve(levels: Array<MarioLevel>): MarioController {
         val evolution = ControllerEvolution(levels, this.networkSettings)
-        val pool = Pool()
+        val networkInputSize = NeatAgentNetwork(this.networkSettings, Genome(0,0)).inputLayerSize
+        val networkOutputSize = 4
+        val pool = Pool(100)
         val chart = EvolutionLineChart(label = "NEAT Evolution Stage 4 Level 1", hideNegative = true)
 
-        pool.initializePool()
+        var currentGeneration = pool.initializePool(networkInputSize, networkOutputSize)
         chart.show()
 
-        var topGenome = Genome()
-        var currentGeneration = listOf<Genome>()
         var generation = 1
 
         while (generation < this.generationsCount) {
             pool.evaluateFitness(evolution)
-            topGenome = pool.topGenome
+            val topGenome = pool.topGenome
 
             val averageFitness = this.getAverageFitness(currentGeneration)
             val minFitness = this.getMinFitness(currentGeneration)
-            val maxFitness = pool.topGenome.points
-            if (currentGeneration.isNotEmpty()) {
-                chart.update(generation, maxFitness.toDouble(), averageFitness.toDouble(), if (minFitness >= 0.0) minFitness.toDouble() else 0.0)
-            }
+            val maxFitness = topGenome.points
+            chart.update(generation, maxFitness.toDouble(), averageFitness.toDouble(), if (minFitness >= 0.0) minFitness.toDouble() else 0.0)
             println("Neat gen: $generation: Fitness - Max: $maxFitness, Avg: $averageFitness, Min: $minFitness}")
 
             currentGeneration = pool.breedNewGeneration()
             generation++
         }
 
-        this.topGenome = topGenome
+        this.topGenome = pool.topGenome
         val network = NeatAgentNetwork(this.networkSettings, this.topGenome)
 
-        NeatAIStorage.storeAi(NeatAIStorage.FIRST_NEAT_AI, this.topGenome)
+        NeatAIStorage.storeAi(NeatAIStorage.LATEST, this.topGenome)
         chart.save("latest.svg")
 
         return SimpleANNController(network)
     }
 
     private fun getAverageFitness(population: List<Genome>): Float {
-        return population.fold(0.0f, { accumulator, genome -> accumulator + genome.points}) / population.size
+        return population.fold(0.0f, { accumulator, genome -> accumulator + genome.points }) / population.size
     }
 
     private fun getMinFitness(population: List<Genome>): Float {
