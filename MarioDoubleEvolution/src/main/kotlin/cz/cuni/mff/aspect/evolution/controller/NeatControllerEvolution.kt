@@ -42,10 +42,9 @@ class NeatControllerEvolution(
         val pool = Pool(100)
         val chart = EvolutionLineChart(label = "NEAT Evolution Stage 4 Level 1", hideNegative = true)
 
-        pool.initializePool(networkInputSize, networkOutputSize)
+        var currentGeneration = pool.initializePool(networkInputSize, networkOutputSize)
         chart.show()
 
-        var currentGeneration = listOf<Genome>()
         var generation = 1
 
         while (generation < this.generationsCount) {
@@ -55,9 +54,7 @@ class NeatControllerEvolution(
             val averageFitness = this.getAverageFitness(currentGeneration)
             val minFitness = this.getMinFitness(currentGeneration)
             val maxFitness = topGenome.points
-            if (currentGeneration.isNotEmpty()) {
-                chart.update(generation, maxFitness.toDouble(), averageFitness.toDouble(), if (minFitness >= 0.0) minFitness.toDouble() else 0.0)
-            }
+            chart.update(generation, maxFitness.toDouble(), averageFitness.toDouble(), if (minFitness >= 0.0) minFitness.toDouble() else 0.0)
             println("Neat gen: $generation: Fitness - Max: $maxFitness, Avg: $averageFitness, Min: $minFitness}")
 
             currentGeneration = pool.breedNewGeneration()
@@ -74,7 +71,7 @@ class NeatControllerEvolution(
     }
 
     private fun getAverageFitness(population: List<Genome>): Float {
-        return population.fold(0.0f, { accumulator, genome -> accumulator + genome.points}) / population.size
+        return population.fold(0.0f, { accumulator, genome -> accumulator + genome.points }) / population.size
     }
 
     private fun getMinFitness(population: List<Genome>): Float {
