@@ -33,11 +33,11 @@ fun fitnessOnlyVictories(controller: MarioController, levels: Array<MarioLevel>)
 
 
 // TODO: genetics does not evaluate an individual again, but here we want it
-private fun playLevels(controller: MarioController, levels: Array<MarioLevel>, count: Int = 99999): List<GameStatistics> {
+private fun playLevels(controller: MarioController, levels: Array<MarioLevel>, count: Int = 0): List<GameStatistics> {
     val marioSimulator = GameSimulator()
     val statistics = mutableListOf<GameStatistics>()
 
-    val lastIndex = if (levels.size < count) levels.size else count
+    val lastIndex = if (levels.size < count) levels.size else if (count == 0) levels.size else count
     val levelsToPlay = if (count < 1) levels.toList() else levels.toMutableList().shuffled().subList(0, lastIndex)
 
     levelsToPlay.forEach { level ->

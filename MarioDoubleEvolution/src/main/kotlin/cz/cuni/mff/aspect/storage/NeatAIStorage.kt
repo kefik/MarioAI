@@ -6,7 +6,7 @@ import com.evo.NEAT.Genome
 object NeatAIStorage {
 
     const val LATEST: String = "latest.ai"
-    const val STAGE4_LEVEL1_SPLIT: String = "Stage4Level1Best.ai"
+    const val STAGE4_LEVEL1_SPLIT: String = "Stage4Level1.ai"
 
     private val storage: ObjectStorage = ObjectStorage
     private const val aisDirectory = "neat-ai"
