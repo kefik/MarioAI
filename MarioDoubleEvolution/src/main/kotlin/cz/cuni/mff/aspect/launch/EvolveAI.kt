@@ -23,19 +23,18 @@ fun main() {
 
 fun evolveAI() {
     val controllerANN = UpdatedAgentNetwork(5, 5, 0, 2, 20)
-    val controllerEvolution: ControllerEvolution = NeuroControllerEvolution(controllerANN, 250  , 50)
-    val levels = emptyArray<MarioLevel>() + Stage2Level1Split.levels + OnlyPathLevel + PathWithHolesLevel
+    val controllerEvolution: ControllerEvolution = NeuroControllerEvolution(controllerANN, 1000  , 50, chartLabel = "Neuroevolution Stage 4 Level 1 split")
+    val levels = emptyArray<MarioLevel>() + Stage4Level1Split.levels + PathWithHolesLevel
     val resultController = controllerEvolution.evolve(levels, ::fitnessDistanceLeastActions)
 
     val marioSimulator = GameSimulator()
 
     marioSimulator.playMario(resultController, OnlyPathLevel, true)
-    marioSimulator.playMario(resultController, Stage2Level1Split.levels[0], true)
-    marioSimulator.playMario(resultController, Stage2Level1Split.levels[1], true)
-    marioSimulator.playMario(resultController, Stage2Level1Split.levels[2], true)
-    marioSimulator.playMario(resultController, Stage2Level1Split.levels[3], true)
-    marioSimulator.playMario(resultController, Stage2Level1Split.levels[4], true)
-    marioSimulator.playMario(resultController, Stage2Level1Split.levels[5], true)
-    marioSimulator.playMario(resultController, Stage2Level1Split.levels[6], true)
-    marioSimulator.playMario(resultController, Stage2Level1, true)
+    marioSimulator.playMario(resultController, Stage4Level1Split.levels[0], true)
+    marioSimulator.playMario(resultController, Stage4Level1Split.levels[1], true)
+    marioSimulator.playMario(resultController, Stage4Level1Split.levels[2], true)
+    marioSimulator.playMario(resultController, Stage4Level1Split.levels[3], true)
+    marioSimulator.playMario(resultController, Stage4Level1Split.levels[4], true)
+    marioSimulator.playMario(resultController, Stage4Level1Split.levels[5], true)
+    marioSimulator.playMario(resultController, Stage4Level1, true)
 }
