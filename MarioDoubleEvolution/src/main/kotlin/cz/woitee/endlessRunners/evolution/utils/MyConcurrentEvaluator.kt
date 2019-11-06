@@ -10,6 +10,7 @@ import io.jenetics.util.Seq
 import java.util.*
 import java.util.concurrent.Executor
 import java.util.function.Function
+import java.util.stream.Stream
 
 
 /**
@@ -42,28 +43,35 @@ class MyConcurrentEvaluator<G : Gene<*, G>, C : Comparable<C>>(
             seedMap[genotypeId] = random.nextLong()
         }
 
-        val populationStream = population.stream()
-
         // Evaluation happens twice per evolution step in jenetics
         // But we should do the "always evaluation" only once, since it would be wasteful otherwise
         val shouldReevaluateAll = alwaysEvaluate && isEverybodyEvaluated(population)
 
-        val phenotypesToEvaluate = if (shouldReevaluateAll) {
+        return if (shouldReevaluateAll) {
+            val populationStream = population.stream()
             // The only way to un-evaluate a phenotype is to create a new one
-            populationStream.map { pt -> pt.withGeneration(pt.generation); }
+            // val phenotypes = populationStream.map { pt -> pt.withGeneration(pt.generation); }
+            evaluate(populationStream)
         } else {
-            populationStream.filter { pt -> !pt.isEvaluated }
-        }
+            val originalEvaluated = population.filter { pt -> pt.isEvaluated }
+            val originalNotEvaluated = population.stream().filter { pt -> !pt.isEvaluated }
+            val evaluated: Seq<Phenotype<G, C>> = evaluate(originalNotEvaluated)
 
-        val phenotypeRunnables = phenotypesToEvaluate
+            evaluated.prepend(originalEvaluated).asISeq()
+        }
+    }
+
+    private fun evaluate(phenotypes: Stream<Phenotype<G, C>>): ISeq<Phenotype<G, C>> {
+        val phenotypeRunnables = phenotypes
             .map { pt -> PhenotypeFitness(pt, function) }
             .collect(ISeq.toISeq())
 
-        executeAll(phenotypeRunnables)
+        println("PHENOTYPE RUNNABLES LENGTH: ${phenotypeRunnables.length()}")
+        val concurrency = Concurrency.with(executor)
+        concurrency.execute(phenotypeRunnables)
+        concurrency.close()
 
-        val newPhenotypes = phenotypeRunnables.map { it.phenotype() }
-
-        return if (shouldReevaluateAll) { newPhenotypes } else { population.asISeq() }
+        return phenotypeRunnables.map { it.phenotype() }
     }
 
     /**
@@ -81,14 +89,6 @@ class MyConcurrentEvaluator<G : Gene<*, G>, C : Comparable<C>>(
             if (!phenotype.isEvaluated) return false
         }
         return true
-    }
-
-    /**
-     * Execute the individual evaluations.
-     */
-    private fun executeAll(seq: Seq<PhenotypeFitness<G, C>>) {
-        if (seq.isEmpty) return
-        Concurrency.with(executor).execute(seq)
     }
 }
 
