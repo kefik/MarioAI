@@ -7,6 +7,9 @@ import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.level.MarioLevel
 
 
+typealias Fitness = (controller: MarioController, levels: Array<MarioLevel>) -> Float
+
+
 fun fitnessOnlyDistance(controller: MarioController, levels: Array<MarioLevel>): Float {
     val statistics = playLevels(controller, levels)
     return statistics.sumByFloat { it.finalMarioDistance }

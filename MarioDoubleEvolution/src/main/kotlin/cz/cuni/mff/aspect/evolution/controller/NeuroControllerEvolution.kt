@@ -1,6 +1,6 @@
 package cz.cuni.mff.aspect.evolution.controller
 
-import cz.cuni.mff.aspect.evolution.fitnessDistanceLeastActions
+import cz.cuni.mff.aspect.evolution.Fitness
 import cz.cuni.mff.aspect.extensions.getDoubleValues
 import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.controllers.ann.networks.ControllerArtificialNetwork
@@ -21,9 +21,12 @@ class NeuroControllerEvolution(private val controllerNetwork: ControllerArtifici
     ControllerEvolution {
 
     private lateinit var levels: Array<MarioLevel>
+    private lateinit var fitnessFunction: Fitness
 
-    override fun evolve(levels: Array<MarioLevel>): MarioController {
+    override fun evolve(levels: Array<MarioLevel>, fitness: Fitness): MarioController {
         this.levels = levels
+        this.fitnessFunction = fitness
+
         val genotype = this.createInitialGenotype()
         val engine = this.createEvolutionEngine(genotype)
         val result = this.doEvolution(engine)
@@ -71,7 +74,7 @@ class NeuroControllerEvolution(private val controllerNetwork: ControllerArtifici
 
         val controller = SimpleANNController(controllerNetwork)
 
-        return fitnessDistanceLeastActions(controller, this.levels)
+        return this.fitnessFunction(controller, this.levels)
     }
 
     companion object {

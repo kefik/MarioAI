@@ -3,6 +3,7 @@ package cz.cuni.mff.aspect.launch
 import cz.cuni.mff.aspect.evolution.controller.ControllerEvolution
 import cz.cuni.mff.aspect.evolution.controller.NeatControllerEvolution
 import cz.cuni.mff.aspect.evolution.controller.NeuroControllerEvolution
+import cz.cuni.mff.aspect.evolution.fitnessDistanceLeastActions
 import cz.cuni.mff.aspect.evolution.levels.TrainingLevelsSet
 import cz.cuni.mff.aspect.mario.GameSimulator
 import cz.cuni.mff.aspect.mario.controllers.ann.NetworkSettings
@@ -24,7 +25,7 @@ fun evolveAI() {
     val controllerANN = UpdatedAgentNetwork(5, 5, 0, 2, 20)
     val controllerEvolution: ControllerEvolution = NeuroControllerEvolution(controllerANN, 250  , 50)
     val levels = emptyArray<MarioLevel>() + Stage2Level1Split.levels + OnlyPathLevel + PathWithHolesLevel
-    val resultController = controllerEvolution.evolve(levels)
+    val resultController = controllerEvolution.evolve(levels, ::fitnessDistanceLeastActions)
 
     val marioSimulator = GameSimulator()
 

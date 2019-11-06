@@ -32,7 +32,12 @@ fun neatAiPlayLevel() {
     val network = NeatAgentNetwork(NetworkSettings(5, 5, 0, 2), genome)
     val controller = SimpleANNController(network)
 
-    val level = Stage1Level1
+    val levels = arrayOf(Stage4Level1)
+    val simulator = GameSimulator(10000)
 
-    GameSimulator(10000).playMario(controller, level, true)
+    for (level in levels) {
+        simulator.playMario(controller, level, true)
+    }
+
+
 }

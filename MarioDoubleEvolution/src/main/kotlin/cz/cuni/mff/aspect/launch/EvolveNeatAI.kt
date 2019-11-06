@@ -2,6 +2,8 @@ package cz.cuni.mff.aspect.launch
 
 import cz.cuni.mff.aspect.evolution.controller.ControllerEvolution
 import cz.cuni.mff.aspect.evolution.controller.NeatControllerEvolution
+import cz.cuni.mff.aspect.evolution.fitnessDistanceLeastActions
+import cz.cuni.mff.aspect.evolution.levels.TrainingLevelsSet
 import cz.cuni.mff.aspect.mario.GameSimulator
 import cz.cuni.mff.aspect.mario.controllers.ann.NetworkSettings
 import cz.cuni.mff.aspect.mario.level.MarioLevel
@@ -19,8 +21,9 @@ fun main() {
 fun evolveNeatAI() {
     val controllerEvolution: ControllerEvolution = NeatControllerEvolution(NetworkSettings(5, 5, 0, 2),
         1000)
-    val levels = emptyArray<MarioLevel>() + Stage5Level1
-    val resultController = controllerEvolution.evolve(levels)
+    // val levels = emptyArray<MarioLevel>() + Stage5Level1
+    val levels = TrainingLevelsSet
+    val resultController = controllerEvolution.evolve(levels, ::fitnessDistanceLeastActions)
 
     val marioSimulator = GameSimulator()
 
@@ -36,6 +39,11 @@ fun evolveNeatAI() {
     marioSimulator.playMario(resultController, Stage4Level1Split.levels[5], true)
      */
 
+    marioSimulator.playMario(resultController, OnlyPathLevel, true)
+    marioSimulator.playMario(resultController, PathWithHolesLevel, true)
+    marioSimulator.playMario(resultController, Stage1Level1, true)
+    marioSimulator.playMario(resultController, Stage2Level1, true)
+    marioSimulator.playMario(resultController, Stage4Level1, true)
     marioSimulator.playMario(resultController, Stage5Level1, true)
 
 }

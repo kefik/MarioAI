@@ -3,7 +3,7 @@ package cz.cuni.mff.aspect.evolution.controller
 import com.evo.NEAT.Environment
 import com.evo.NEAT.Genome
 import com.evo.NEAT.Pool
-import cz.cuni.mff.aspect.evolution.fitnessDistanceLeastActions
+import cz.cuni.mff.aspect.evolution.Fitness
 import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.controllers.ann.NetworkSettings
 import cz.cuni.mff.aspect.mario.controllers.ann.SimpleANNController
@@ -18,27 +18,27 @@ import kotlin.math.min
 
 class NeatControllerEvolution(
     private val networkSettings: NetworkSettings,
-    private var generationsCount: Int = 50
+    private var generationsCount: Int = 200
 ) : ControllerEvolution {
 
     private lateinit var topGenome: Genome
 
-    class ControllerEvolution(private val levels: Array<MarioLevel>, private val networkSettings: NetworkSettings) : Environment {
+    class ControllerEvolutionEnvironment(private val levels: Array<MarioLevel>,
+                                         private val networkSettings: NetworkSettings,
+                                         private val fitness: Fitness) : Environment {
 
         override fun evaluateFitness(population: ArrayList<Genome>) {
             for (genome in population) {
                 val neatNetwork = NeatAgentNetwork(this.networkSettings, genome)
                 val controller = SimpleANNController(neatNetwork)
-                val fitness = fitnessDistanceLeastActions(controller, this.levels)
-                genome.fitness = fitness
+                genome.fitness = fitness(controller, this.levels)
             }
         }
-
     }
 
-    override fun evolve(levels: Array<MarioLevel>): MarioController {
+    override fun evolve(levels: Array<MarioLevel>, fitness: Fitness): MarioController {
         val startTime = System.currentTimeMillis()
-        val evolution = ControllerEvolution(levels, this.networkSettings)
+        val evolution = ControllerEvolutionEnvironment(levels, this.networkSettings, fitness)
         val networkInputSize = NeatAgentNetwork(this.networkSettings, Genome(0,0)).inputLayerSize
         val networkOutputSize = 4
         val pool = Pool(100)
