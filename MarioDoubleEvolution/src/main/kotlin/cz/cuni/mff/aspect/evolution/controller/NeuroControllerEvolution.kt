@@ -3,8 +3,8 @@ package cz.cuni.mff.aspect.evolution.controller
 import cz.cuni.mff.aspect.evolution.Fitness
 import cz.cuni.mff.aspect.extensions.getDoubleValues
 import cz.cuni.mff.aspect.mario.controllers.MarioController
-import cz.cuni.mff.aspect.mario.controllers.ann.networks.ControllerArtificialNetwork
 import cz.cuni.mff.aspect.mario.controllers.ann.SimpleANNController
+import cz.cuni.mff.aspect.mario.controllers.ann.networks.ControllerArtificialNetwork
 import cz.cuni.mff.aspect.mario.level.MarioLevel
 import cz.woitee.endlessRunners.evolution.utils.MyConcurrentEvaluator
 import io.jenetics.*
@@ -12,18 +12,20 @@ import io.jenetics.engine.Engine
 import io.jenetics.engine.EvolutionResult
 import io.jenetics.internal.util.Concurrency
 import io.jenetics.util.Factory
+import java.util.concurrent.ForkJoinPool
 import java.util.function.Function
-import io.jenetics.DoubleGene
 
 
 /**
- * Implementation of a simple evolution of ANN agent.
+ * Implementation of an evolution of ANN agent controller.
  */
-class NeuroControllerEvolution(private val controllerNetwork: ControllerArtificialNetwork,
-                               private val generationsCount: Long = DEFAULT_GENERATIONS_COUNT,
-                               private val populationSize: Int = DEFAULT_POPULATION_SIZE) :
-    ControllerEvolution {
-
+class NeuroControllerEvolution(
+    private val controllerNetwork: ControllerArtificialNetwork,
+    private val generationsCount: Long = DEFAULT_GENERATIONS_COUNT,
+    private val populationSize: Int = DEFAULT_POPULATION_SIZE,
+    private val parallel: Boolean = true
+) : ControllerEvolution {
+    
     private lateinit var levels: Array<MarioLevel>
     private lateinit var fitnessFunction: Fitness
 
@@ -51,8 +53,8 @@ class NeuroControllerEvolution(private val controllerNetwork: ControllerArtifici
     }
 
     private fun createEvolutionEngine(genotype: Genotype<DoubleGene>): Engine<DoubleGene, Float> {
-        val executor = Concurrency.SERIAL_EXECUTOR
-        val evaluator = MyConcurrentEvaluator(executor, fitness)
+        val executor = if (this.parallel) ForkJoinPool.commonPool() else Concurrency.SERIAL_EXECUTOR
+        val evaluator = MyConcurrentEvaluator(executor, fitness, alwaysEvaluate = true)
         val genotypeFactory = Factory<Genotype<DoubleGene>> { genotype }
 
         return Engine.Builder(evaluator, genotypeFactory)
@@ -61,16 +63,15 @@ class NeuroControllerEvolution(private val controllerNetwork: ControllerArtifici
                 .alterers(Mutator(0.05))
                 .survivorsSelector(EliteSelector(2))
                 .offspringSelector(TournamentSelector())
-                .mapping { evolutionResult ->
-                    println("new gen: ${evolutionResult.generation} (best fitness: ${evolutionResult.bestFitness})")
-                    evolutionResult
-                }
                 .build()
     }
 
     private fun doEvolution(evolutionEngine: Engine<DoubleGene, Float>): EvolutionResult<DoubleGene, Float> {
         return evolutionEngine.stream()
             .limit(this.generationsCount)
+            .peek { evolutionResult ->
+                println("new gen: ${evolutionResult.generation} (best fitness: ${evolutionResult.bestFitness})")
+            }
             .collect(EvolutionResult.toBestEvolutionResult<DoubleGene, Float>())
     }
 
