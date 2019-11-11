@@ -16,3 +16,4 @@ Welcome to my diploma thesis work! Meaningful readme coming soon...
 2. [DeepLearning4J](https://deeplearning4j.org/) - (deep) neural networks 
 3. [evo-NEAT](https://github.com/vishnugh/evo-NEAT) - NEAT algorithm (Neuroevolution of augmented topologies)
 4. [XChart](http://knowm.org/open-source/xchart) - charts
+5. [MyConcurrentEvaluator](https://github.com/woitee/endlessRunners) - custom jenetics evaluator 

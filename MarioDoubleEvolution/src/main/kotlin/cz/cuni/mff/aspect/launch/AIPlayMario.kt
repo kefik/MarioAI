@@ -28,7 +28,7 @@ fun aiPlayLevel() {
 
 
 fun neatAiPlayLevel() {
-    val genome = NeatAIStorage.loadAi(NeatAIStorage.STAGE4_LEVEL1_SPLIT)
+    val genome = NeatAIStorage.loadAi(NeatAIStorage.STAGE4_LEVEL1)
     val network = NeatAgentNetwork(NetworkSettings(5, 5, 0, 2), genome)
     val controller = SimpleANNController(network)
 

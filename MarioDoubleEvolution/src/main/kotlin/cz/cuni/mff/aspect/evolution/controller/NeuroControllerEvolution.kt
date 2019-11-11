@@ -6,10 +6,14 @@ import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.controllers.ann.networks.ControllerArtificialNetwork
 import cz.cuni.mff.aspect.mario.controllers.ann.SimpleANNController
 import cz.cuni.mff.aspect.mario.level.MarioLevel
+import cz.woitee.endlessRunners.evolution.utils.MyConcurrentEvaluator
 import io.jenetics.*
 import io.jenetics.engine.Engine
 import io.jenetics.engine.EvolutionResult
+import io.jenetics.internal.util.Concurrency
+import io.jenetics.util.Factory
 import java.util.function.Function
+import io.jenetics.DoubleGene
 
 
 /**
@@ -47,7 +51,11 @@ class NeuroControllerEvolution(private val controllerNetwork: ControllerArtifici
     }
 
     private fun createEvolutionEngine(genotype: Genotype<DoubleGene>): Engine<DoubleGene, Float> {
-        return Engine.builder(fitness, genotype)
+        val executor = Concurrency.SERIAL_EXECUTOR
+        val evaluator = MyConcurrentEvaluator(executor, fitness)
+        val genotypeFactory = Factory<Genotype<DoubleGene>> { genotype }
+
+        return Engine.Builder(evaluator, genotypeFactory)
                 .optimize(Optimize.MAXIMUM)
                 .populationSize(this.populationSize)
                 .alterers(Mutator(0.05))
