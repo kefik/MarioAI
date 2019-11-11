@@ -6,6 +6,7 @@ import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.controllers.ann.SimpleANNController
 import cz.cuni.mff.aspect.mario.controllers.ann.networks.ControllerArtificialNetwork
 import cz.cuni.mff.aspect.mario.level.MarioLevel
+import cz.cuni.mff.aspect.visualisation.EvolutionLineChart
 import cz.woitee.endlessRunners.evolution.utils.MyConcurrentEvaluator
 import io.jenetics.*
 import io.jenetics.engine.Engine
@@ -23,15 +24,18 @@ class NeuroControllerEvolution(
     private val controllerNetwork: ControllerArtificialNetwork,
     private val generationsCount: Long = DEFAULT_GENERATIONS_COUNT,
     private val populationSize: Int = DEFAULT_POPULATION_SIZE,
-    private val parallel: Boolean = true
+    private val parallel: Boolean = true,
+    chartLabel: String = "NeuroController evolution"
 ) : ControllerEvolution {
-    
+
+    private var chart = EvolutionLineChart(chartLabel, hideNegative = true)
     private lateinit var levels: Array<MarioLevel>
     private lateinit var fitnessFunction: Fitness
 
     override fun evolve(levels: Array<MarioLevel>, fitness: Fitness): MarioController {
         this.levels = levels
         this.fitnessFunction = fitness
+        this.chart.show()
 
         val genotype = this.createInitialGenotype()
         val engine = this.createEvolutionEngine(genotype)
@@ -69,8 +73,9 @@ class NeuroControllerEvolution(
     private fun doEvolution(evolutionEngine: Engine<DoubleGene, Float>): EvolutionResult<DoubleGene, Float> {
         return evolutionEngine.stream()
             .limit(this.generationsCount)
-            .peek { evolutionResult ->
-                println("new gen: ${evolutionResult.generation} (best fitness: ${evolutionResult.bestFitness})")
+            .peek {
+                this.chart.update(it.generation.toInt(), it.bestFitness.toDouble(), this.getAverageFitness(it).toDouble(), it.worstFitness.toDouble())
+                println("new gen: ${it.generation} (best fitness: ${it.bestFitness})")
             }
             .collect(EvolutionResult.toBestEvolutionResult<DoubleGene, Float>())
     }
@@ -84,6 +89,10 @@ class NeuroControllerEvolution(
         val controller = SimpleANNController(controllerNetwork)
 
         return this.fitnessFunction(controller, this.levels)
+    }
+
+    private fun getAverageFitness(evolutionResult: EvolutionResult<DoubleGene, Float>): Float {
+        return evolutionResult.population.asList().fold(0.0f, {accumulator, genotype -> accumulator + genotype.fitness}) / evolutionResult.population.length()
     }
 
     companion object {
