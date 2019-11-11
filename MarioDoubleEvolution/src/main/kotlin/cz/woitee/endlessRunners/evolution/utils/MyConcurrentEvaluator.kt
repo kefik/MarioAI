@@ -66,7 +66,6 @@ class MyConcurrentEvaluator<G : Gene<*, G>, C : Comparable<C>>(
             .map { pt -> PhenotypeFitness(pt, function) }
             .collect(ISeq.toISeq())
 
-        println("PHENOTYPE RUNNABLES LENGTH: ${phenotypeRunnables.length()}")
         val concurrency = Concurrency.with(executor)
         concurrency.execute(phenotypeRunnables)
         concurrency.close()
