@@ -20,7 +20,7 @@ fun main() {
 
 fun evolveNeatAI() {
     val controllerEvolution: ControllerEvolution = NeatControllerEvolution(NetworkSettings(5, 5, 0, 2),
-        1000)
+        1000, "NEAT Evolution Stage 5 Level 1")
     // val levels = emptyArray<MarioLevel>() + Stage5Level1
     val levels = arrayOf<MarioLevel>(Stage5Level1) + PathWithHolesLevel
     val resultController = controllerEvolution.evolve(levels, ::fitnessDistanceLeastActions)

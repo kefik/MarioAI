@@ -17,7 +17,7 @@ fun main() {
 
 fun keyboardPlay() {
     // val levels = Stage2Level1Split.levels.sliceArray(1..1)
-    val levels = arrayOf(*Stage4Level1Split.levels)
+    val levels = arrayOf(Stage5Level1Split.levels[5])
     val marioSimulator = GameSimulator(15000)
 
     for (level in levels) {
