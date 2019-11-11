@@ -23,7 +23,7 @@ fun main() {
 
 fun evolveAI() {
     val controllerANN = UpdatedAgentNetwork(5, 5, 0, 2, 20)
-    val controllerEvolution: ControllerEvolution = NeuroControllerEvolution(controllerANN, 1000  , 50, chartLabel = "Neuroevolution Stage 4 Level 1 split")
+    val controllerEvolution: ControllerEvolution = NeuroControllerEvolution(controllerANN, 250  , 50, chartLabel = "Neuroevolution Stage 4 Level 1 split")
     val levels = emptyArray<MarioLevel>() + Stage4Level1Split.levels + PathWithHolesLevel
     val resultController = controllerEvolution.evolve(levels, ::fitnessDistanceLeastActions)
 
