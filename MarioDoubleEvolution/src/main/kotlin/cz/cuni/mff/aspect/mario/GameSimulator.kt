@@ -16,20 +16,20 @@ class GameSimulator(private val maxTicks: Int = DEFAULT_MAX_TICKS) {
     private var currentTick: Int = 0
     lateinit var statistics: GameStatistics
 
-    fun playMario(marioController: MarioController, level: MarioLevel, visualize: Boolean = true) {
+    fun playMario(marioController: MarioController, level: MarioLevel, visualize: Boolean = true): GameStatistics {
         val marioAgent = MarioAgent(marioController)
         val marioLevelGenerator = SingleLevelLevelGenerator(level)
 
-        this.playMario(marioAgent, marioLevelGenerator, visualize)
+        return this.playMario(marioAgent, marioLevelGenerator, visualize)
     }
 
-    fun playMario(marioAgent: IAgent, level: MarioLevel, visualize: Boolean = true) {
+    fun playMario(marioAgent: IAgent, level: MarioLevel, visualize: Boolean = true): GameStatistics {
         val marioLevelGenerator = SingleLevelLevelGenerator(level)
 
-        this.playMario(marioAgent, marioLevelGenerator, visualize)
+        return this.playMario(marioAgent, marioLevelGenerator, visualize)
     }
 
-    fun playMario(marioAgent: IAgent, levelGenerator: SingleLevelLevelGenerator, visualize: Boolean = true) {
+    fun playMario(marioAgent: IAgent, levelGenerator: SingleLevelLevelGenerator, visualize: Boolean = true): GameStatistics {
         this.currentTick = 0
 
         if (visualize) {
@@ -48,7 +48,7 @@ class GameSimulator(private val maxTicks: Int = DEFAULT_MAX_TICKS) {
             environment.tick()
             marioAgent.observe(environment)
             val actions = marioAgent.actionSelection()
-            if (marioAgent is MarioAgent && marioAgent.lastActions.contains(MarioAction.JUMP))
+            if (marioAgent is MarioAgent && marioAgent.lastActions.contains(MarioAction.JUMP) && environment.mario.mayJump)
                 marioJumps++
 
             if (marioAgent is MarioAgent && marioAgent.lastActions.contains(MarioAction.SPECIAL))
@@ -72,6 +72,8 @@ class GameSimulator(private val maxTicks: Int = DEFAULT_MAX_TICKS) {
 
         this.statistics = GameStatistics(environment.marioSprite.x, marioJumps, marioSpecials, environment.mario.killsTotal,
             marioHurts, environment.mario.status == STATUS_DEAD, environment.mario.status == STATUS_WIN)
+
+        return this.statistics
     }
 
     companion object {
