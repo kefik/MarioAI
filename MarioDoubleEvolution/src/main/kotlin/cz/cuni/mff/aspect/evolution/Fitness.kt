@@ -7,18 +7,16 @@ import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.level.MarioLevel
 
 
-typealias Fitness = (controller: MarioController, levels: Array<MarioLevel>) -> Float
+// TODO: rename me
+typealias Fitness<F> = (gameStatistics: Array<GameStatistics>) -> F
 
 
-fun fitnessOnlyDistance(controller: MarioController, levels: Array<MarioLevel>): Float {
-    val statistics = playLevels(controller, levels)
+fun fitnessOnlyDistance(statistics: Array<GameStatistics>): Float {
     return statistics.sumByFloat { it.finalMarioDistance }
 }
 
 
-fun fitnessDistanceLeastActions(controller: MarioController, levels: Array<MarioLevel>): Float {
-    val statistics = playLevels(controller, levels, 10)
-
+fun fitnessDistanceLeastActions(statistics: Array<GameStatistics>): Float {
     val sumFinalDistances: Float = statistics.sumByFloat { it.finalMarioDistance }
     val sumJumps = statistics.sumBy { it.jumps }
     val sumSpecials = statistics.sumBy { it.specials }
@@ -28,24 +26,6 @@ fun fitnessDistanceLeastActions(controller: MarioController, levels: Array<Mario
 }
 
 
-fun fitnessOnlyVictories(controller: MarioController, levels: Array<MarioLevel>): Float {
-    val statistics = playLevels(controller, levels)
-
+fun fitnessOnlyVictories(statistics: Array<GameStatistics>): Float {
     return statistics.sumByFloat { if (it.levelFinished) 1.0f else 0.0f }
-}
-
-
-private fun playLevels(controller: MarioController, levels: Array<MarioLevel>, count: Int = 0): List<GameStatistics> {
-    val marioSimulator = GameSimulator()
-    val statistics = mutableListOf<GameStatistics>()
-
-    val lastIndex = if (levels.size < count) levels.size else if (count == 0) levels.size else count
-    val levelsToPlay = if (count < 1) levels.toList() else levels.toMutableList().shuffled().subList(0, lastIndex)
-
-    levelsToPlay.forEach { level ->
-        marioSimulator.playMario(controller, level, false)
-        statistics.add(marioSimulator.statistics)
-    }
-
-    return statistics
 }

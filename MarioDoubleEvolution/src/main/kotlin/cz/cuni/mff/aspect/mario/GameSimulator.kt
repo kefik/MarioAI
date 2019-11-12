@@ -16,6 +16,12 @@ class GameSimulator(private val maxTicks: Int = DEFAULT_MAX_TICKS) {
     private var currentTick: Int = 0
     lateinit var statistics: GameStatistics
 
+    fun playMario(marioController: MarioController, levels: List<MarioLevel>, visualize: Boolean = true): Array<GameStatistics> {
+        return Array(levels.size) {
+            this.playMario(marioController, levels[it], false)
+        }
+    }
+
     fun playMario(marioController: MarioController, level: MarioLevel, visualize: Boolean = true): GameStatistics {
         val marioAgent = MarioAgent(marioController)
         val marioLevelGenerator = SingleLevelLevelGenerator(level)

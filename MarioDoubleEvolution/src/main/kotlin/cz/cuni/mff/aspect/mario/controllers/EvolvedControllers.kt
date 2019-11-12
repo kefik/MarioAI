@@ -32,7 +32,7 @@ object EvolvedControllers {
         fun avoidingEnemies(): MarioController = updatedANNController(this.avoidingEnemiesANNWeights, 5, 5, 0, 2, 5)
         fun startingSmallConstrained(): MarioController = updatedANNController(this.startingSmallConstrainedANNWeights, 5, 5, 0, 2, 5)
 
-        fun test(): MarioController = updatedANNController(this.testANNWeights, 3, 5, 0, 2, 7)
+        fun test(): MarioController = updatedANNController(this.testANNWeights, 5, 5, 0, 2, 20)
         fun showThis(): MarioController = updatedANNController(this.testANNWeights, 5, 5, 0, 2, 5)
 
         private fun updatedANNController(networkWeights: DoubleArray, receptiveFieldSizeRow: Int, receptiveFieldSizeColumn: Int, receptiveFieldRowOffset: Int, receptiveFieldColumnOffset: Int, hiddenLayerSize: Int): MarioController {

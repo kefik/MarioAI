@@ -41,7 +41,7 @@ class GrammarLevelEvolution : LevelEvolution {
             return 0f
 
         val level = this.createLevelFromSentence(sentence)
-        return sentence.size.toFloat() + (fitnessOnlyVictories(this.controller, arrayOf(level)) * 10f)
+        return sentence.size.toFloat() /*(fitnessOnlyVictories(this.controller, arrayOf(level)) * 10f)*/
     }
 
     // TODO: this may be its own class

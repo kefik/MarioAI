@@ -15,6 +15,6 @@ interface ControllerEvolution {
      *
      * @return the evolved agent controller
      */
-    fun evolve(levels: Array<MarioLevel>, fitness: Fitness): MarioController
+    fun evolve(levels: Array<MarioLevel>, fitness: Fitness<Float>, objective: Fitness<Float>): MarioController
 
 }
