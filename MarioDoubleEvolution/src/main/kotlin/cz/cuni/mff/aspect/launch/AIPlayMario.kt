@@ -12,16 +12,16 @@ import kotlin.system.exitProcess
 
 
 fun main() {
-    // aiPlayLevel()
-    neatAiPlayLevel()
+    aiPlayLevel()
+    // neatAiPlayLevel()
     exitProcess(0)
 }
 
 
 fun aiPlayLevel() {
-    val controller = EvolvedControllers.UpdatedNetwork.test()
+    val controller = EvolvedControllers.UpdatedNetwork.stage4level1Solver()
     // val level = LevelStorage.loadLevel("ge_long.lvl")
-    val level = Stage2Level1
+    val level = Stage4Level1
     //val level = Stage4Level1Split.levels[2]
 
     GameSimulator(10000).playMario(controller, level, true)
