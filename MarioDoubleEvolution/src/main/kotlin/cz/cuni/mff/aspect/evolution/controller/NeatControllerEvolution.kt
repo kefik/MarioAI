@@ -69,7 +69,7 @@ class NeatControllerEvolution(
             val minFitness = this.getMinFitness(currentGeneration)
             val maxFitness = topGenome.points
 
-            chart.update(generation, maxFitness.toDouble(), averageFitness.toDouble(), if (minFitness >= 0.0) minFitness.toDouble() else 0.0)
+            chart.update(generation, maxFitness.toDouble(), averageFitness.toDouble(), 0.0, 0.0)
             val currentTimeMillis = System.currentTimeMillis() - startTime
             val timeString = String.format("%02d min, %02d sec",
                 TimeUnit.MILLISECONDS.toMinutes(currentTimeMillis),
