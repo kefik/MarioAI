@@ -101,38 +101,14 @@ class UpdatedAgentNetwork(private val receptiveFieldSizeRow: Int = 3,
         return multiLayerNetwork
     }
 
-    // TODO: unit test this + separate to custom class -> its already multiple times here
     private fun createInput(tiles: Tiles, entities: Entities, mario: MarioEntity): DoubleArray {
-        val marioX = mario.egoCol
-        val marioY = mario.egoRow
-
-        val flatTiles = MutableList(this.receptiveFieldSizeRow * this.receptiveFieldSizeColumn) { 0.0 }
-        val flatEntities = MutableList(this.receptiveFieldSizeRow * this.receptiveFieldSizeColumn) { 0.0 }
-        val receptiveFieldRowMiddle: Int = this.receptiveFieldSizeRow / 2
-        val receptiveFieldColumnMiddle: Int = this.receptiveFieldSizeColumn / 2
-
-        for (i in 0 until this.receptiveFieldSizeRow * this.receptiveFieldSizeColumn) {
-            val row = i / this.receptiveFieldSizeRow - receptiveFieldRowMiddle + this.receptiveFieldRowOffset
-            val column = i % this.receptiveFieldSizeColumn - receptiveFieldColumnMiddle + this.receptiveFieldColumnOffset
-
-            val tileAtPosition = tiles.tileField[marioY + row][marioX + column]
-            val tileCode = when (tileAtPosition.code) {
-                -60 -> -1.0
-                else -> tileAtPosition.code.toDouble()
-            }
-            flatTiles[i] = tileCode
-
-            val entitiesAtPosition = entities.entityField[marioY + row][marioX + column]
-            flatEntities[i] = if (entitiesAtPosition.size > 0) entitiesAtPosition[0].type.code.toDouble() else 0.0
-        }
-
-        return DoubleArray(this.inputLayerSize) {
-            if (it >= flatEntities.size) {
-                flatTiles[it - flatEntities.size]
-            } else {
-                flatEntities[it]
-            }
-        }
+        return NetworkInputBuilder()
+            .tiles(tiles)
+            .entities(entities)
+            .mario(mario)
+            .receptiveFieldSize(this.receptiveFieldSizeRow, this.receptiveFieldSizeColumn)
+            .receptiveFieldOffset(this.receptiveFieldRowOffset, this.receptiveFieldColumnOffset)
+            .buildDouble()
     }
 
     private fun addActionIfOutputActivated(actions: ArrayList<MarioAction>, output: INDArray, outputIndex: Int, action: MarioAction) {

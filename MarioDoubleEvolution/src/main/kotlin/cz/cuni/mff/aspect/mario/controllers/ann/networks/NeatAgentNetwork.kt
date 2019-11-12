@@ -39,31 +39,16 @@ class NeatAgentNetwork(private val networkSettings: NetworkSettings, private val
 
     // TODO: generalise this pls :(
     private fun createInput(tiles: Tiles, entities: Entities, mario: MarioEntity): FloatArray {
-        val marioX = mario.egoCol
-        val marioY = mario.egoRow
+        return NetworkInputBuilder()
+            .tiles(tiles)
+            .entities(entities)
+            .mario(mario)
+            .receptiveFieldSize(this.networkSettings.receptiveFieldSizeRow, this.networkSettings.receptiveFieldSizeColumn)
+            .receptiveFieldOffset(this.networkSettings.receptiveFieldRowOffset, this.networkSettings.receptiveFieldColumnOffset)
+            .addMarioInTilePosition()
+            .buildFloat()
 
-        val flatTiles = MutableList(this.networkSettings.receptiveFieldSizeRow * this.networkSettings.receptiveFieldSizeColumn) { 0.0f }
-        val flatEntities = MutableList(this.networkSettings.receptiveFieldSizeRow * this.networkSettings.receptiveFieldSizeColumn) { 0.0f }
-        val receptiveFieldRowMiddle: Int = this.networkSettings.receptiveFieldSizeRow / 2
-        val receptiveFieldColumnMiddle: Int = this.networkSettings.receptiveFieldSizeColumn / 2
-
-        for (i in 0 until this.networkSettings.receptiveFieldSizeRow * this.networkSettings.receptiveFieldSizeColumn) {
-            val row =
-                i / this.networkSettings.receptiveFieldSizeRow - receptiveFieldRowMiddle + this.networkSettings.receptiveFieldRowOffset
-            val column =
-                i % this.networkSettings.receptiveFieldSizeColumn - receptiveFieldColumnMiddle + this.networkSettings.receptiveFieldColumnOffset
-
-            val tileAtPosition = tiles.tileField[marioY + row][marioX + column]
-            val tileCode = when (tileAtPosition.code) {
-                -60 -> -1.0
-                else -> tileAtPosition.code.toDouble()
-            }
-            flatTiles[i] = tileCode.toFloat()
-
-            val entitiesAtPosition = entities.entityField[marioY + row][marioX + column]
-            flatEntities[i] = if (entitiesAtPosition.size > 0) entitiesAtPosition[0].type.code.toFloat() else 0.0f
-        }
-
+        /*
         return FloatArray(this.inputLayerSize) {
             when {
                 it == this.inputLayerSize - 1 -> mario.dX
@@ -72,6 +57,7 @@ class NeatAgentNetwork(private val networkSettings: NetworkSettings, private val
                 else -> flatEntities[it]
             }
         }
+         */
     }
 
 

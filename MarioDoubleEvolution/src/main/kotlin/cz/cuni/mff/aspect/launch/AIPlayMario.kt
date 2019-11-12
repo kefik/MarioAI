@@ -19,9 +19,9 @@ fun main() {
 
 
 fun aiPlayLevel() {
-    val controller = EvolvedControllers.UpdatedNetwork.test()
+    val controller = EvolvedControllers.UpdatedNetwork.stage4level1Solver()
     // val level = LevelStorage.loadLevel("ge_long.lvl")
-    val level = Stage2Level1
+    val level = Stage4Level1
     //val level = Stage4Level1Split.levels[2]
 
     GameSimulator(10000).playMario(controller, level, true)
@@ -29,11 +29,11 @@ fun aiPlayLevel() {
 
 
 fun neatAiPlayLevel() {
-    val genome = NeatAIStorage.loadAi(NeatAIStorage.LATEST)
+    val genome = NeatAIStorage.loadAi(NeatAIStorage.STAGE4_LEVEL1)
     val network = NeatAgentNetwork(NetworkSettings(5, 5, 0, 2), genome)
     val controller = SimpleANNController(network)
 
-    val levels = arrayOf(*Stage1Level1Split.levels) + Stage1Level1
+    val levels = arrayOf(Stage4Level1)
     val simulator = GameSimulator(10000)
 
     for (level in levels) {

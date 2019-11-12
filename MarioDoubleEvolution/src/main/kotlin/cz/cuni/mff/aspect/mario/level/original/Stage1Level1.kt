@@ -37,10 +37,10 @@ object Stage1Level1 : MarioLevel {
                 47 -> ChunkHelpers.getPipeStartColumn(FLOOR_LEVEL, 4)
                 48 -> ChunkHelpers.getPipeEndColumn(FLOOR_LEVEL, 4)
 
-                58 -> ChunkHelpers.getPipeStartColumn(FLOOR_LEVEL, 4) // TODO: should be pipe down
+                58 -> ChunkHelpers.getPipeStartColumn(FLOOR_LEVEL, 4) // should be pipe down
                 59 -> ChunkHelpers.getPipeEndColumn(FLOOR_LEVEL, 4)
 
-                65 -> ChunkHelpers.getSecretBoxesColumn(FLOOR_LEVEL, SECOND_LEVEL - 1)  // TODO: Should be green mroom and invisible
+                65 -> ChunkHelpers.getSecretBoxesColumn(FLOOR_LEVEL, SECOND_LEVEL - 1)  // Should be green mroom and invisible
 
                 70, 71 -> ChunkHelpers.getSpaceColumn()
 
@@ -58,10 +58,10 @@ object Stage1Level1 : MarioLevel {
                 89 -> ChunkHelpers.getSpaceColumn()
 
                 92, 93, 94 -> ChunkHelpers.getBoxesColumn(FLOOR_LEVEL, THIRD_LEVEL)
-                95 -> ChunkHelpers.getBoxesAndSecretsColumn(FLOOR_LEVEL, SECOND_LEVEL, THIRD_LEVEL) // TODO: on second level is multiple coins qm
+                95 -> ChunkHelpers.getBoxesAndSecretsColumn(FLOOR_LEVEL, SECOND_LEVEL, THIRD_LEVEL) // on second level is multiple coins qm
 
                 101 -> ChunkHelpers.getBoxesColumn(FLOOR_LEVEL, SECOND_LEVEL)
-                    102 -> ChunkHelpers.getBoxesColumn(FLOOR_LEVEL, SECOND_LEVEL)  // TODO: should be star powerup
+                    102 -> ChunkHelpers.getBoxesColumn(FLOOR_LEVEL, SECOND_LEVEL)  // should be star powerup
 
                 107 -> ChunkHelpers.getSecretBoxesColumn(FLOOR_LEVEL, SECOND_LEVEL)
                 110 -> ChunkHelpers.getColumnWithTwoBlocks(FLOOR_LEVEL, SECOND_LEVEL, Tiles.QM_WITH_COIN, THIRD_LEVEL, Tiles.QM_WITH_POWERUP)
@@ -96,7 +96,7 @@ object Stage1Level1 : MarioLevel {
                 158 -> ChunkHelpers.getStonesColumn(FLOOR_LEVEL, 2)
                 159 -> ChunkHelpers.getStonesColumn(FLOOR_LEVEL, 1)
 
-                164 -> ChunkHelpers.getPipeStartColumn(FLOOR_LEVEL, 2)  // TODO: should be pipe up
+                164 -> ChunkHelpers.getPipeStartColumn(FLOOR_LEVEL, 2)  // should be pipe up
                 165 -> ChunkHelpers.getPipeEndColumn(FLOOR_LEVEL, 2)
 
                 169, 170 -> ChunkHelpers.getBoxesColumn(FLOOR_LEVEL, SECOND_LEVEL)
