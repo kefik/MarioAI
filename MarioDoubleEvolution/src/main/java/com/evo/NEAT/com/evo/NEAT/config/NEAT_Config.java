@@ -8,8 +8,8 @@ public class NEAT_Config {
     public static final int HIDDEN_NODES = 1000000;
 
     public static final float COMPATIBILITY_THRESHOLD = 1;
-    public static final float EXCESS_COEFFICENT = 2;
-    public static final float DISJOINT_COEFFICENT = 2;
+    public static final float EXCESS_COEFFICENT = 1.0f;
+    public static final float DISJOINT_COEFFICENT = 1.0f;
     public static final float WEIGHT_COEFFICENT = 0.4f;
 
     public static final float STALE_SPECIES = 15;
