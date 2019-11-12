@@ -42,43 +42,42 @@ data class NetworkInputBuilder(
     }
 
     private fun createFlatTiles(): IntArray {
-        val receptiveFieldRowMiddle: Int = this.receptiveFieldRows / 2
-        val receptiveFieldColumnMiddle: Int = this.receptiveFieldColumns / 2
-        val marioX = this.mario!!.egoCol
-        val marioY = this.mario!!.egoRow
         val flatTiles = IntArray(this.receptiveFieldRows * this.receptiveFieldColumns) { 0 }
 
-        for (i in 0 until this.receptiveFieldRows * this.receptiveFieldColumns) {
-            val row = i / this.receptiveFieldRows - receptiveFieldRowMiddle + this.receptiveFieldOffsetRows
-            val column = i % this.receptiveFieldColumns - receptiveFieldColumnMiddle + this.receptiveFieldOffsetColumns
-
-            val tileAtPosition = this.tiles!!.tileField[marioY + row][marioX + column]
+        this.iterateOverReceptiveField { index, row, column ->
+            val tileAtPosition = this.tiles!!.tileField[row][column]
             val tileCode = when (tileAtPosition.code) {
                 -60 -> -1
                 else -> tileAtPosition.code
             }
-            flatTiles[i] = tileCode
+            flatTiles[index] = tileCode
         }
 
         return flatTiles
     }
 
     private fun createFlatEntities(): IntArray {
-        // TODO: add some function iterateOverReceptiveField to fix DRY error
+        val flatEntities = IntArray(this.receptiveFieldRows * this.receptiveFieldColumns) { 0 }
+
+        this.iterateOverReceptiveField { index, row, column ->
+            val entitiesAtPosition = this.entities!!.entityField[row][column]
+            flatEntities[index] = if (entitiesAtPosition.size > 0) entitiesAtPosition[0].type.code else 0
+        }
+
+        return flatEntities
+    }
+
+    private fun iterateOverReceptiveField(callback: (Int, Int, Int) -> Unit) {
         val receptiveFieldRowMiddle: Int = this.receptiveFieldRows / 2
         val receptiveFieldColumnMiddle: Int = this.receptiveFieldColumns / 2
         val marioX = this.mario!!.egoCol
         val marioY = this.mario!!.egoRow
-        val flatEntities = IntArray(this.receptiveFieldRows * this.receptiveFieldColumns) { 0 }
 
-        for (i in 0 until this.receptiveFieldRows * this.receptiveFieldColumns) {
-            val row = i / this.receptiveFieldRows - receptiveFieldRowMiddle + this.receptiveFieldOffsetRows
-            val column = i % this.receptiveFieldColumns - receptiveFieldColumnMiddle + this.receptiveFieldOffsetColumns
-            val entitiesAtPosition = this.entities!!.entityField[marioY + row][marioX + column]
-            flatEntities[i] = if (entitiesAtPosition.size > 0) entitiesAtPosition[0].type.code else 0
+        for (index in 0 until this.receptiveFieldRows * this.receptiveFieldColumns) {
+            val row = index / this.receptiveFieldRows - receptiveFieldRowMiddle + this.receptiveFieldOffsetRows
+            val column = index % this.receptiveFieldColumns - receptiveFieldColumnMiddle + this.receptiveFieldOffsetColumns
+            callback(index, marioY + row, marioX + column)
         }
-
-        return flatEntities
     }
 
     private fun getInputLayerSize(): Int {
