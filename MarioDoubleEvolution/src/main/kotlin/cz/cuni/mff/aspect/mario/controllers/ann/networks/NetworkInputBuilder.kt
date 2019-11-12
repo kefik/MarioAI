@@ -12,23 +12,27 @@ data class NetworkInputBuilder(
     private var receptiveFieldRows: Int = 5,
     private var receptiveFieldColumns: Int = 5,
     private var receptiveFieldOffsetRows: Int = 0,
-    private var receptiveFieldOffsetColumns: Int = 0
+    private var receptiveFieldOffsetColumns: Int = 0,
+    private var addMarioInTilePosition: Boolean = false
 ) {
     fun tiles(tiles: Tiles) = apply { this.tiles = tiles }
     fun entities(entities: Entities) = apply { this.entities = entities }
     fun mario(mario: MarioEntity) = apply { this.mario = mario }
     fun receptiveFieldSize(rows: Int, columns: Int) = apply { this.receptiveFieldRows = rows; this.receptiveFieldColumns = columns }
     fun receptiveFieldOffset(rows: Int, columns: Int) = apply { this.receptiveFieldOffsetRows = rows; this.receptiveFieldOffsetColumns = columns }
+    fun addMarioInTilePosition() = apply { this.addMarioInTilePosition = true }
 
+    // TODO: unite these functions -> don't we need only Ints?
     // TODO: unit test this
     fun buildDouble(): DoubleArray {
         val (flatTiles, flatEntities, inputLayerSize) = this.createFlatArrays()
 
         return DoubleArray(inputLayerSize) {
-            if (it >= flatEntities.size) {
-                flatTiles[it - flatEntities.size].toDouble()
-            } else {
-                flatEntities[it].toDouble()
+            when {
+                it == inputLayerSize - 1 -> this.mario!!.dX.toDouble()
+                it == inputLayerSize - 2 -> this.mario!!.dY.toDouble()
+                it >= flatEntities.size -> flatTiles[it - flatEntities.size].toDouble()
+                else -> flatEntities[it].toDouble()
             }
         }
     }
@@ -37,10 +41,11 @@ data class NetworkInputBuilder(
         val (flatTiles, flatEntities, inputLayerSize) = this.createFlatArrays()
 
         return FloatArray(inputLayerSize) {
-            if (it >= flatEntities.size) {
-                flatTiles[it - flatEntities.size].toFloat()
-            } else {
-                flatEntities[it].toFloat()
+            when {
+                it == inputLayerSize - 1 -> this.mario!!.dX
+                it == inputLayerSize - 2 -> this.mario!!.dY
+                it >= flatEntities.size -> flatTiles[it - flatEntities.size].toFloat()
+                else -> flatEntities[it].toFloat()
             }
         }
     }
@@ -97,7 +102,8 @@ data class NetworkInputBuilder(
     }
 
     private fun getInputLayerSize(): Int {
-        return 2 * this.receptiveFieldRows * this.receptiveFieldColumns
+        val receptiveFileSize = this.receptiveFieldRows * this.receptiveFieldColumns
+        return if (!this.addMarioInTilePosition) 2 * receptiveFileSize else 2 * receptiveFileSize + 2
     }
 
 }
