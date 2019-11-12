@@ -5,6 +5,9 @@ import ch.idsia.agents.controllers.modules.Tiles
 import ch.idsia.benchmark.mario.engine.generalization.MarioEntity
 import java.lang.Exception
 
+
+
+
 data class NetworkInputBuilder(
     private var tiles: Tiles? = null,
     private var entities: Entities? = null,
@@ -15,6 +18,9 @@ data class NetworkInputBuilder(
     private var receptiveFieldOffsetColumns: Int = 0,
     private var addMarioInTilePosition: Boolean = false
 ) {
+
+    class NetworkInputBuilderException(error: String) : Exception(error)
+
     fun tiles(tiles: Tiles) = apply { this.tiles = tiles }
     fun entities(entities: Entities) = apply { this.entities = entities }
     fun mario(mario: MarioEntity) = apply { this.mario = mario }
@@ -56,10 +62,9 @@ data class NetworkInputBuilder(
     }
 
     private fun checkInput() {
-        // TODO: throw nicer exceptions -_-
-        if (this.tiles == null) throw Exception("Missing `tiles` in the NetworkInputBuilder")
-        if (this.entities == null) throw Exception("Missing `entities` in the NetworkInputBuilder")
-        if (this.mario == null) throw Exception("Missing `mario` in the NetworkInputBuilder")
+        if (this.tiles == null) throw NetworkInputBuilderException("'Tiles' not specified")
+        if (this.entities == null) throw NetworkInputBuilderException("'Entities' not specified")
+        if (this.mario == null) throw NetworkInputBuilderException("'Mario' not specified")
     }
 
     private fun createFlatTiles(): IntArray {
