@@ -19,6 +19,7 @@ import kotlin.math.min
 class NeatControllerEvolution(
     private val networkSettings: NetworkSettings,
     private var generationsCount: Int = 200,
+    private val populationSize: Int = 150,
     private val chartName: String = "NEAT Evolution"
 ) : ControllerEvolution {
 
@@ -42,7 +43,7 @@ class NeatControllerEvolution(
         val evolution = ControllerEvolutionEnvironment(levels, this.networkSettings, fitness)
         val networkInputSize = NeatAgentNetwork(this.networkSettings, Genome(0,0)).inputLayerSize
         val networkOutputSize = 4
-        val pool = Pool(100)
+        val pool = Pool(this.populationSize)
         val chart = EvolutionLineChart(label = this.chartName, hideNegative = true)
 
         var currentGeneration = pool.initializePool(networkInputSize, networkOutputSize)

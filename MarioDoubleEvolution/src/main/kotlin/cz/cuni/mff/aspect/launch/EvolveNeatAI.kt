@@ -19,16 +19,19 @@ fun main() {
 }
 
 fun evolveNeatAI() {
-    val controllerEvolution: ControllerEvolution = NeatControllerEvolution(NetworkSettings(5, 5, 0, 2),
-        1000, "NEAT Evolution Stage 5 Level 1")
-    // val levels = emptyArray<MarioLevel>() + Stage5Level1
-    val levels = arrayOf<MarioLevel>(Stage5Level1) + PathWithHolesLevel
+    val networkSettings = NetworkSettings(5, 5, 0, 2)
+    val controllerEvolution: ControllerEvolution = NeatControllerEvolution(
+        networkSettings,
+        generationsCount = 25,
+        populationSize = 100,
+        chartName = "NEAT Evolution S1L1")
+    val levels = emptyArray<MarioLevel>() + TrainingLevelsSet // + PathWithHolesLevel
+    //val levels = arrayOf<MarioLevel>(*TrainingLevelsSet)
     val resultController = controllerEvolution.evolve(levels, ::fitnessDistanceLeastActions)
 
     val marioSimulator = GameSimulator()
 
-    marioSimulator.playMario(resultController, OnlyPathLevel, true)
-    marioSimulator.playMario(resultController, PathWithHolesLevel, true)
-    marioSimulator.playMario(resultController, Stage5Level1, true)
-
+    levels.forEach {
+        marioSimulator.playMario(resultController, it, true)
+    }
 }

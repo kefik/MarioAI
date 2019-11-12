@@ -1,5 +1,6 @@
 package cz.cuni.mff.aspect.launch
 
+import cz.cuni.mff.aspect.evolution.levels.TrainingLevelsSet
 import cz.cuni.mff.aspect.mario.GameSimulator
 import cz.cuni.mff.aspect.mario.controllers.EvolvedControllers
 import cz.cuni.mff.aspect.mario.controllers.ann.NetworkSettings
@@ -28,15 +29,16 @@ fun aiPlayLevel() {
 
 
 fun neatAiPlayLevel() {
-    val genome = NeatAIStorage.loadAi(NeatAIStorage.STAGE4_LEVEL1)
+    val genome = NeatAIStorage.loadAi(NeatAIStorage.LATEST)
     val network = NeatAgentNetwork(NetworkSettings(5, 5, 0, 2), genome)
     val controller = SimpleANNController(network)
 
-    val levels = arrayOf(Stage4Level1)
+    val levels = arrayOf(*Stage1Level1Split.levels) + Stage1Level1
     val simulator = GameSimulator(10000)
 
     for (level in levels) {
-        simulator.playMario(controller, level, true)
+        val stats = simulator.playMario(controller, level, true)
+        print(stats.jumps)
     }
 
 

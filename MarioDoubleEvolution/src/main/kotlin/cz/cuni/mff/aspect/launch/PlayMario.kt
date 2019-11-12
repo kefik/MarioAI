@@ -22,6 +22,7 @@ fun keyboardPlay() {
 
     for (level in levels) {
         val agent = CheaterKeyboardAgent()
-        marioSimulator.playMario(agent, level, true)
+        val stats = marioSimulator.playMario(agent, level, true)
+        print(stats.jumps)
     }
 }
