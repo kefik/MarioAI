@@ -108,7 +108,7 @@ class UpdatedAgentNetwork(private val receptiveFieldSizeRow: Int = 3,
             .mario(mario)
             .receptiveFieldSize(this.receptiveFieldSizeRow, this.receptiveFieldSizeColumn)
             .receptiveFieldOffset(this.receptiveFieldRowOffset, this.receptiveFieldColumnOffset)
-            .build()
+            .buildDouble()
     }
 
     private fun addActionIfOutputActivated(actions: ArrayList<MarioAction>, output: INDArray, outputIndex: Int, action: MarioAction) {

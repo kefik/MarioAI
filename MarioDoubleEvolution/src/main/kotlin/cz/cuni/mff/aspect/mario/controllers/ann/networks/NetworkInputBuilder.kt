@@ -14,7 +14,6 @@ data class NetworkInputBuilder(
     private var receptiveFieldOffsetRows: Int = 0,
     private var receptiveFieldOffsetColumns: Int = 0
 ) {
-
     fun tiles(tiles: Tiles) = apply { this.tiles = tiles }
     fun entities(entities: Entities) = apply { this.entities = entities }
     fun mario(mario: MarioEntity) = apply { this.mario = mario }
@@ -22,16 +21,9 @@ data class NetworkInputBuilder(
     fun receptiveFieldOffset(rows: Int, columns: Int) = apply { this.receptiveFieldOffsetRows = rows; this.receptiveFieldOffsetColumns = columns }
 
     // TODO: unit test this
-    fun build(): DoubleArray {
-        // TODO: throw nicer exceptions -_-
-        if (this.tiles == null) throw Exception("Missing `tiles` in the NetworkInputBuilder")
-        if (this.entities == null) throw Exception("Missing `entities` in the NetworkInputBuilder")
-        if (this.mario == null) throw Exception("Missing `mario` in the NetworkInputBuilder")
+    fun buildDouble(): DoubleArray {
+        val (flatTiles, flatEntities, inputLayerSize) = this.createFlatArrays()
 
-        val flatTiles = this.createFlatTiles()
-        val flatEntities = this.createFlatEntities()
-
-        val inputLayerSize = this.getInputLayerSize()
         return DoubleArray(inputLayerSize) {
             if (it >= flatEntities.size) {
                 flatTiles[it - flatEntities.size].toDouble()
@@ -39,6 +31,30 @@ data class NetworkInputBuilder(
                 flatEntities[it].toDouble()
             }
         }
+    }
+
+    fun buildFloat(): FloatArray {
+        val (flatTiles, flatEntities, inputLayerSize) = this.createFlatArrays()
+
+        return FloatArray(inputLayerSize) {
+            if (it >= flatEntities.size) {
+                flatTiles[it - flatEntities.size].toFloat()
+            } else {
+                flatEntities[it].toFloat()
+            }
+        }
+    }
+
+    private fun createFlatArrays(): Triple<IntArray, IntArray, Int> {
+        this.checkInput()
+        return Triple(this.createFlatTiles(), this.createFlatEntities(), this.getInputLayerSize())
+    }
+
+    private fun checkInput() {
+        // TODO: throw nicer exceptions -_-
+        if (this.tiles == null) throw Exception("Missing `tiles` in the NetworkInputBuilder")
+        if (this.entities == null) throw Exception("Missing `entities` in the NetworkInputBuilder")
+        if (this.mario == null) throw Exception("Missing `mario` in the NetworkInputBuilder")
     }
 
     private fun createFlatTiles(): IntArray {
