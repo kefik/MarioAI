@@ -3,7 +3,7 @@ package cz.cuni.mff.aspect.evolution.controller
 import com.evo.NEAT.Environment
 import com.evo.NEAT.Genome
 import com.evo.NEAT.Pool
-import cz.cuni.mff.aspect.evolution.Fitness
+import cz.cuni.mff.aspect.evolution.MarioGameplayEvaluator
 import cz.cuni.mff.aspect.mario.GameSimulator
 import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.controllers.ann.NetworkSettings
@@ -28,27 +28,24 @@ class NeatControllerEvolution(
 
     class ControllerEvolutionEnvironment(private val levels: Array<MarioLevel>,
                                          private val networkSettings: NetworkSettings,
-                                         private val fitness: Fitness<Float>,
+                                         private val fitness: MarioGameplayEvaluator<Float>,
                                          private val levelsCount: Int = 0) : Environment {
 
-        // TODO: refactor me -> choosing which levels to play is duplicated also in MarioEvaluator
         override fun evaluateFitness(population: ArrayList<Genome>) {
             for (genome in population) {
                 val neatNetwork = NeatAgentNetwork(this.networkSettings, genome)
                 val controller = SimpleANNController(neatNetwork)
 
                 val marioSimulator = GameSimulator()
-                val lastIndex = if (levels.size < levelsCount) levels.size else if (levelsCount == 0) levels.size else levelsCount
-                val levelsToPlay = if (levelsCount < 1) levels.toList() else levels.toMutableList().shuffled().subList(0, lastIndex)
-
-                val statistics = marioSimulator.playMario(controller, levelsToPlay, false)
+                // TODO: levelsCount as parameter to the evolution
+                val statistics = marioSimulator.playRandomLevels(controller, this.levels, 999, false)
 
                 genome.fitness = fitness(statistics)
             }
         }
     }
 
-    override fun evolve(levels: Array<MarioLevel>, fitness: Fitness<Float>, objective: Fitness<Float>): MarioController {
+    override fun evolve(levels: Array<MarioLevel>, fitness: MarioGameplayEvaluator<Float>, objective: MarioGameplayEvaluator<Float>): MarioController {
         val startTime = System.currentTimeMillis()
         val evolution = ControllerEvolutionEnvironment(levels, this.networkSettings, fitness)
         val networkInputSize = NeatAgentNetwork(this.networkSettings, Genome(0,0)).inputLayerSize
