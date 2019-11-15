@@ -1,8 +1,7 @@
 package cz.cuni.mff.aspect.coevolution
 
+import cz.cuni.mff.aspect.evolution.MarioGameplayEvaluators
 import cz.cuni.mff.aspect.evolution.controller.ControllerEvolution
-import cz.cuni.mff.aspect.evolution.fitnessDistanceLeastActions
-import cz.cuni.mff.aspect.evolution.fitnessOnlyVictories
 import cz.cuni.mff.aspect.evolution.levels.LevelEvolution
 import cz.cuni.mff.aspect.evolution.levels.mock.MockLevelEvolution
 import cz.cuni.mff.aspect.mario.controllers.MarioController
@@ -16,7 +15,7 @@ class MarioCoEvolver {
 
         for (generation in (0 until generations)) {
             println("COEVOLUTION GENERATION ${generation + 1}")
-            resultController = controllerEvolution.evolve(resultLevels, ::fitnessDistanceLeastActions, ::fitnessOnlyVictories)
+            resultController = controllerEvolution.evolve(resultLevels, MarioGameplayEvaluators::distanceLeastActions, MarioGameplayEvaluators::victoriesOnly)
             resultLevels = generator.evolve(resultController)
         }
 

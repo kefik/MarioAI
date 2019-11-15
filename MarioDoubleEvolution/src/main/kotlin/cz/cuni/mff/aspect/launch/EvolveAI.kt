@@ -1,10 +1,8 @@
 package cz.cuni.mff.aspect.launch
 
+import cz.cuni.mff.aspect.evolution.MarioGameplayEvaluators
 import cz.cuni.mff.aspect.evolution.controller.ControllerEvolution
 import cz.cuni.mff.aspect.evolution.controller.NeuroControllerEvolution
-import cz.cuni.mff.aspect.evolution.fitnessDistanceLeastActions
-import cz.cuni.mff.aspect.evolution.fitnessOnlyDistance
-import cz.cuni.mff.aspect.evolution.fitnessOnlyVictories
 import cz.cuni.mff.aspect.mario.GameSimulator
 import cz.cuni.mff.aspect.mario.controllers.ann.networks.UpdatedAgentNetwork
 import cz.cuni.mff.aspect.mario.level.MarioLevel
@@ -32,7 +30,7 @@ fun evolveAI() {
         mutators = arrayOf(GaussianMutator(0.25))
     )
     val levels = emptyArray<MarioLevel>() + Stage1Level1Split.levels + PathWithHolesLevel + OnlyPathLevel
-    val resultController = controllerEvolution.evolve(levels, ::fitnessOnlyDistance, ::fitnessOnlyVictories)
+    val resultController = controllerEvolution.evolve(levels, MarioGameplayEvaluators::distanceOnly, MarioGameplayEvaluators::victoriesOnly)
 
     val marioSimulator = GameSimulator()
 
