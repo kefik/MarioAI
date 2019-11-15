@@ -12,6 +12,8 @@ import io.jenetics.*
 import io.jenetics.engine.Engine
 import io.jenetics.engine.EvolutionResult
 import io.jenetics.internal.util.Concurrency
+import io.jenetics.util.DoubleRange
+import io.jenetics.util.Factory
 import java.util.concurrent.ForkJoinPool
 
 
@@ -23,6 +25,10 @@ class NeuroControllerEvolution(
     private val generationsCount: Long = DEFAULT_GENERATIONS_COUNT,
     private val populationSize: Int = DEFAULT_POPULATION_SIZE,
     private val parallel: Boolean = true,
+    private val alterers: Array<Alterer<DoubleGene, Float>> = arrayOf(Mutator(0.05)),
+    private val survivorsSelector: Selector<DoubleGene, Float> = EliteSelector(2),
+    private val offspringSelector: Selector<DoubleGene, Float> = TournamentSelector(2),
+    private val weightsRange: DoubleRange = DoubleRange.of(-1.0, 1.0),
     chartLabel: String = "NeuroController evolution"
 ) : ControllerEvolution {
 
@@ -57,6 +63,14 @@ class NeuroControllerEvolution(
         return Genotype.of(DoubleChromosome.of(-2.0, 2.0, this.controllerNetwork.weightsCount))
     }
 
+    fun storeChart(path: String) {
+        this.chart.save(path)
+    }
+
+    private fun createInitialGenotype(): Genotype<DoubleGene> {
+        return Genotype.of(DoubleChromosome.of(this.weightsRange, this.controllerNetwork.weightsCount))
+    }
+
     private fun createEvaluator(): MarioEvaluator<DoubleGene, Float> {
         val executor = if (this.parallel) ForkJoinPool.commonPool() else Concurrency.SERIAL_EXECUTOR
 
@@ -71,13 +85,24 @@ class NeuroControllerEvolution(
     }
 
     private fun createEvolutionEngine(initialGenotype: Genotype<DoubleGene>, evaluator: MarioEvaluator<DoubleGene, Float>): Engine<DoubleGene, Float> {
-        return Engine.Builder(evaluator, initialGenotype)
+        val engine = Engine.Builder(evaluator, initialGenotype)
                 .optimize(Optimize.MAXIMUM)
                 .populationSize(this.populationSize)
-                .alterers(Mutator(0.05))
-                .survivorsSelector(EliteSelector(2))
-                .offspringSelector(TournamentSelector())
-                .build()
+
+        if (this.alterers.isNotEmpty()) {
+            val (first, rest) = this.getFirstAndRest(this.alterers)
+            engine.alterers(first, *rest)
+        }
+
+        return engine
+            .survivorsSelector(this.survivorsSelector)
+            .offspringSelector(this.offspringSelector)
+            .build()
+    }
+
+    private inline fun <reified T> getFirstAndRest(data: Array<T>): Pair<T, Array<T>> {
+        val rest = Array(data.size - 1) { data[it + 1] }
+        return Pair(data[0], rest)
     }
 
     private fun doEvolution(evolutionEngine: Engine<DoubleGene, Float>, evaluator: MarioEvaluator<DoubleGene, Float>): EvolutionResult<DoubleGene, Float> {

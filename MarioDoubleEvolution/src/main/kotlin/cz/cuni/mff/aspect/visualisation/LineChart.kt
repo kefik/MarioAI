@@ -7,6 +7,7 @@ import org.knowm.xchart.style.markers.SeriesMarkers
 import java.awt.BorderLayout
 import java.awt.Color
 import javax.swing.JFrame
+import java.io.File
 
 
 class LineChart(label: String = "Line chart", xLabel: String = "X", yLabel: String = "Y") {
@@ -34,7 +35,6 @@ class LineChart(label: String = "Line chart", xLabel: String = "X", yLabel: Stri
         javax.swing.SwingUtilities.invokeLater {
             val frame = JFrame("Chart")
             frame.layout = BorderLayout()
-            frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
 
             this.chartUIPanel = XChartPanel(chart)
             frame.add(this.chartUIPanel, BorderLayout.CENTER)
@@ -61,7 +61,13 @@ class LineChart(label: String = "Line chart", xLabel: String = "X", yLabel: Stri
     }
 
     fun save(path: String) {
-        VectorGraphicsEncoder.saveVectorGraphic(this.chart, "data/charts/$path", VectorGraphicsEncoder.VectorGraphicsFormat.SVG);
+        val fullPath = "data/$path"
+        val directoryPath = fullPath.replaceAfterLast("/", "")
+
+        val directory = File(directoryPath)
+        if (!directory.exists()) directory.mkdirs()
+
+        VectorGraphicsEncoder.saveVectorGraphic(this.chart, fullPath, VectorGraphicsEncoder.VectorGraphicsFormat.SVG);
     }
 
     private fun getOrCreateSeries(label: String, color: Color): Series {
