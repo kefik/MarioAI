@@ -15,6 +15,7 @@ import org.nd4j.linalg.activations.Activation
 import org.nd4j.linalg.api.ndarray.INDArray
 import org.nd4j.linalg.cpu.nativecpu.NDArray
 import org.nd4j.linalg.learning.config.Nesterovs
+import java.io.Serializable
 
 
 /**
@@ -28,8 +29,9 @@ class UpdatedAgentNetwork(private val receptiveFieldSizeRow: Int = 3,
                           private val receptiveFieldSizeColumn: Int = 3,
                           private val receptiveFieldRowOffset: Int = 0,
                           private val receptiveFieldColumnOffset: Int = 1,
-                          private val hiddenLayerSize: Int = 7) :
-    ControllerArtificialNetwork {
+                          private val hiddenLayerSize: Int = 7
+) : ControllerArtificialNetwork,
+    Serializable {
 
     private val network: MultiLayerNetwork = this.createNetwork()
 
