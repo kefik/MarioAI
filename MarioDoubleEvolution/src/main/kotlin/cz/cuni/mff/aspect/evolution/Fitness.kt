@@ -7,45 +7,28 @@ import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.level.MarioLevel
 
 
-typealias Fitness = (controller: MarioController, levels: Array<MarioLevel>) -> Float
+typealias MarioGameplayEvaluator<F> = (gameStatistics: Array<GameStatistics>) -> F
 
 
-fun fitnessOnlyDistance(controller: MarioController, levels: Array<MarioLevel>): Float {
-    val statistics = playLevels(controller, levels)
-    return statistics.sumByFloat { it.finalMarioDistance }
-}
+object MarioGameplayEvaluators {
 
-
-fun fitnessDistanceLeastActions(controller: MarioController, levels: Array<MarioLevel>): Float {
-    val statistics = playLevels(controller, levels, 10)
-
-    val sumFinalDistances: Float = statistics.sumByFloat { it.finalMarioDistance }
-    val sumJumps = statistics.sumBy { it.jumps }
-    val sumSpecials = statistics.sumBy { it.specials }
-    val levelsFinished = statistics.sumBy { if (it.levelFinished) 1 else 0 }
-
-    return sumFinalDistances - sumJumps * 40 - sumSpecials * 40  + levelsFinished * 200.0f
-}
-
-
-fun fitnessOnlyVictories(controller: MarioController, levels: Array<MarioLevel>): Float {
-    val statistics = playLevels(controller, levels)
-
-    return statistics.sumByFloat { if (it.levelFinished) 1.0f else 0.0f }
-}
-
-
-private fun playLevels(controller: MarioController, levels: Array<MarioLevel>, count: Int = 0): List<GameStatistics> {
-    val marioSimulator = GameSimulator()
-    val statistics = mutableListOf<GameStatistics>()
-
-    val lastIndex = if (levels.size < count) levels.size else if (count == 0) levels.size else count
-    val levelsToPlay = if (count < 1) levels.toList() else levels.toMutableList().shuffled().subList(0, lastIndex)
-
-    levelsToPlay.forEach { level ->
-        marioSimulator.playMario(controller, level, false)
-        statistics.add(marioSimulator.statistics)
+    fun distanceOnly(statistics: Array<GameStatistics>): Float {
+        return statistics.sumByFloat { it.finalMarioDistance }
     }
 
-    return statistics
+
+    fun distanceLeastActions(statistics: Array<GameStatistics>): Float {
+        val sumFinalDistances: Float = statistics.sumByFloat { it.finalMarioDistance }
+        val sumJumps = statistics.sumBy { it.jumps }
+        val sumSpecials = statistics.sumBy { it.specials }
+        val levelsFinished = statistics.sumBy { if (it.levelFinished) 1 else 0 }
+
+        return sumFinalDistances - sumJumps * 40 - sumSpecials * 40 + levelsFinished * 200.0f
+    }
+
+
+    fun victoriesOnly(statistics: Array<GameStatistics>): Float {
+        return statistics.sumByFloat { if (it.levelFinished) 1.0f else 0.0f }
+    }
+
 }

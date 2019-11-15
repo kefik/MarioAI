@@ -16,6 +16,19 @@ class GameSimulator(private val maxTicks: Int = DEFAULT_MAX_TICKS) {
     private var currentTick: Int = 0
     lateinit var statistics: GameStatistics
 
+    fun playRandomLevels(controller: MarioController, levels: Array<MarioLevel>, levelsCount: Int, visualize: Boolean = true): Array<GameStatistics> {
+        val lastIndex = if (levels.size < levelsCount) levels.size else levelsCount
+        val levelsToPlay = levels.toMutableList().shuffled().subList(0, lastIndex).toTypedArray()
+
+        return this.playMario(controller, levelsToPlay, visualize)
+    }
+
+    fun playMario(marioController: MarioController, levels: Array<MarioLevel>, visualize: Boolean = true): Array<GameStatistics> {
+        return Array(levels.size) {
+            this.playMario(marioController, levels[it], visualize)
+        }
+    }
+
     fun playMario(marioController: MarioController, level: MarioLevel, visualize: Boolean = true): GameStatistics {
         val marioAgent = MarioAgent(marioController)
         val marioLevelGenerator = SingleLevelLevelGenerator(level)

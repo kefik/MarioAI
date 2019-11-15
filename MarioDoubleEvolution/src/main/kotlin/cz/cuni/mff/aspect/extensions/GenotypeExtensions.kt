@@ -2,13 +2,15 @@ package cz.cuni.mff.aspect.extensions
 
 import cz.cuni.mff.aspect.evolution.algorithm.grammar.jenetics.ByteGene
 import io.jenetics.DoubleGene
+import io.jenetics.Gene
 import io.jenetics.Genotype
 import io.jenetics.IntegerGene
 import io.jenetics.util.Seq
 
 
-fun Genotype<DoubleGene>.getDoubleValues(): DoubleArray {
-    val geneSequence: Seq<DoubleGene> = this.chromosome.toSeq()
+fun <G : Gene<*, G>> Genotype<G>.getDoubleValues(): DoubleArray {
+    // TODO: this unchecked cast
+    val geneSequence: Seq<DoubleGene> = this.chromosome.toSeq() as Seq<DoubleGene>
 
     val array = DoubleArray(geneSequence.size())
     var i = geneSequence.size()

@@ -1,8 +1,8 @@
 package cz.cuni.mff.aspect.launch
 
+import cz.cuni.mff.aspect.evolution.MarioGameplayEvaluators
 import cz.cuni.mff.aspect.evolution.controller.ControllerEvolution
 import cz.cuni.mff.aspect.evolution.controller.NeatControllerEvolution
-import cz.cuni.mff.aspect.evolution.fitnessDistanceLeastActions
 import cz.cuni.mff.aspect.evolution.levels.TrainingLevelsSet
 import cz.cuni.mff.aspect.mario.GameSimulator
 import cz.cuni.mff.aspect.mario.controllers.ann.NetworkSettings
@@ -27,7 +27,7 @@ fun evolveNeatAI() {
         chartName = "NEAT Evolution S1L1")
     val levels = emptyArray<MarioLevel>() + TrainingLevelsSet // + PathWithHolesLevel
     //val levels = arrayOf<MarioLevel>(*TrainingLevelsSet)
-    val resultController = controllerEvolution.evolve(levels, ::fitnessDistanceLeastActions)
+    val resultController = controllerEvolution.evolve(levels, MarioGameplayEvaluators::distanceLeastActions, MarioGameplayEvaluators::victoriesOnly)
 
     val marioSimulator = GameSimulator()
 

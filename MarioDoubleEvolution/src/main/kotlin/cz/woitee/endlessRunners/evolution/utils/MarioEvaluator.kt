@@ -1,5 +1,11 @@
 package cz.woitee.endlessRunners.evolution.utils
 
+import cz.cuni.mff.aspect.evolution.MarioGameplayEvaluator
+import cz.cuni.mff.aspect.extensions.getDoubleValues
+import cz.cuni.mff.aspect.mario.GameSimulator
+import cz.cuni.mff.aspect.mario.controllers.ann.SimpleANNController
+import cz.cuni.mff.aspect.mario.controllers.ann.networks.ControllerArtificialNetwork
+import cz.cuni.mff.aspect.mario.level.MarioLevel
 import io.jenetics.Gene
 import io.jenetics.Genotype
 import io.jenetics.Phenotype
@@ -9,9 +15,7 @@ import io.jenetics.util.ISeq
 import io.jenetics.util.Seq
 import java.util.*
 import java.util.concurrent.Executor
-import java.util.function.Function
 import java.util.stream.Stream
-
 
 /**
  * A custom implementation of concurrent evaluator (mostly rewriting io.jenetics.engine.ConcurrentEvaluator to Kotlin),
@@ -21,17 +25,23 @@ import java.util.stream.Stream
  * Additionally we deal with some of the issues when using jenetics. First, we provide a simple option to reevaluate all,
  * even surviving individuals in each generation. Secondly, we can distribute seeds consistently to fitness evaluations,
  * such that we have reproducible results.
+ *
+ * Implementation was updated to support jenetics version 5.0 and compute also objective function
  */
-
-class MyConcurrentEvaluator<G : Gene<*, G>, C : Comparable<C>>(
+// TODO: refactor
+class MarioEvaluator<G : Gene<*, G>, C : Comparable<C>>(
     private val executor: Executor,
-    private val function: Function<in Genotype<G>, out C>,
+    private val fitnessFunction: MarioGameplayEvaluator<C>,
+    private val objectiveFunction: MarioGameplayEvaluator<C>,
+    private val controllerNetwork: ControllerArtificialNetwork,
+    private val levels: Array<MarioLevel>,
     private val alwaysEvaluate: Boolean = false,
     private val seed: Long? = null
 ) : Evaluator<G, C> {
 
     private val random = if (seed != null) Random(seed) else Random()
     private val seedMap = HashMap<Int, Long>()
+    private val objectiveResults = mutableListOf<HashMap<Int, C>>()
 
     /**
      * Evaluate implementation, possibly reevaluating all individuals in a population.
@@ -61,16 +71,29 @@ class MyConcurrentEvaluator<G : Gene<*, G>, C : Comparable<C>>(
         }
     }
 
+    fun getBestObjectiveFromLastGeneration(): C {
+        return this.objectiveResults.last().values.max()!!
+    }
+
     private fun evaluate(phenotypes: Stream<Phenotype<G, C>>): ISeq<Phenotype<G, C>> {
         val phenotypeRunnables = phenotypes
-            .map { pt -> PhenotypeFitness(pt, function) }
+            .map { pt -> PhenotypeEvaluation(pt, fitnessFunction, objectiveFunction, controllerNetwork, levels) }
             .collect(ISeq.toISeq())
 
         val concurrency = Concurrency.with(executor)
         concurrency.execute(phenotypeRunnables)
         concurrency.close()
 
-        return phenotypeRunnables.map { it.phenotype() }
+        val newPhenotypes = phenotypeRunnables.map { it.phenotype() }
+        val objectives = hashMapOf<Int, C>()
+        phenotypeRunnables.forEach {
+            val genotypeHash = System.identityHashCode(it.phenotype().genotype)
+            val objectiveValue = it.objective
+            objectives[genotypeHash] = objectiveValue
+        }
+        this.objectiveResults.add(objectives)
+
+        return newPhenotypes
     }
 
     /**
@@ -91,14 +114,32 @@ class MyConcurrentEvaluator<G : Gene<*, G>, C : Comparable<C>>(
     }
 }
 
-private class PhenotypeFitness<G : Gene<*, G>, C : Comparable<C>> internal constructor(
+private class PhenotypeEvaluation<G : Gene<*, G>, C : Comparable<C>> internal constructor(
     private val _phenotype: Phenotype<G, C>,
-    private val function: Function<in Genotype<G>, out C>
+    private val fitnessFunction: MarioGameplayEvaluator<C>,
+    private val objectiveFunction: MarioGameplayEvaluator<C>,
+    private val controllerNetwork: ControllerArtificialNetwork,
+    private val levels: Array<MarioLevel>
 ) : Runnable {
+    lateinit var objective: C
     private lateinit var fitness: C
 
     override fun run() {
-        fitness = function.apply(_phenotype.genotype)
+        this.computeFitnessAndObjective(_phenotype.genotype)
+    }
+
+    private fun computeFitnessAndObjective(genotype: Genotype<G>) {
+        val networkWeights: DoubleArray = genotype.getDoubleValues()
+        val controllerNetwork = this.controllerNetwork.newInstance()
+        controllerNetwork.setNetworkWeights(networkWeights)
+
+        val controller = SimpleANNController(controllerNetwork)
+        val marioSimulator = GameSimulator()
+        // TODO: levelsCount as parameter
+        val statistics = marioSimulator.playRandomLevels(controller, levels, 999, false)
+
+        fitness = fitnessFunction(statistics)
+        objective = objectiveFunction(statistics)
     }
 
     internal fun phenotype(): Phenotype<G, C> {
