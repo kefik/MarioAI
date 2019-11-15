@@ -17,14 +17,32 @@ fun main() {
 }
 
 fun doManyEvolution() {
-    val evaluationName = "First test evaluation"
+    val evaluationName = "Gaussian test evaluation"
 
     val evolutions = arrayOf(
         NeuroEvolutionLauncher(
             levels = arrayOf(*Stage1Level1Split.levels + PathWithHolesLevel + OnlyPathLevel),
             fitnessFunction = ::fitnessOnlyDistance,
             objectiveFunction = ::fitnessOnlyVictories,
-            mutators = arrayOf(Mutator(0.05)),
+            mutators = arrayOf(GaussianMutator(0.01)),
+            survivorsSelector = EliteSelector(2),
+            offspringSelector = TournamentSelector(2),
+            generationsCount = 50,
+            populationSize = 50,
+            receptiveFieldSize = Pair(5, 5),
+            receptiveFieldOffset = Pair(0, 2),
+            hiddenLayerSize = 20,
+            weightsRange = DoubleRange.of(-2.0, 2.0),
+            label = "NeuroEvolution Stage 1 Level 1, Mutator 0.01",
+            runParallel = true,
+            dataLocation = evaluationName
+        ),
+
+        NeuroEvolutionLauncher(
+            levels = arrayOf(*Stage1Level1Split.levels + PathWithHolesLevel + OnlyPathLevel),
+            fitnessFunction = ::fitnessOnlyDistance,
+            objectiveFunction = ::fitnessOnlyVictories,
+            mutators = arrayOf(GaussianMutator(0.05)),
             survivorsSelector = EliteSelector(2),
             offspringSelector = TournamentSelector(2),
             generationsCount = 50,
@@ -42,7 +60,7 @@ fun doManyEvolution() {
             levels = arrayOf(*Stage1Level1Split.levels + PathWithHolesLevel + OnlyPathLevel),
             fitnessFunction = ::fitnessOnlyDistance,
             objectiveFunction = ::fitnessOnlyVictories,
-            mutators = arrayOf(Mutator(0.10)),
+            mutators = arrayOf(GaussianMutator(0.1)),
             survivorsSelector = EliteSelector(2),
             offspringSelector = TournamentSelector(2),
             generationsCount = 50,
@@ -51,7 +69,7 @@ fun doManyEvolution() {
             receptiveFieldOffset = Pair(0, 2),
             hiddenLayerSize = 20,
             weightsRange = DoubleRange.of(-2.0, 2.0),
-            label = "NeuroEvolution Stage 1 Level 1, Mutator 0.10",
+            label = "NeuroEvolution Stage 1 Level 1, Mutator 0.1",
             runParallel = true,
             dataLocation = evaluationName
         ),
@@ -60,7 +78,7 @@ fun doManyEvolution() {
             levels = arrayOf(*Stage1Level1Split.levels + PathWithHolesLevel + OnlyPathLevel),
             fitnessFunction = ::fitnessOnlyDistance,
             objectiveFunction = ::fitnessOnlyVictories,
-            mutators = arrayOf(Mutator(0.15)),
+            mutators = arrayOf(GaussianMutator(0.25)),
             survivorsSelector = EliteSelector(2),
             offspringSelector = TournamentSelector(2),
             generationsCount = 50,
@@ -69,7 +87,7 @@ fun doManyEvolution() {
             receptiveFieldOffset = Pair(0, 2),
             hiddenLayerSize = 20,
             weightsRange = DoubleRange.of(-2.0, 2.0),
-            label = "NeuroEvolution Stage 1 Level 1, Mutator 0.15",
+            label = "NeuroEvolution Stage 1 Level 1, Mutator 0.25",
             runParallel = true,
             dataLocation = evaluationName
         )

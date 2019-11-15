@@ -109,7 +109,12 @@ class NeuroControllerEvolution(
         return evolutionEngine.stream()
             .limit(this.generationsCount)
             .peek {
-                this.chart.update(it.generation.toInt(), it.bestFitness.toDouble(), this.getAverageFitness(it).toDouble(), it.worstFitness.toDouble())
+                val generation = it.generation.toInt()
+                val bestFitness = it.bestFitness.toDouble()
+                val averageFitness = this.getAverageFitness(it).toDouble()
+                val maxObjective = this.getBestObjectiveValue(evaluator).toDouble()
+                val averageObjective = this.getAverageObjectiveValue(evaluator).toDouble()
+                this.chart.update(generation, bestFitness, averageFitness, maxObjective, averageObjective)
                 println("new gen: ${it.generation} (best fitness: ${it.bestFitness}, best objective: ${evaluator.getBestObjectiveFromLastGeneration()})")
             }
             .collect(EvolutionResult.toBestEvolutionResult<DoubleGene, Float>())
@@ -117,6 +122,14 @@ class NeuroControllerEvolution(
 
     private fun getAverageFitness(evolutionResult: EvolutionResult<DoubleGene, Float>): Float {
         return evolutionResult.population.asList().fold(0.0f, {accumulator, genotype -> accumulator + genotype.fitness}) / evolutionResult.population.length()
+    }
+
+    private fun getBestObjectiveValue(evaluator: MarioEvaluator<DoubleGene, Float>): Float {
+        return evaluator.getBestObjectiveFromLastGeneration()
+    }
+
+    private fun getAverageObjectiveValue(evaluator: MarioEvaluator<DoubleGene, Float>): Float {
+        return evaluator.getAverageObjectiveFromLastGeneration()
     }
 
     companion object {

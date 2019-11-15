@@ -2,6 +2,7 @@ package cz.woitee.endlessRunners.evolution.utils
 
 import cz.cuni.mff.aspect.evolution.MarioGameplayEvaluator
 import cz.cuni.mff.aspect.extensions.getDoubleValues
+import cz.cuni.mff.aspect.extensions.sumByFloat
 import cz.cuni.mff.aspect.mario.GameSimulator
 import cz.cuni.mff.aspect.mario.controllers.ann.SimpleANNController
 import cz.cuni.mff.aspect.mario.controllers.ann.networks.ControllerArtificialNetwork
@@ -73,6 +74,13 @@ class MarioEvaluator<G : Gene<*, G>, C : Comparable<C>>(
 
     fun getBestObjectiveFromLastGeneration(): C {
         return this.objectiveResults.last().values.max()!!
+    }
+
+    fun getAverageObjectiveFromLastGeneration(): Float {
+        val objectives = this.objectiveResults.last().values
+        // TODO: `it as Float` lol
+        val objectivesSum = objectives.sumByFloat { it as Float }
+        return objectivesSum / objectives.size
     }
 
     private fun evaluate(phenotypes: Stream<Phenotype<G, C>>): ISeq<Phenotype<G, C>> {
