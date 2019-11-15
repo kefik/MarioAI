@@ -7,25 +7,28 @@ import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.level.MarioLevel
 
 
-// TODO: rename me
-typealias Fitness<F> = (gameStatistics: Array<GameStatistics>) -> F
+typealias MarioGameplayEvaluator<F> = (gameStatistics: Array<GameStatistics>) -> F
 
 
-fun fitnessOnlyDistance(statistics: Array<GameStatistics>): Float {
-    return statistics.sumByFloat { it.finalMarioDistance }
-}
+object MarioGameplayEvaluators {
+
+    fun distanceOnly(statistics: Array<GameStatistics>): Float {
+        return statistics.sumByFloat { it.finalMarioDistance }
+    }
 
 
-fun fitnessDistanceLeastActions(statistics: Array<GameStatistics>): Float {
-    val sumFinalDistances: Float = statistics.sumByFloat { it.finalMarioDistance }
-    val sumJumps = statistics.sumBy { it.jumps }
-    val sumSpecials = statistics.sumBy { it.specials }
-    val levelsFinished = statistics.sumBy { if (it.levelFinished) 1 else 0 }
+    fun distanceLeastActions(statistics: Array<GameStatistics>): Float {
+        val sumFinalDistances: Float = statistics.sumByFloat { it.finalMarioDistance }
+        val sumJumps = statistics.sumBy { it.jumps }
+        val sumSpecials = statistics.sumBy { it.specials }
+        val levelsFinished = statistics.sumBy { if (it.levelFinished) 1 else 0 }
 
-    return sumFinalDistances - sumJumps * 40 - sumSpecials * 40  + levelsFinished * 200.0f
-}
+        return sumFinalDistances - sumJumps * 40 - sumSpecials * 40 + levelsFinished * 200.0f
+    }
 
 
-fun fitnessOnlyVictories(statistics: Array<GameStatistics>): Float {
-    return statistics.sumByFloat { if (it.levelFinished) 1.0f else 0.0f }
+    fun victoriesOnly(statistics: Array<GameStatistics>): Float {
+        return statistics.sumByFloat { if (it.levelFinished) 1.0f else 0.0f }
+    }
+
 }

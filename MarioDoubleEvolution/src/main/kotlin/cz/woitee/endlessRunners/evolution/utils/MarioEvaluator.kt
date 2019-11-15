@@ -1,10 +1,8 @@
 package cz.woitee.endlessRunners.evolution.utils
 
-import cz.cuni.mff.aspect.evolution.Fitness
+import cz.cuni.mff.aspect.evolution.MarioGameplayEvaluator
 import cz.cuni.mff.aspect.extensions.getDoubleValues
 import cz.cuni.mff.aspect.mario.GameSimulator
-import cz.cuni.mff.aspect.mario.GameStatistics
-import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.controllers.ann.SimpleANNController
 import cz.cuni.mff.aspect.mario.controllers.ann.networks.ControllerArtificialNetwork
 import cz.cuni.mff.aspect.mario.level.MarioLevel
@@ -19,8 +17,6 @@ import java.util.*
 import java.util.concurrent.Executor
 import java.util.stream.Stream
 
-// TODO: refactor me pls
-
 /**
  * A custom implementation of concurrent evaluator (mostly rewriting io.jenetics.engine.ConcurrentEvaluator to Kotlin),
  * which was necessary, for the original has only internal visibility.
@@ -29,12 +25,14 @@ import java.util.stream.Stream
  * Additionally we deal with some of the issues when using jenetics. First, we provide a simple option to reevaluate all,
  * even surviving individuals in each generation. Secondly, we can distribute seeds consistently to fitness evaluations,
  * such that we have reproducible results.
+ *
+ * Implementation was updated to support jenetics version 5.0 and compute also objective function
  */
-
+// TODO: refactor
 class MarioEvaluator<G : Gene<*, G>, C : Comparable<C>>(
     private val executor: Executor,
-    private val fitnessFunction: Fitness<C>,
-    private val objectiveFunction: Fitness<C>,
+    private val fitnessFunction: MarioGameplayEvaluator<C>,
+    private val objectiveFunction: MarioGameplayEvaluator<C>,
     private val controllerNetwork: ControllerArtificialNetwork,
     private val levels: Array<MarioLevel>,
     private val alwaysEvaluate: Boolean = false,
@@ -79,7 +77,7 @@ class MarioEvaluator<G : Gene<*, G>, C : Comparable<C>>(
 
     private fun evaluate(phenotypes: Stream<Phenotype<G, C>>): ISeq<Phenotype<G, C>> {
         val phenotypeRunnables = phenotypes
-            .map { pt -> PhenotypeFitness(pt, fitnessFunction, objectiveFunction, controllerNetwork, levels) }
+            .map { pt -> PhenotypeEvaluation(pt, fitnessFunction, objectiveFunction, controllerNetwork, levels) }
             .collect(ISeq.toISeq())
 
         val concurrency = Concurrency.with(executor)
@@ -116,10 +114,10 @@ class MarioEvaluator<G : Gene<*, G>, C : Comparable<C>>(
     }
 }
 
-private class PhenotypeFitness<G : Gene<*, G>, C : Comparable<C>> internal constructor(
+private class PhenotypeEvaluation<G : Gene<*, G>, C : Comparable<C>> internal constructor(
     private val _phenotype: Phenotype<G, C>,
-    private val fitnessFunction: Fitness<C>,
-    private val objectiveFunction: Fitness<C>,
+    private val fitnessFunction: MarioGameplayEvaluator<C>,
+    private val objectiveFunction: MarioGameplayEvaluator<C>,
     private val controllerNetwork: ControllerArtificialNetwork,
     private val levels: Array<MarioLevel>
 ) : Runnable {
@@ -136,20 +134,12 @@ private class PhenotypeFitness<G : Gene<*, G>, C : Comparable<C>> internal const
         controllerNetwork.setNetworkWeights(networkWeights)
 
         val controller = SimpleANNController(controllerNetwork)
-
-        val statistics = this.playLevels(controller, this.levels)
+        val marioSimulator = GameSimulator()
+        // TODO: levelsCount as parameter
+        val statistics = marioSimulator.playRandomLevels(controller, levels, 999, false)
 
         fitness = fitnessFunction(statistics)
         objective = objectiveFunction(statistics)
-    }
-
-    private fun playLevels(controller: MarioController, levels: Array<MarioLevel>, count: Int = 0): Array<GameStatistics> {
-        val marioSimulator = GameSimulator()
-
-        val lastIndex = if (levels.size < count) levels.size else if (count == 0) levels.size else count
-        val levelsToPlay = if (count < 1) levels.toList() else levels.toMutableList().shuffled().subList(0, lastIndex)
-
-        return marioSimulator.playMario(controller, levelsToPlay, false)
     }
 
     internal fun phenotype(): Phenotype<G, C> {
