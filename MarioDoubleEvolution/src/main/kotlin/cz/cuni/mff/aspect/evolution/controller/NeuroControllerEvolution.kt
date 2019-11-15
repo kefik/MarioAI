@@ -1,6 +1,6 @@
 package cz.cuni.mff.aspect.evolution.controller
 
-import cz.cuni.mff.aspect.evolution.Fitness
+import cz.cuni.mff.aspect.evolution.MarioGameplayEvaluator
 import cz.cuni.mff.aspect.extensions.getDoubleValues
 import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.controllers.ann.SimpleANNController
@@ -12,7 +12,6 @@ import io.jenetics.*
 import io.jenetics.engine.Engine
 import io.jenetics.engine.EvolutionResult
 import io.jenetics.internal.util.Concurrency
-import io.jenetics.util.Factory
 import java.util.concurrent.ForkJoinPool
 
 
@@ -29,16 +28,16 @@ class NeuroControllerEvolution(
 
     private var chart = EvolutionLineChart(chartLabel, hideNegative = true)
     private lateinit var levels: Array<MarioLevel>
-    private lateinit var fitnessFunction: Fitness<Float>
-    private lateinit var objectiveFunction: Fitness<Float>
+    private lateinit var fitnessFunction: MarioGameplayEvaluator<Float>
+    private lateinit var objectiveFunction: MarioGameplayEvaluator<Float>
 
-    override fun evolve(levels: Array<MarioLevel>, fitness: Fitness<Float>, objective: Fitness<Float>): MarioController {
+    override fun evolve(levels: Array<MarioLevel>, fitness: MarioGameplayEvaluator<Float>, objective: MarioGameplayEvaluator<Float>): MarioController {
         this.levels = levels
         this.fitnessFunction = fitness
         this.objectiveFunction = objective
         this.chart.show()
 
-        val genotype = this.createInitialGenotype()
+        val genotype = this.createInitialGenotypes()
         val evaluator = this.createEvaluator()
         val engine = this.createEvolutionEngine(genotype, evaluator)
         val result = this.doEvolution(engine, evaluator)
@@ -54,7 +53,7 @@ class NeuroControllerEvolution(
         return SimpleANNController(controllerNetwork)
     }
 
-    private fun createInitialGenotype(): Genotype<DoubleGene> {
+    private fun createInitialGenotypes(): Genotype<DoubleGene> {
         return Genotype.of(DoubleChromosome.of(-2.0, 2.0, this.controllerNetwork.weightsCount))
     }
 
@@ -71,11 +70,8 @@ class NeuroControllerEvolution(
         )
     }
 
-    // TODO: this should get the genotype factory as a parameter
-    private fun createEvolutionEngine(genotype: Genotype<DoubleGene>, evaluator: MarioEvaluator<DoubleGene, Float>): Engine<DoubleGene, Float> {
-        val genotypeFactory = Factory<Genotype<DoubleGene>> { genotype }
-
-        return Engine.Builder(evaluator, genotypeFactory)
+    private fun createEvolutionEngine(initialGenotype: Genotype<DoubleGene>, evaluator: MarioEvaluator<DoubleGene, Float>): Engine<DoubleGene, Float> {
+        return Engine.Builder(evaluator, initialGenotype)
                 .optimize(Optimize.MAXIMUM)
                 .populationSize(this.populationSize)
                 .alterers(Mutator(0.05))
