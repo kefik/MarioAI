@@ -13,6 +13,7 @@ import cz.cuni.mff.aspect.mario.level.custom.PathWithHolesLevel
 import cz.cuni.mff.aspect.mario.level.original.Stage1Level1Split
 import cz.cuni.mff.aspect.mario.level.original.Stage4Level1
 import cz.cuni.mff.aspect.mario.level.original.Stage4Level1Split
+import io.jenetics.GaussianMutator
 import kotlin.system.exitProcess
 
 
@@ -24,7 +25,12 @@ fun main() {
 
 fun evolveAI() {
     val controllerANN = UpdatedAgentNetwork(5, 5, 0, 2, 20)
-    val controllerEvolution: ControllerEvolution = NeuroControllerEvolution(controllerANN, 50  , 50, chartLabel = "Neuroevolution Stage 1 Level 1 split")
+    val controllerEvolution: ControllerEvolution = NeuroControllerEvolution(controllerANN,
+        50,
+        50,
+        chartLabel = "Neuroevolution Stage 1 Level 1 split",
+        mutators = arrayOf(GaussianMutator(0.25))
+    )
     val levels = emptyArray<MarioLevel>() + Stage1Level1Split.levels + PathWithHolesLevel + OnlyPathLevel
     val resultController = controllerEvolution.evolve(levels, ::fitnessOnlyDistance, ::fitnessOnlyVictories)
 

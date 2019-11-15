@@ -25,7 +25,7 @@ class NeuroControllerEvolution(
     private val generationsCount: Long = DEFAULT_GENERATIONS_COUNT,
     private val populationSize: Int = DEFAULT_POPULATION_SIZE,
     private val parallel: Boolean = true,
-    private val alterers: Array<Alterer<DoubleGene, Float>> = arrayOf(Mutator(0.05)),
+    private val mutators: Array<Alterer<DoubleGene, Float>> = arrayOf(Mutator(0.05)),
     private val survivorsSelector: Selector<DoubleGene, Float> = EliteSelector(2),
     private val offspringSelector: Selector<DoubleGene, Float> = TournamentSelector(2),
     private val weightsRange: DoubleRange = DoubleRange.of(-1.0, 1.0),
@@ -88,8 +88,8 @@ class NeuroControllerEvolution(
                 .optimize(Optimize.MAXIMUM)
                 .populationSize(this.populationSize)
 
-        if (this.alterers.isNotEmpty()) {
-            val (first, rest) = this.getFirstAndRest(this.alterers)
+        if (this.mutators.isNotEmpty()) {
+            val (first, rest) = this.getFirstAndRest(this.mutators)
             engine.alterers(first, *rest)
         }
 

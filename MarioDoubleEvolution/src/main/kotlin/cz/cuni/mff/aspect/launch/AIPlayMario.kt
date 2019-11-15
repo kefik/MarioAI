@@ -3,28 +3,34 @@ package cz.cuni.mff.aspect.launch
 import cz.cuni.mff.aspect.evolution.levels.TrainingLevelsSet
 import cz.cuni.mff.aspect.mario.GameSimulator
 import cz.cuni.mff.aspect.mario.controllers.EvolvedControllers
+import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.controllers.ann.NetworkSettings
 import cz.cuni.mff.aspect.mario.controllers.ann.SimpleANNController
 import cz.cuni.mff.aspect.mario.controllers.ann.networks.NeatAgentNetwork
 import cz.cuni.mff.aspect.mario.level.original.*
 import cz.cuni.mff.aspect.storage.NeatAIStorage
+import cz.cuni.mff.aspect.storage.ObjectStorage
 import kotlin.system.exitProcess
 
 
 fun main() {
-    // aiPlayLevel()
-    neatAiPlayLevel()
+    aiPlayLevel()
+    // neatAiPlayLevel()
     exitProcess(0)
 }
 
 
 fun aiPlayLevel() {
-    val controller = EvolvedControllers.UpdatedNetwork.stage4level1Solver()
+    // val controller = EvolvedControllers.UpdatedNetwork.stage4level1Solver()
     // val level = LevelStorage.loadLevel("ge_long.lvl")
-    val level = Stage4Level1
+    val controller = ObjectStorage.load("tests/Gaussian test evaluation - Stage 2 Level Split/NeuroEvolution, Mutator 0.45/ai.ai") as MarioController
+    val levels = Stage2Level1Split.levels
     //val level = Stage4Level1Split.levels[2]
 
-    GameSimulator(10000).playMario(controller, level, true)
+    val gameSimulator = GameSimulator(1000)
+    levels.forEach {
+        gameSimulator.playMario(controller, it, true)
+    }
 }
 
 
