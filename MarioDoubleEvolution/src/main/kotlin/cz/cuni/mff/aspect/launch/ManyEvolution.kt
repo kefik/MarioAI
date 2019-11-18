@@ -74,7 +74,7 @@ fun doManyEvolution() {
             receptiveFieldOffset = Pair(0, 2),
             hiddenLayerSize = 20,
             weightsRange = DoubleRange.of(-2.0, 2.0),
-            label = "NeuroEvolution, Mutator 0.1",
+            label = "NeuroEvolution, Mutator 0.10",
             runParallel = true,
             dataLocation = evaluationName
         ),

@@ -27,7 +27,7 @@ fun aiPlayLevel() {
     val levels = Stage2Level1Split.levels
     //val level = Stage4Level1Split.levels[2]
 
-    val gameSimulator = GameSimulator(1000)
+    val gameSimulator = GameSimulator(400)
     levels.forEach {
         gameSimulator.playMario(controller, it, true)
     }
