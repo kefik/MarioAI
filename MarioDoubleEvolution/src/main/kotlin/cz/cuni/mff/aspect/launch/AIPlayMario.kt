@@ -1,15 +1,15 @@
 package cz.cuni.mff.aspect.launch
 
-import cz.cuni.mff.aspect.evolution.levels.TrainingLevelsSet
+import cz.cuni.mff.aspect.evolution.EvolvedAgents
 import cz.cuni.mff.aspect.mario.GameSimulator
-import cz.cuni.mff.aspect.mario.controllers.EvolvedControllers
-import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.controllers.ann.NetworkSettings
 import cz.cuni.mff.aspect.mario.controllers.ann.SimpleANNController
 import cz.cuni.mff.aspect.mario.controllers.ann.networks.NeatAgentNetwork
-import cz.cuni.mff.aspect.mario.level.original.*
+import cz.cuni.mff.aspect.mario.level.original.Stage1Level1Split
+import cz.cuni.mff.aspect.mario.level.original.Stage2Level1Split
+import cz.cuni.mff.aspect.mario.level.original.Stage4Level1
+import cz.cuni.mff.aspect.mario.level.original.Stage4Level1Split
 import cz.cuni.mff.aspect.storage.NeatAIStorage
-import cz.cuni.mff.aspect.storage.ObjectStorage
 import kotlin.system.exitProcess
 
 
@@ -21,15 +21,12 @@ fun main() {
 
 
 fun aiPlayLevel() {
-    // val controller = EvolvedControllers.UpdatedNetwork.stage4level1Solver()
-    // val level = LevelStorage.loadLevel("ge_long.lvl")
-    val controller = ObjectStorage.load("tests/Gaussian test evaluation - Stage 2 Level Split/NeuroEvolution, Mutator 0.45/ai.ai") as MarioController
-    val levels = Stage2Level1Split.levels
-    //val level = Stage4Level1Split.levels[2]
+    val agent = EvolvedAgents.ruleBasedAgent
+    val levels = Stage4Level1Split.levels
 
     val gameSimulator = GameSimulator(400)
     levels.forEach {
-        gameSimulator.playMario(controller, it, true)
+        gameSimulator.playMario(agent, it, true)
     }
 }
 

@@ -25,6 +25,7 @@ import java.io.Serializable
  * one hidden layer with 5 neurons. The output layer has 4 neurons, corresponding to 4 mario actions (run left / right,
  * jump and special).
  */
+// TODO: remove 'updated' from the name (won't it break loading of the serialized objects?)
 class UpdatedAgentNetwork(private val receptiveFieldSizeRow: Int = 3,
                           private val receptiveFieldSizeColumn: Int = 3,
                           private val receptiveFieldRowOffset: Int = 0,
