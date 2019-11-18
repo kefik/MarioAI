@@ -6,8 +6,8 @@ import org.knowm.xchart.style.Styler
 import org.knowm.xchart.style.markers.SeriesMarkers
 import java.awt.BorderLayout
 import java.awt.Color
-import javax.swing.JFrame
 import java.io.File
+import javax.swing.JFrame
 
 
 class LineChart(label: String = "Line chart", xLabel: String = "X", yLabel: String = "Y") {
@@ -41,6 +41,7 @@ class LineChart(label: String = "Line chart", xLabel: String = "X", yLabel: Stri
 
             frame.pack()
             frame.isVisible = true
+            frame.extendedState = frame.extendedState or JFrame.MAXIMIZED_BOTH
         }
     }
 
