@@ -11,7 +11,7 @@ import java.util.Random
 /**
  * Updated [io.jenetics.GaussianMutator] with added possibility to define standard deviation.
  */
-class GaussianMutator<G : NumericGene<*, G>, C : Comparable<C>> @JvmOverloads constructor(
+class UpdatedGaussianMutator<G : NumericGene<*, G>, C : Comparable<C>> @JvmOverloads constructor(
     private val standardDeviation: Double,
     probability: Double = Alterer.DEFAULT_ALTER_PROBABILITY
 ) : Mutator<G, C>(probability) {

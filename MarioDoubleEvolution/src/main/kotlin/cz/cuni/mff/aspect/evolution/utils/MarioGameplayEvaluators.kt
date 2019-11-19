@@ -13,6 +13,10 @@ object MarioGameplayEvaluators {
         return statistics.sumByFloat { it.finalMarioDistance }
     }
 
+    fun distanceAndVictories(statistics: Array<GameStatistics>): Float {
+        return statistics.sumByFloat { it.finalMarioDistance + if (it.levelFinished) 500f else 0f }
+    }
+
 
     fun distanceLeastActions(statistics: Array<GameStatistics>): Float {
         val sumFinalDistances: Float = statistics.sumByFloat { it.finalMarioDistance }

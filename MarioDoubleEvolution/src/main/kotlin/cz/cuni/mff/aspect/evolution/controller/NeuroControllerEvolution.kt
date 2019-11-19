@@ -58,15 +58,11 @@ class NeuroControllerEvolution(
         return SimpleANNController(controllerNetwork)
     }
 
-    private fun createInitialGenotypes(): Genotype<DoubleGene> {
-        return Genotype.of(DoubleChromosome.of(-2.0, 2.0, this.controllerNetwork.weightsCount))
-    }
-
     fun storeChart(path: String) {
         this.chart.save(path)
     }
 
-    private fun createInitialGenotype(): Genotype<DoubleGene> {
+    private fun createInitialGenotypes(): Genotype<DoubleGene> {
         return Genotype.of(DoubleChromosome.of(this.weightsRange, this.controllerNetwork.weightsCount))
     }
 

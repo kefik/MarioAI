@@ -1,6 +1,7 @@
 package cz.cuni.mff.aspect.launch
 
 import cz.cuni.mff.aspect.evolution.EvolvedAgents
+import cz.cuni.mff.aspect.evolution.levels.TrainingLevelsSet
 import cz.cuni.mff.aspect.mario.GameSimulator
 import cz.cuni.mff.aspect.mario.MarioAgent
 import cz.cuni.mff.aspect.mario.controllers.MarioController
@@ -27,8 +28,9 @@ fun main() {
 
 fun aiPlayLevel() {
     // val agent = EvolvedAgents.ruleBasedAgent
-    val agent = MarioAgent(ObjectStorage.load("experiments/Hidden layer test evaluation - S4S - 100/NeuroEvolution, hidden layer size 100_ai.ai") as MarioController)
-    val levels = arrayOf<MarioLevel>(PathWithHolesLevel) + Stage4Level1Split.levels
+    val agent = MarioAgent(ObjectStorage.load("experiments/All test - multi gaussian/NeuroEvolution, experiment 3_ai.ai") as MarioController)
+    // val levels = arrayOf<MarioLevel>(PathWithHolesLevel) + Stage4Level1Split.levels
+    val levels = TrainingLevelsSet
 
     val gameSimulator = GameSimulator(400)
     levels.forEach {
