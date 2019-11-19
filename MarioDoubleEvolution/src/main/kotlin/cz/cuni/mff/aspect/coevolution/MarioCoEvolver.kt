@@ -1,6 +1,6 @@
 package cz.cuni.mff.aspect.coevolution
 
-import cz.cuni.mff.aspect.evolution.MarioGameplayEvaluators
+import cz.cuni.mff.aspect.evolution.utils.MarioGameplayEvaluators
 import cz.cuni.mff.aspect.evolution.controller.ControllerEvolution
 import cz.cuni.mff.aspect.evolution.levels.LevelEvolution
 import cz.cuni.mff.aspect.evolution.levels.mock.MockLevelEvolution

@@ -10,7 +10,7 @@ object EvolvedAgents {
 
     val ruleBasedAgent: IAgent get() = RuleBasedAgent()
 
-    val stage2Level1Solver: IAgent get() = MarioAgent(ObjectStorage.load("tests/Gaussian test evaluation - Stage 2 Level Split/NeuroEvolution, Mutator 0.45_ai.ai") as MarioController)
-    val stage4Level1Solver: IAgent get() = MarioAgent(ObjectStorage.load("tests/Gaussian test evaluation - Stage 4 Level Split/NeuroEvolution, Mutator 0.45_ai.ai") as MarioController)
+    val stage2Level1Solver: IAgent get() = MarioAgent(ObjectStorage.load("experiments/Gaussian test evaluation - S2S/NeuroEvolution, Mutator 0.45_ai.ai") as MarioController)
+    val stage4Level1Solver: IAgent get() = MarioAgent(ObjectStorage.load("experiments/Gaussian test evaluation - S4S/NeuroEvolution, Mutator 0.45_ai.ai") as MarioController)
 
 }

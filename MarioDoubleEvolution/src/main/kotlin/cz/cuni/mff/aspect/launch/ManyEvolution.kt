@@ -1,7 +1,7 @@
 package cz.cuni.mff.aspect.launch
 
-import cz.cuni.mff.aspect.evolution.MarioGameplayEvaluator
-import cz.cuni.mff.aspect.evolution.MarioGameplayEvaluators
+import cz.cuni.mff.aspect.evolution.utils.MarioGameplayEvaluator
+import cz.cuni.mff.aspect.evolution.utils.MarioGameplayEvaluators
 import cz.cuni.mff.aspect.evolution.controller.NeuroControllerEvolution
 import cz.cuni.mff.aspect.mario.controllers.ann.networks.UpdatedAgentNetwork
 import cz.cuni.mff.aspect.mario.level.MarioLevel
@@ -18,23 +18,33 @@ fun main() {
 
 fun doManyEvolution() {
     val learningLevels = arrayOf(*Stage4Level1Split.levels + PathWithHolesLevel + OnlyPathLevel)
-    val evaluationName = "Gaussian test evaluation - Stage 4 Level Split - Population 100"
+    val evaluationName = "Hidden layer test evaluation - S4S - 100"
+
+    val generationsCount = 50
+    val populationSize = 50
+    val mutators = arrayOf<Alterer<DoubleGene, Float>>(GaussianMutator(0.5))
+
+    // CURRENT:
+    val hiddenLayerSize = 20
+
+    // NEXT: 5, 10, 20, 30, 40
+    // custom mutator - similar to gaussian but lesser changes
 
     val evolutions = arrayOf(
         NeuroEvolutionLauncher(
             levels = learningLevels,
             fitnessFunction = MarioGameplayEvaluators::distanceOnly,
             objectiveFunction = MarioGameplayEvaluators::victoriesOnly,
-            mutators = arrayOf(GaussianMutator(0.01)),
+            mutators = mutators,
             survivorsSelector = EliteSelector(2),
             offspringSelector = TournamentSelector(2),
-            generationsCount = 100,
-            populationSize = 100,
+            generationsCount = generationsCount,
+            populationSize = populationSize,
             receptiveFieldSize = Pair(5, 5),
             receptiveFieldOffset = Pair(0, 2),
-            hiddenLayerSize = 20,
+            hiddenLayerSize = 100,
             weightsRange = DoubleRange.of(-2.0, 2.0),
-            label = "NeuroEvolution, Mutator 0.01",
+            label = "NeuroEvolution, hidden layer size 100",
             runParallel = true,
             dataLocation = evaluationName
         ),
@@ -43,16 +53,16 @@ fun doManyEvolution() {
             levels = learningLevels,
             fitnessFunction = MarioGameplayEvaluators::distanceOnly,
             objectiveFunction = MarioGameplayEvaluators::victoriesOnly,
-            mutators = arrayOf(GaussianMutator(0.05)),
+            mutators = mutators,
             survivorsSelector = EliteSelector(2),
             offspringSelector = TournamentSelector(2),
-            generationsCount = 100,
-            populationSize = 100,
+            generationsCount = generationsCount,
+            populationSize = populationSize,
             receptiveFieldSize = Pair(5, 5),
             receptiveFieldOffset = Pair(0, 2),
-            hiddenLayerSize = 20,
+            hiddenLayerSize = 100,
             weightsRange = DoubleRange.of(-2.0, 2.0),
-            label = "NeuroEvolution, Mutator 0.05",
+            label = "NeuroEvolution, hidden layer size 100",
             runParallel = true,
             dataLocation = evaluationName
         ),
@@ -61,16 +71,16 @@ fun doManyEvolution() {
             levels = learningLevels,
             fitnessFunction = MarioGameplayEvaluators::distanceOnly,
             objectiveFunction = MarioGameplayEvaluators::victoriesOnly,
-            mutators = arrayOf(GaussianMutator(0.1)),
+            mutators = mutators,
             survivorsSelector = EliteSelector(2),
             offspringSelector = TournamentSelector(2),
-            generationsCount = 100,
-            populationSize = 100,
+            generationsCount = generationsCount,
+            populationSize = populationSize,
             receptiveFieldSize = Pair(5, 5),
             receptiveFieldOffset = Pair(0, 2),
-            hiddenLayerSize = 20,
+            hiddenLayerSize = 100,
             weightsRange = DoubleRange.of(-2.0, 2.0),
-            label = "NeuroEvolution, Mutator 0.10",
+            label = "NeuroEvolution, hidden layer size 100",
             runParallel = true,
             dataLocation = evaluationName
         ),
@@ -79,40 +89,22 @@ fun doManyEvolution() {
             levels = learningLevels,
             fitnessFunction = MarioGameplayEvaluators::distanceOnly,
             objectiveFunction = MarioGameplayEvaluators::victoriesOnly,
-            mutators = arrayOf(GaussianMutator(0.25)),
+            mutators = mutators,
             survivorsSelector = EliteSelector(2),
             offspringSelector = TournamentSelector(2),
-            generationsCount = 100,
-            populationSize = 100,
+            generationsCount = generationsCount,
+            populationSize = populationSize,
             receptiveFieldSize = Pair(5, 5),
             receptiveFieldOffset = Pair(0, 2),
-            hiddenLayerSize = 20,
+            hiddenLayerSize = 100,
             weightsRange = DoubleRange.of(-2.0, 2.0),
-            label = "NeuroEvolution, Mutator 0.25",
-            runParallel = true,
-            dataLocation = evaluationName
-        ),
-
-        NeuroEvolutionLauncher(
-            levels = learningLevels,
-            fitnessFunction = MarioGameplayEvaluators::distanceOnly,
-            objectiveFunction = MarioGameplayEvaluators::victoriesOnly,
-            mutators = arrayOf(GaussianMutator(0.45)),
-            survivorsSelector = EliteSelector(2),
-            offspringSelector = TournamentSelector(2),
-            generationsCount = 100,
-            populationSize = 100,
-            receptiveFieldSize = Pair(5, 5),
-            receptiveFieldOffset = Pair(0, 2),
-            hiddenLayerSize = 20,
-            weightsRange = DoubleRange.of(-2.0, 2.0),
-            label = "NeuroEvolution, Mutator 0.45",
+            label = "NeuroEvolution, hidden layer size 100",
             runParallel = true,
             dataLocation = evaluationName
         )
     )
 
-    evolutions.forEach() {
+    evolutions.forEach {
         it.run()
     }
 }
@@ -124,7 +116,7 @@ interface EvolutionLauncher {
 
 class NeuroEvolutionLauncher(
     private val levels: Array<MarioLevel>,
-    private val generationsCount: Long,
+    private val generationsCount: Int,
     private val populationSize: Int,
     private val receptiveFieldSize: Pair<Int, Int>,
     private val receptiveFieldOffset: Pair<Int, Int>,
@@ -151,7 +143,7 @@ class NeuroEvolutionLauncher(
 
         val controllerEvolution = NeuroControllerEvolution(
             controllerANN,
-            generationsCount,
+            generationsCount.toLong(),
             populationSize,
             chartLabel = label,
             mutators = mutators,
@@ -161,9 +153,8 @@ class NeuroEvolutionLauncher(
             parallel = runParallel
         )
 
-        // TODO: store also controller
         val resultController = controllerEvolution.evolve(levels, fitnessFunction, objectiveFunction)
-        controllerEvolution.storeChart("tests/$dataLocation/${label}_chart.svg")
-        ObjectStorage.store("tests/$dataLocation/${label}_ai.ai", resultController)
+        controllerEvolution.storeChart("experiments/$dataLocation/${label}_chart.svg")
+        ObjectStorage.store("experiments/$dataLocation/${label}_ai.ai", resultController)
     }
 }

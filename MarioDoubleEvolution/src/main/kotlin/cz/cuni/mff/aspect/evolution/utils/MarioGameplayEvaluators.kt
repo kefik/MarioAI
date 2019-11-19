@@ -1,4 +1,4 @@
-package cz.cuni.mff.aspect.evolution
+package cz.cuni.mff.aspect.evolution.utils
 
 import cz.cuni.mff.aspect.extensions.sumByFloat
 import cz.cuni.mff.aspect.mario.GameStatistics

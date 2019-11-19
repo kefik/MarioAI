@@ -1,6 +1,6 @@
 package cz.woitee.endlessRunners.evolution.utils
 
-import cz.cuni.mff.aspect.evolution.MarioGameplayEvaluator
+import cz.cuni.mff.aspect.evolution.utils.MarioGameplayEvaluator
 import cz.cuni.mff.aspect.extensions.getDoubleValues
 import cz.cuni.mff.aspect.extensions.sumByFloat
 import cz.cuni.mff.aspect.mario.GameSimulator

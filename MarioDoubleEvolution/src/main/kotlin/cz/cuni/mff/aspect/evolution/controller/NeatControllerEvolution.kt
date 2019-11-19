@@ -3,7 +3,7 @@ package cz.cuni.mff.aspect.evolution.controller
 import com.evo.NEAT.Environment
 import com.evo.NEAT.Genome
 import com.evo.NEAT.Pool
-import cz.cuni.mff.aspect.evolution.MarioGameplayEvaluator
+import cz.cuni.mff.aspect.evolution.utils.MarioGameplayEvaluator
 import cz.cuni.mff.aspect.mario.GameSimulator
 import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.controllers.ann.NetworkSettings

@@ -1,6 +1,6 @@
 package cz.cuni.mff.aspect.evolution.controller
 
-import cz.cuni.mff.aspect.evolution.MarioGameplayEvaluator
+import cz.cuni.mff.aspect.evolution.utils.MarioGameplayEvaluator
 import cz.cuni.mff.aspect.extensions.getDoubleValues
 import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.controllers.ann.SimpleANNController
@@ -13,7 +13,6 @@ import io.jenetics.engine.Engine
 import io.jenetics.engine.EvolutionResult
 import io.jenetics.internal.util.Concurrency
 import io.jenetics.util.DoubleRange
-import io.jenetics.util.Factory
 import java.util.concurrent.ForkJoinPool
 
 

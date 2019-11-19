@@ -1,6 +1,6 @@
 package cz.cuni.mff.aspect.evolution.controller
 
-import cz.cuni.mff.aspect.evolution.MarioGameplayEvaluator
+import cz.cuni.mff.aspect.evolution.utils.MarioGameplayEvaluator
 import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.level.MarioLevel
 

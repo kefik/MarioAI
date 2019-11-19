@@ -1,15 +1,12 @@
 package cz.cuni.mff.aspect.launch
 
-import cz.cuni.mff.aspect.evolution.MarioGameplayEvaluators
+import cz.cuni.mff.aspect.evolution.utils.MarioGameplayEvaluators
 import cz.cuni.mff.aspect.evolution.controller.ControllerEvolution
 import cz.cuni.mff.aspect.evolution.controller.NeatControllerEvolution
 import cz.cuni.mff.aspect.evolution.levels.TrainingLevelsSet
 import cz.cuni.mff.aspect.mario.GameSimulator
 import cz.cuni.mff.aspect.mario.controllers.ann.NetworkSettings
 import cz.cuni.mff.aspect.mario.level.MarioLevel
-import cz.cuni.mff.aspect.mario.level.custom.OnlyPathLevel
-import cz.cuni.mff.aspect.mario.level.custom.PathWithHolesLevel
-import cz.cuni.mff.aspect.mario.level.original.*
 import kotlin.system.exitProcess
 
 

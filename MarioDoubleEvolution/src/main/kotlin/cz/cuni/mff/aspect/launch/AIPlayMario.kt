@@ -2,14 +2,19 @@ package cz.cuni.mff.aspect.launch
 
 import cz.cuni.mff.aspect.evolution.EvolvedAgents
 import cz.cuni.mff.aspect.mario.GameSimulator
+import cz.cuni.mff.aspect.mario.MarioAgent
+import cz.cuni.mff.aspect.mario.controllers.MarioController
 import cz.cuni.mff.aspect.mario.controllers.ann.NetworkSettings
 import cz.cuni.mff.aspect.mario.controllers.ann.SimpleANNController
 import cz.cuni.mff.aspect.mario.controllers.ann.networks.NeatAgentNetwork
+import cz.cuni.mff.aspect.mario.level.MarioLevel
+import cz.cuni.mff.aspect.mario.level.custom.PathWithHolesLevel
 import cz.cuni.mff.aspect.mario.level.original.Stage1Level1Split
 import cz.cuni.mff.aspect.mario.level.original.Stage2Level1Split
 import cz.cuni.mff.aspect.mario.level.original.Stage4Level1
 import cz.cuni.mff.aspect.mario.level.original.Stage4Level1Split
 import cz.cuni.mff.aspect.storage.NeatAIStorage
+import cz.cuni.mff.aspect.storage.ObjectStorage
 import kotlin.system.exitProcess
 
 
@@ -21,8 +26,9 @@ fun main() {
 
 
 fun aiPlayLevel() {
-    val agent = EvolvedAgents.ruleBasedAgent
-    val levels = Stage4Level1Split.levels
+    // val agent = EvolvedAgents.ruleBasedAgent
+    val agent = MarioAgent(ObjectStorage.load("experiments/Hidden layer test evaluation - S4S - 100/NeuroEvolution, hidden layer size 100_ai.ai") as MarioController)
+    val levels = arrayOf<MarioLevel>(PathWithHolesLevel) + Stage4Level1Split.levels
 
     val gameSimulator = GameSimulator(400)
     levels.forEach {
