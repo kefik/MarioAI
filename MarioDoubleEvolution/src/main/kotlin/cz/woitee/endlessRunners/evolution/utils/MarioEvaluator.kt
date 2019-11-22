@@ -144,7 +144,7 @@ private class PhenotypeEvaluation<G : Gene<*, G>, C : Comparable<C>> internal co
         val controller = SimpleANNController(controllerNetwork)
         val marioSimulator = GameSimulator()
         // TODO: levelsCount as parameter
-        val statistics = marioSimulator.playRandomLevels(controller, levels, 15, false)
+        val statistics = marioSimulator.playRandomLevels(controller, levels, 999999, false)
 
         fitness = fitnessFunction(statistics)
         objective = objectiveFunction(statistics)

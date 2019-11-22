@@ -3,9 +3,6 @@ package cz.cuni.mff.aspect.mario.controllers.ann.networks
 import ch.idsia.agents.controllers.modules.Entities
 import ch.idsia.agents.controllers.modules.Tiles
 import ch.idsia.benchmark.mario.engine.generalization.MarioEntity
-import java.lang.Exception
-
-
 
 
 data class NetworkInputBuilder(
@@ -26,32 +23,26 @@ data class NetworkInputBuilder(
     fun mario(mario: MarioEntity) = apply { this.mario = mario }
     fun receptiveFieldSize(rows: Int, columns: Int) = apply { this.receptiveFieldRows = rows; this.receptiveFieldColumns = columns }
     fun receptiveFieldOffset(rows: Int, columns: Int) = apply { this.receptiveFieldOffsetRows = rows; this.receptiveFieldOffsetColumns = columns }
-    fun addMarioInTilePosition() = apply { this.addMarioInTilePosition = true }
+    fun addMarioInTilePosition() = apply { this.addMarioInTilePosition = false }
 
-    // TODO: unite these functions -> don't we need only Ints?
-    // TODO: unit test this
+    // TODO: do not use these pls :(
     fun buildDouble(): DoubleArray {
-        val (flatTiles, flatEntities, inputLayerSize) = this.createFlatArrays()
-
-        return DoubleArray(inputLayerSize) {
-            when {
-                it == inputLayerSize - 1 -> this.mario!!.dX.toDouble()
-                it == inputLayerSize - 2 -> this.mario!!.dY.toDouble()
-                it >= flatEntities.size -> flatTiles[it - flatEntities.size].toDouble()
-                else -> flatEntities[it].toDouble()
-            }
-        }
+        return this.build().map { it.toDouble() }.toDoubleArray()
     }
 
     fun buildFloat(): FloatArray {
+        return this.build().map { it.toFloat() }.toFloatArray()
+    }
+
+    fun build(): IntArray {
         val (flatTiles, flatEntities, inputLayerSize) = this.createFlatArrays()
 
-        return FloatArray(inputLayerSize) {
+        return IntArray(inputLayerSize) {
             when {
-                it == inputLayerSize - 1 -> this.mario!!.dX
-                it == inputLayerSize - 2 -> this.mario!!.dY
-                it >= flatEntities.size -> flatTiles[it - flatEntities.size].toFloat()
-                else -> flatEntities[it].toFloat()
+                this.addMarioInTilePosition && it == inputLayerSize - 1 -> this.mario!!.inTileX
+                this.addMarioInTilePosition && it == inputLayerSize - 2 -> this.mario!!.inTileY
+                it >= flatEntities.size -> flatTiles[it - flatEntities.size]
+                else -> flatEntities[it]
             }
         }
     }
@@ -68,10 +59,11 @@ data class NetworkInputBuilder(
     }
 
     private fun createFlatTiles(): IntArray {
-        val flatTiles = IntArray(this.receptiveFieldRows * this.receptiveFieldColumns) { 0 }
+        val flatTiles = IntArray(this.receptiveFieldRows * this.receptiveFieldColumns * 4) { 0 }
 
         this.iterateOverReceptiveField { index, row, column ->
             val tileAtPosition = this.tiles!!.tileField[row][column]
+
             val tileCode = when (tileAtPosition.code) {
                 -60 -> -1
                 else -> tileAtPosition.code
@@ -83,7 +75,7 @@ data class NetworkInputBuilder(
     }
 
     private fun createFlatEntities(): IntArray {
-        val flatEntities = IntArray(this.receptiveFieldRows * this.receptiveFieldColumns) { 0 }
+        val flatEntities = IntArray(this.receptiveFieldRows * this.receptiveFieldColumns * 4) { 0 }
 
         this.iterateOverReceptiveField { index, row, column ->
             val entitiesAtPosition = this.entities!!.entityField[row][column]
@@ -99,16 +91,22 @@ data class NetworkInputBuilder(
         val marioX = this.mario!!.egoCol
         val marioY = this.mario!!.egoRow
 
-        for (index in 0 until this.receptiveFieldRows * this.receptiveFieldColumns) {
-            val row = index / this.receptiveFieldRows - receptiveFieldRowMiddle + this.receptiveFieldOffsetRows
-            val column = index % this.receptiveFieldColumns - receptiveFieldColumnMiddle + this.receptiveFieldOffsetColumns
-            callback(index, marioY + row, marioX + column)
+        var index = 0
+        for (row in 0 until this.receptiveFieldRows * 2) {
+            val refinedRow = if (row % 2 == 1 && this.mario!!.inTileY >= 8) (row / 2) + 1 else (row / 2)
+            val offsetRow = refinedRow - receptiveFieldRowMiddle + this.receptiveFieldOffsetRows
+            for (column in 0 until this.receptiveFieldColumns * 2) {
+                val refinedColumn = if (column % 2 == 1 && this.mario!!.inTileX >= 8) (column / 2) + 1 else (column / 2)
+                val offsetColumn = refinedColumn - receptiveFieldColumnMiddle + this.receptiveFieldOffsetColumns
+                callback(index, marioY + offsetRow, marioX + offsetColumn)
+                index++
+            }
         }
     }
 
     private fun getInputLayerSize(): Int {
-        val receptiveFileSize = this.receptiveFieldRows * this.receptiveFieldColumns
-        return if (!this.addMarioInTilePosition) 2 * receptiveFileSize else 2 * receptiveFileSize + 2
+        val receptiveFieldSize = this.receptiveFieldRows * this.receptiveFieldColumns * 4
+        return if (!this.addMarioInTilePosition) 2 * receptiveFieldSize else 2 * receptiveFieldSize + 2
     }
 
 }

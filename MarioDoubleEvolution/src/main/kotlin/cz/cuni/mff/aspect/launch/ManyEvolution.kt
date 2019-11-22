@@ -19,19 +19,19 @@ fun main() {
 }
 
 fun doManyEvolution() {
-    val learningLevels = arrayOf(*TrainingLevelsSet)
-    val evaluationName = "All test - multi gaussian"
+    val learningLevels = TrainingLevelsSet
+    val evaluationName = "Doubled input - All"
 
     val generationsCount = 50
     val populationSize = 50
     val fitness = MarioGameplayEvaluators::distanceOnly
-    val mutators = arrayOf<Alterer<DoubleGene, Float>>(
-        UpdatedGaussianMutator(0.25, 0.1),
-        UpdatedGaussianMutator(0.15, 0.2),
-        UpdatedGaussianMutator(0.05, 0.4),
-        UpdatedGaussianMutator(0.01, 0.6)
-    )
-    //val mutators = arrayOf<Alterer<DoubleGene, Float>>(GaussianMutator(0.45))
+//    val mutators = arrayOf<Alterer<DoubleGene, Float>>(
+//        UpdatedGaussianMutator(0.25, 0.1),
+//        UpdatedGaussianMutator(0.15, 0.2),
+//        UpdatedGaussianMutator(0.05, 0.4),
+//        UpdatedGaussianMutator(0.01, 0.6)
+//    )
+    val mutators = arrayOf<Alterer<DoubleGene, Float>>(GaussianMutator(0.45))
     val hiddenLayerSize = 5
 
     val evolutions = arrayOf(

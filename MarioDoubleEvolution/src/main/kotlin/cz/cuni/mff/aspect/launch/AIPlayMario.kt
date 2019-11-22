@@ -28,9 +28,9 @@ fun main() {
 
 fun aiPlayLevel() {
     // val agent = EvolvedAgents.ruleBasedAgent
-    val agent = MarioAgent(ObjectStorage.load("experiments/All test - multi gaussian/NeuroEvolution, experiment 3_ai.ai") as MarioController)
-    // val levels = arrayOf<MarioLevel>(PathWithHolesLevel) + Stage4Level1Split.levels
-    val levels = TrainingLevelsSet
+    val agent = MarioAgent(ObjectStorage.load("experiments/Doubled input - S4S/NeuroEvolution, experiment 2_ai.ai") as MarioController)
+    val levels = arrayOf<MarioLevel>(PathWithHolesLevel) + Stage4Level1Split.levels
+    // val levels = TrainingLevelsSet
 
     val gameSimulator = GameSimulator(400)
     levels.forEach {

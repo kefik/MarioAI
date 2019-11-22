@@ -129,7 +129,7 @@ class NeuroControllerEvolution(
 
     companion object {
         private const val DEFAULT_POPULATION_SIZE = 50
-        private const val DEFAULT_GENERATIONS_COUNT: Long = 200
+        private const val DEFAULT_GENERATIONS_COUNT: Long = 50
     }
 
 }
